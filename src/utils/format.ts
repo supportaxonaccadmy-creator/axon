@@ -1,86 +1,43 @@
-/**
- * Formatting utilities for dates, numbers, and strings.
- */
-
-/**
- * Format a date string or Date object into a localized date string.
- */
 export function formatDate(
-  date: string | Date,
-  locale = 'en-US',
-  options: Intl.DateTimeFormatOptions = {
+  date: Date | string | number,
+  options: Intl.DateTimeFormatOptions = {},
+): string {
+  const d = typeof date === 'string' || typeof date === 'number' ? new Date(date) : date;
+
+  const defaultOptions: Intl.DateTimeFormatOptions = {
     year: 'numeric',
-    month: 'long',
+    month: 'short',
     day: 'numeric',
-  },
-): string {
-  const d = typeof date === 'string' ? new Date(date) : date;
-  return new Intl.DateTimeFormat(locale, options).format(d);
+    ...options,
+  };
+
+  return new Intl.DateTimeFormat('en-US', defaultOptions).format(d);
 }
 
-/**
- * Format a date string or Date object into a localized time string.
- */
-export function formatTime(
-  date: string | Date,
-  locale = 'en-US',
-): string {
-  const d = typeof date === 'string' ? new Date(date) : date;
-  return new Intl.DateTimeFormat(locale, {
-    hour: '2-digit',
-    minute: '2-digit',
-  }).format(d);
+export function formatRelativeTime(date: Date | string | number): string {
+  const d = typeof date === 'string' || typeof date === 'number' ? new Date(date) : date;
+  const now = new Date();
+  const diffMs = d.getTime() - now.getTime();
+  const diffSec = Math.round(diffMs / 1000);
+  const diffMin = Math.round(diffSec / 60);
+  const diffHr = Math.round(diffMin / 60);
+  const diffDay = Math.round(diffHr / 24);
+
+  const rtf = new Intl.RelativeTimeFormat('en-US', { numeric: 'auto' });
+
+  if (Math.abs(diffSec) < 60) return rtf.format(diffSec, 'second');
+  if (Math.abs(diffMin) < 60) return rtf.format(diffMin, 'minute');
+  if (Math.abs(diffHr) < 24) return rtf.format(diffHr, 'hour');
+  return rtf.format(diffDay, 'day');
 }
 
-/**
- * Format a number as a percentage string.
- */
-export function formatPercent(
-  value: number,
-  decimals = 0,
-  locale = 'en-US',
+export function formatCurrency(
+  amount: number,
+  currency: string = 'INR',
+  locale: string = 'en-IN',
 ): string {
   return new Intl.NumberFormat(locale, {
-    style: 'percent',
-    minimumFractionDigits: decimals,
-    maximumFractionDigits: decimals,
-  }).format(value / 100);
-}
-
-/**
- * Format a number with thousands separators.
- */
-export function formatNumber(
-  value: number,
-  locale = 'en-US',
-): string {
-  return new Intl.NumberFormat(locale).format(value);
-}
-
-/**
- * Truncate a string to a maximum length, appending an ellipsis.
- */
-export function truncate(text: string, maxLength: number): string {
-  if (text.length <= maxLength) return text;
-  return text.slice(0, maxLength - 1).trimEnd() + '\u2026';
-}
-
-/**
- * Convert a string to title case.
- */
-export function toTitleCase(text: string): string {
-  return text.replace(
-    /\w\S*/g,
-    (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
-  );
-}
-
-/**
- * Format a duration in minutes to a human-readable string.
- */
-export function formatDuration(minutes: number): string {
-  if (minutes < 60) return `${minutes} min`;
-  const hours = Math.floor(minutes / 60);
-  const remaining = minutes % 60;
-  return remaining > 0 ? `${hours}h ${remaining}m` : `${hours}h`;
+    style: 'currency',
+    currency,
+  }).format(amount);
 }

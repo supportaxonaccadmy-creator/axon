@@ -1,22 +1,26 @@
-import { APP_CONFIG } from '@/config/app';
-import { SITE_CONFIG } from '@/config/site';
+import { RouterProvider } from 'react-router-dom';
+import { router } from '@/routes';
+import { ThemeProvider } from '@/providers/ThemeProvider';
+import { ToastProvider } from '@/providers/ToastProvider';
+import { SessionProvider } from '@/providers/SessionProvider';
+import { AuthProvider } from '@/providers/AuthProvider';
+import { QueryProvider } from '@/providers/QueryProvider';
+import { ErrorBoundary } from '@/components/feedback/ErrorBoundary';
 
-function App() {
+export default function App() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-neutral-50">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold text-primary-700">
-          {APP_CONFIG.name}
-        </h1>
-        <p className="mt-4 text-lg text-neutral-600">
-          {SITE_CONFIG.tagline}
-        </p>
-        <p className="mt-2 text-sm text-neutral-400">
-          v{APP_CONFIG.version}
-        </p>
-      </div>
-    </div>
+    <ErrorBoundary>
+      <ThemeProvider>
+        <QueryProvider>
+          <AuthProvider>
+            <SessionProvider>
+              <ToastProvider>
+                <RouterProvider router={router} />
+              </ToastProvider>
+            </SessionProvider>
+          </AuthProvider>
+        </QueryProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }
-
-export default App;

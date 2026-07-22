@@ -1,20 +1,15 @@
-/**
- * Site-level configuration for metadata, branding, and navigation.
- */
+import { APP_CONFIG } from '@/constants/app';
 
-export const SITE_CONFIG = {
-  title: 'Enterprise Nursing LMS',
-  tagline: 'Empowering Nursing Excellence Through Education',
-  author: 'Enterprise Nursing LMS',
-  logo: '/logo.svg',
-  favicon: '/favicon.svg',
-  links: {
-    home: '/',
-    dashboard: '/dashboard',
-    courses: '/courses',
-    profile: '/profile',
-    settings: '/settings',
-  },
-} as const;
+export const siteConfig = {
+  name: APP_CONFIG.name,
+  shortName: APP_CONFIG.shortName,
+  description: APP_CONFIG.description,
+  locale: APP_CONFIG.locale,
+};
 
-export type SiteConfig = typeof SITE_CONFIG;
+export const envConfig = {
+  supabaseUrl: import.meta.env.VITE_SUPABASE_URL ?? '',
+  supabaseAnonKey: import.meta.env.VITE_SUPABASE_ANON_KEY ?? '',
+  isDev: import.meta.env.DEV,
+  isProd: import.meta.env.PROD,
+};

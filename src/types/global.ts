@@ -1,6 +1,8 @@
-/**
- * Global type re-exports for convenient importing.
- * Ambient declarations are in global.d.ts and apply automatically.
- */
+export interface ImportMetaEnv {
+  readonly VITE_SUPABASE_URL: string;
+  readonly VITE_SUPABASE_ANON_KEY: string;
+}
 
-export {};
+export interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}

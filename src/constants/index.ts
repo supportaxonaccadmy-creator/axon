@@ -1,8 +1,6 @@
-export { COLORS } from './colors';
-export type { Colors, ColorScale } from './colors';
-
 export { ROUTES } from './routes';
-export type { RouteKey, RoutePath } from './routes';
-
+export type { RoutePath } from './routes';
 export { STORAGE_KEYS } from './storage';
 export type { StorageKey } from './storage';
+export { APP_CONFIG, API_CONFIG, PAGINATION, DEFAULT_VALUES } from './app';
+export { COLORS } from './colors';
