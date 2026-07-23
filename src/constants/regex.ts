@@ -1,0 +1,17 @@
+export const REGEX = {
+  EMAIL: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+  URL: /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})[/\w .-]*\/?$/,
+  PHONE: /^[+]?[\d\s-()]{10,15}$/,
+  USERNAME: /^[a-zA-Z0-9_]{3,30}$/,
+  SLUG: /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+  UUID: /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i,
+  STRONG_PASSWORD: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+  ALPHANUMERIC: /^[a-zA-Z0-9]+$/,
+  NUMERIC: /^\d+$/,
+  ALPHA: /^[a-zA-Z]+$/,
+  WHITESPACE: /\s+/,
+  HTML_TAGS: /<[^>]*>/g,
+  CAMEL_CASE: /^[a-z][a-zA-Z0-9]*$/,
+  SNAKE_CASE: /^[a-z][a-z0-9_]*$/,
+  KEBAB_CASE: /^[a-z][a-z0-9-]*$/,
+} as const;
