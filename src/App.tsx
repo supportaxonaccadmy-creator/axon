@@ -1,26 +1,20 @@
 import { RouterProvider } from 'react-router-dom';
 import { router } from '@/routes';
-import { ThemeProvider } from '@/providers/ThemeProvider';
+import { RootProvider } from '@/providers/RootProvider';
 import { ToastProvider } from '@/providers/ToastProvider';
-import { SessionProvider } from '@/providers/SessionProvider';
-import { AuthProvider } from '@/providers/AuthProvider';
 import { QueryProvider } from '@/providers/QueryProvider';
 import { ErrorBoundary } from '@/components/feedback/ErrorBoundary';
 
 export default function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider>
+      <RootProvider>
         <QueryProvider>
-          <AuthProvider>
-            <SessionProvider>
-              <ToastProvider>
-                <RouterProvider router={router} />
-              </ToastProvider>
-            </SessionProvider>
-          </AuthProvider>
+          <ToastProvider>
+            <RouterProvider router={router} />
+          </ToastProvider>
         </QueryProvider>
-      </ThemeProvider>
+      </RootProvider>
     </ErrorBoundary>
   );
 }
