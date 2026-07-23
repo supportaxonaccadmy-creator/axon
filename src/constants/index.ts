@@ -11,3 +11,5 @@ export { REGEX } from './regex';
 export { THEME, THEME_STORAGE_KEY } from './theme';
 export type { ThemeMode } from './theme';
 export { ANIMATION } from './animation';
+export { SUPABASE_CONFIG } from './supabase';
+export { AUTH_CONFIG, AUTH_EVENTS, AUTH_ERRORS } from './auth';

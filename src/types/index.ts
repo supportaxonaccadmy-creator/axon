@@ -73,3 +73,35 @@ export type {
 export { ok, err } from './utilities';
 
 export type { ImportMetaEnv, ImportMeta } from './global';
+
+export type { SupabaseClient, SupabaseErrorDetail, SupabaseClientConfig } from './supabase';
+export type {
+  AuthEvent,
+  AuthUser,
+  AuthSession,
+  AuthState,
+  SignInCredentials,
+  SignUpData,
+  AuthResult,
+  AuthStateChangeCallback,
+} from './auth';
+export type {
+  FilterOperator,
+  FilterCondition,
+  SortOrder,
+  OrderCondition,
+  QueryOptions,
+  PaginatedResult,
+  CountResult,
+  TransactionCallback,
+} from './database';
+export type {
+  UploadOptions,
+  UploadResult,
+  DownloadResult,
+  FileMetadata,
+  ListFilesOptions,
+  ListFilesResult,
+  StorageBucket,
+  PublicUrlResult,
+} from './storage';
