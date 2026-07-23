@@ -34,3 +34,15 @@ export function isStrongPassword(value: string): boolean {
 export function matches(value: string, pattern: RegExp): boolean {
   return pattern.test(value);
 }
+
+export function isAlphanumeric(value: string): boolean {
+  return /^[a-zA-Z0-9]+$/.test(value);
+}
+
+export function isNumeric(value: string): boolean {
+  return /^\d+$/.test(value);
+}
+
+export function isAlpha(value: string): boolean {
+  return /^[a-zA-Z]+$/.test(value);
+}
