@@ -7,9 +7,5 @@ export const siteConfig = {
   locale: APP_CONFIG.locale,
 };
 
-export const envConfig = {
-  supabaseUrl: import.meta.env.VITE_SUPABASE_URL ?? '',
-  supabaseAnonKey: import.meta.env.VITE_SUPABASE_ANON_KEY ?? '',
-  isDev: import.meta.env.DEV,
-  isProd: import.meta.env.PROD,
-};
+export { envConfig } from './env';
+export { appConfig, environmentConfig, runtimeConfig, featureFlags, versionConfig, buildConfig } from './runtime';

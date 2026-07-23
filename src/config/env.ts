@@ -1,3 +1,9 @@
-import { envConfig } from './site';
+import { environmentConfig } from './runtime';
 
-export { envConfig };
+export const envConfig = {
+  isDev: environmentConfig.isDev,
+  isProd: environmentConfig.isProd,
+  isTest: environmentConfig.isTest,
+  supabaseUrl: environmentConfig.supabaseUrl,
+  supabaseAnonKey: environmentConfig.supabaseAnonKey,
+};
