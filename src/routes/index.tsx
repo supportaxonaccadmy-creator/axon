@@ -3,8 +3,10 @@ import { createBrowserRouter, type RouteObject } from 'react-router-dom';
 import { ROUTES } from '@/constants/routes';
 import { MainLayout } from '@/layouts/MainLayout';
 import { BlankLayout } from '@/layouts/BlankLayout';
+import { AuthLayout } from '@/layouts/AuthLayout';
 import { PageLoader } from '@/components/feedback/Loaders';
 import { NotFoundPage } from '@/pages/NotFoundPage';
+import { GuestRoute, ProtectedRoute } from '@/routes/guards';
 
 const HomePage = lazy(() => import('@/pages/HomePage').then((m) => ({ default: m.HomePage })));
 const UnauthorizedPage = lazy(() =>
@@ -12,6 +14,14 @@ const UnauthorizedPage = lazy(() =>
 );
 const AccessDeniedPage = lazy(() =>
   import('@/pages/AccessDeniedPage').then((m) => ({ default: m.AccessDeniedPage })),
+);
+const LoginPage = lazy(() => import('@/pages/auth/LoginPage').then((m) => ({ default: m.LoginPage })));
+const RegisterPage = lazy(() => import('@/pages/auth/RegisterPage').then((m) => ({ default: m.RegisterPage })));
+const ForgotPasswordPage = lazy(() =>
+  import('@/pages/auth/ForgotPasswordPage').then((m) => ({ default: m.ForgotPasswordPage })),
+);
+const ResetPasswordPage = lazy(() =>
+  import('@/pages/auth/ResetPasswordPage').then((m) => ({ default: m.ResetPasswordPage })),
 );
 
 const withSuspense = (element: React.ReactNode) => <Suspense fallback={<PageLoader />}>{element}</Suspense>;
@@ -21,7 +31,31 @@ export const routes: RouteObject[] = [
     path: ROUTES.HOME,
     element: <MainLayout />,
     children: [
-      { index: true, element: withSuspense(<HomePage />) },
+      {
+        index: true,
+        element: <ProtectedRoute>{withSuspense(<HomePage />)}</ProtectedRoute>,
+      },
+    ],
+  },
+  {
+    element: <AuthLayout />,
+    children: [
+      {
+        path: ROUTES.LOGIN,
+        element: <GuestRoute>{withSuspense(<LoginPage />)}</GuestRoute>,
+      },
+      {
+        path: ROUTES.REGISTER,
+        element: <GuestRoute>{withSuspense(<RegisterPage />)}</GuestRoute>,
+      },
+      {
+        path: ROUTES.FORGOT_PASSWORD,
+        element: <GuestRoute>{withSuspense(<ForgotPasswordPage />)}</GuestRoute>,
+      },
+      {
+        path: ROUTES.RESET_PASSWORD,
+        element: <GuestRoute>{withSuspense(<ResetPasswordPage />)}</GuestRoute>,
+      },
     ],
   },
   {
