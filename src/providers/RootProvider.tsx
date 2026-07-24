@@ -5,6 +5,7 @@ import { LoadingProvider } from './LoadingProvider';
 import { SessionProvider } from './SessionProvider';
 import { AuthProvider } from './AuthProvider';
 import { ProfileProvider } from './ProfileProvider';
+import { AuthorizationProvider } from './AuthorizationProvider';
 
 export function RootProvider({ children }: { children: ReactNode }) {
   return (
@@ -13,7 +14,9 @@ export function RootProvider({ children }: { children: ReactNode }) {
         <LoadingProvider>
           <SessionProvider>
             <AuthProvider>
-              <ProfileProvider>{children}</ProfileProvider>
+              <ProfileProvider>
+                <AuthorizationProvider>{children}</AuthorizationProvider>
+              </ProfileProvider>
             </AuthProvider>
           </SessionProvider>
         </LoadingProvider>

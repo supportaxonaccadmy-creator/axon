@@ -10,3 +10,11 @@ export {
   deleteAvatar,
   refreshProfile,
 } from './profile';
+export {
+  hasPermission,
+  hasAny,
+  hasAll,
+  canAccessRoute,
+  canAccessFeatureByKey,
+  getPermissions,
+} from './authorization';

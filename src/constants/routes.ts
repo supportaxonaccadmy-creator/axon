@@ -10,4 +10,4 @@ export const ROUTES = {
   NOT_FOUND: '*',
 } as const;
 
-export type RoutePath = (typeof ROUTES)[key of typeof ROUTES];
+export type RoutePath = (typeof ROUTES)[keyof typeof ROUTES];

@@ -116,3 +116,14 @@ export type {
   ProfileUpdateResponse,
   AvatarUploadResponse,
 } from './profile';
+
+export type {
+  Role,
+  Permission as AuthzPermission,
+  PermissionGroup,
+  PermissionCheck,
+  AuthorizationState,
+  FeatureFlag,
+  FeatureFlagConfig,
+  RoutePermission,
+} from './authorization';

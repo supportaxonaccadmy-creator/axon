@@ -17,3 +17,16 @@ export { useDocumentTitle } from './useDocumentTitle';
 export { useInterval } from './useInterval';
 export { useTimeout } from './useTimeout';
 export { useProfile, useCurrentUser, useUserRole, useIsAdmin, useAvatar, useProfileDisplayName } from './useProfile';
+export {
+  useAuthorization,
+  usePermissions,
+  useHasPermission,
+  useHasAnyPermission,
+  useHasAllPermissions,
+  useRole as useAuthzRole,
+  useIsAdminRole,
+  useIsStudentRole,
+  useCanAccessFeature,
+} from './useAuthorization';
+export { useFilteredNavItems } from './useFilteredNavItems';
+export type { SecureNavItem } from './useFilteredNavItems';

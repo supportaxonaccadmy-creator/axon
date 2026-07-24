@@ -15,6 +15,7 @@ const UnauthorizedPage = lazy(() =>
 const AccessDeniedPage = lazy(() =>
   import('@/pages/AccessDeniedPage').then((m) => ({ default: m.AccessDeniedPage })),
 );
+const ForbiddenPage = lazy(() => import('@/pages/ForbiddenPage').then((m) => ({ default: m.ForbiddenPage })));
 const LoginPage = lazy(() => import('@/pages/auth/LoginPage').then((m) => ({ default: m.LoginPage })));
 const RegisterPage = lazy(() => import('@/pages/auth/RegisterPage').then((m) => ({ default: m.RegisterPage })));
 const ForgotPasswordPage = lazy(() =>
@@ -62,6 +63,11 @@ export const routes: RouteObject[] = [
         element: <GuestRoute>{withSuspense(<ResetPasswordPage />)}</GuestRoute>,
       },
     ],
+  },
+  {
+    path: '/forbidden',
+    element: <BlankLayout />,
+    children: [{ index: true, element: withSuspense(<ForbiddenPage />) }],
   },
   {
     path: ROUTES.UNAUTHORIZED,
