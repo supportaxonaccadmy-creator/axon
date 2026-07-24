@@ -16,3 +16,4 @@ export { useScrollTop } from './useScrollTop';
 export { useDocumentTitle } from './useDocumentTitle';
 export { useInterval } from './useInterval';
 export { useTimeout } from './useTimeout';
+export { useProfile, useCurrentUser, useUserRole, useIsAdmin, useAvatar, useProfileDisplayName } from './useProfile';

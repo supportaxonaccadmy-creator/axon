@@ -4,9 +4,10 @@ export const ROUTES = {
   REGISTER: '/register',
   FORGOT_PASSWORD: '/forgot-password',
   RESET_PASSWORD: '/reset-password',
+  PROFILE: '/profile',
   UNAUTHORIZED: '/unauthorized',
   ACCESS_DENIED: '/access-denied',
   NOT_FOUND: '*',
 } as const;
 
-export type RoutePath = (typeof ROUTES)[keyof typeof ROUTES];
+export type RoutePath = (typeof ROUTES)[key of typeof ROUTES];
