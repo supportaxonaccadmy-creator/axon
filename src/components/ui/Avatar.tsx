@@ -1,11 +1,11 @@
 import { cn } from '@/utils/cn';
 
 export interface AvatarProps {
-  src?: string;
-  alt?: string;
-  fallback?: string;
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-  className?: string;
+  src?: string | undefined;
+  alt?: string | undefined;
+  fallback?: string | undefined;
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | undefined;
+  className?: string | undefined;
 }
 
 const sizeClasses: Record<NonNullable<AvatarProps['size']>, string> = {

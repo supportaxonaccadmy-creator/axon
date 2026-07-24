@@ -23,6 +23,7 @@ const ForgotPasswordPage = lazy(() =>
 const ResetPasswordPage = lazy(() =>
   import('@/pages/auth/ResetPasswordPage').then((m) => ({ default: m.ResetPasswordPage })),
 );
+const ProfilePage = lazy(() => import('@/pages/ProfilePage').then((m) => ({ default: m.ProfilePage })));
 
 const withSuspense = (element: React.ReactNode) => <Suspense fallback={<PageLoader />}>{element}</Suspense>;
 
@@ -34,6 +35,10 @@ export const routes: RouteObject[] = [
       {
         index: true,
         element: <ProtectedRoute>{withSuspense(<HomePage />)}</ProtectedRoute>,
+      },
+      {
+        path: ROUTES.PROFILE,
+        element: <ProtectedRoute>{withSuspense(<ProfilePage />)}</ProtectedRoute>,
       },
     ],
   },
