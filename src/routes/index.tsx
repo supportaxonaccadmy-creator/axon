@@ -2,11 +2,12 @@ import { lazy, Suspense } from 'react';
 import { createBrowserRouter, type RouteObject } from 'react-router-dom';
 import { ROUTES } from '@/constants/routes';
 import { MainLayout } from '@/layouts/MainLayout';
+import { AdminLayout } from '@/layouts/AdminLayout';
 import { BlankLayout } from '@/layouts/BlankLayout';
 import { AuthLayout } from '@/layouts/AuthLayout';
 import { PageLoader } from '@/components/feedback/Loaders';
 import { NotFoundPage } from '@/pages/NotFoundPage';
-import { GuestRoute, ProtectedRoute } from '@/routes/guards';
+import { GuestRoute, ProtectedRoute, AdminRoute } from '@/routes/guards';
 
 const HomePage = lazy(() => import('@/pages/HomePage').then((m) => ({ default: m.HomePage })));
 const UnauthorizedPage = lazy(() =>
@@ -25,6 +26,7 @@ const ResetPasswordPage = lazy(() =>
   import('@/pages/auth/ResetPasswordPage').then((m) => ({ default: m.ResetPasswordPage })),
 );
 const ProfilePage = lazy(() => import('@/pages/ProfilePage').then((m) => ({ default: m.ProfilePage })));
+const DashboardPage = lazy(() => import('@/pages/admin/DashboardPage').then((m) => ({ default: m.DashboardPage })));
 
 const withSuspense = (element: React.ReactNode) => <Suspense fallback={<PageLoader />}>{element}</Suspense>;
 
@@ -40,6 +42,20 @@ export const routes: RouteObject[] = [
       {
         path: ROUTES.PROFILE,
         element: <ProtectedRoute>{withSuspense(<ProfilePage />)}</ProtectedRoute>,
+      },
+    ],
+  },
+  {
+    path: ROUTES.ADMIN,
+    element: (
+      <AdminRoute>
+        <AdminLayout />
+      </AdminRoute>
+    ),
+    children: [
+      {
+        index: true,
+        element: withSuspense(<DashboardPage />),
       },
     ],
   },
