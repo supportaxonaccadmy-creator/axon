@@ -8,6 +8,7 @@ export const ROUTES = {
   UNAUTHORIZED: '/unauthorized',
   ACCESS_DENIED: '/access-denied',
   NOT_FOUND: '*',
+  ADMIN: '/admin',
 } as const;
 
 export type RoutePath = (typeof ROUTES)[keyof typeof ROUTES];

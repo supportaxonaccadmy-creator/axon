@@ -18,3 +18,10 @@ export {
   canAccessFeatureByKey,
   getPermissions,
 } from './authorization';
+export {
+  fetchDashboardStats,
+  fetchDashboardActivity,
+  fetchDashboardQuickActions,
+  fetchSystemStatus,
+  fetchDashboardSummary,
+} from './dashboard';

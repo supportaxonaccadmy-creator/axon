@@ -30,3 +30,4 @@ export {
 } from './useAuthorization';
 export { useFilteredNavItems } from './useFilteredNavItems';
 export type { SecureNavItem } from './useFilteredNavItems';
+export { useDashboard, useDashboardStats, useDashboardActivity, useDashboardQuickActions, useDashboardSystemStatus } from './useDashboard';
