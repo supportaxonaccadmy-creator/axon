@@ -1,0 +1,113 @@
+import type { SecureNavItem } from '@/hooks/useFilteredNavItems';
+
+export const ADMIN_NAV_ITEMS: SecureNavItem[] = [
+  {
+    label: 'Dashboard',
+    href: '/admin',
+    icon: 'LayoutDashboard',
+    roles: ['admin'],
+    permissions: ['admin.access'],
+  },
+  {
+    label: 'Users',
+    href: '/admin/users',
+    icon: 'Users',
+    roles: ['admin'],
+    permissions: ['users.read'],
+    feature: 'userManagement',
+  },
+  {
+    label: 'Batches',
+    href: '/admin/batches',
+    icon: 'Layers',
+    roles: ['admin'],
+    permissions: ['admin.access'],
+  },
+  {
+    label: 'Subjects',
+    href: '/admin/subjects',
+    icon: 'BookOpen',
+    roles: ['admin'],
+    permissions: ['courses.read'],
+  },
+  {
+    label: 'Chapters',
+    href: '/admin/chapters',
+    icon: 'FileText',
+    roles: ['admin'],
+    permissions: ['courses.read'],
+  },
+  {
+    label: 'Classes',
+    href: '/admin/classes',
+    icon: 'Video',
+    roles: ['admin'],
+    permissions: ['courses.read'],
+  },
+  {
+    label: 'Videos',
+    href: '/admin/videos',
+    icon: 'PlayCircle',
+    roles: ['admin'],
+    permissions: ['courses.read'],
+  },
+  {
+    label: 'PDF Notes',
+    href: '/admin/pdf-notes',
+    icon: 'FileText',
+    roles: ['admin'],
+    permissions: ['courses.read'],
+  },
+  {
+    label: 'MCQs',
+    href: '/admin/mcqs',
+    icon: 'HelpCircle',
+    roles: ['admin'],
+    permissions: ['courses.read'],
+  },
+  {
+    label: 'Test Series',
+    href: '/admin/test-series',
+    icon: 'ClipboardList',
+    roles: ['admin'],
+    permissions: ['courses.read'],
+  },
+  {
+    label: 'Live Classes',
+    href: '/admin/live-classes',
+    icon: 'Radio',
+    roles: ['admin'],
+    permissions: ['admin.access'],
+  },
+  {
+    label: 'Payments',
+    href: '/admin/payments',
+    icon: 'CreditCard',
+    roles: ['admin'],
+    permissions: ['admin.access'],
+  },
+  {
+    label: 'Analytics',
+    href: '/admin/analytics',
+    icon: 'BarChart3',
+    roles: ['admin'],
+    permissions: ['admin.access'],
+    feature: 'analytics',
+  },
+  {
+    label: 'Announcements',
+    href: '/admin/announcements',
+    icon: 'Megaphone',
+    roles: ['admin'],
+    permissions: ['admin.access'],
+  },
+  {
+    label: 'Settings',
+    href: '/admin/settings',
+    icon: 'Settings',
+    roles: ['admin'],
+    permissions: ['admin.access'],
+  },
+];
+
+export const ADMIN_NAV_ACTIVE_PATHS = ['/admin'] as const;
