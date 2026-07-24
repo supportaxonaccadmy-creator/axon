@@ -127,3 +127,20 @@ export type {
   FeatureFlagConfig,
   RoutePermission,
 } from './authorization';
+
+export type {
+  DashboardStatTrend,
+  DashboardActivityType,
+  DashboardQuickActionVariant,
+  DashboardWidgetSize,
+  DashboardSystemStatusLevel,
+  DashboardStat,
+  DashboardStats,
+  DashboardActivity,
+  DashboardQuickAction,
+  DashboardSystemStatus,
+  DashboardSummary,
+  DashboardCardConfig,
+  DashboardWidget,
+  DashboardUpcomingModule,
+} from './dashboard';
