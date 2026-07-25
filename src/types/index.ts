@@ -144,3 +144,26 @@ export type {
   DashboardWidget,
   DashboardUpcomingModule,
 } from './dashboard';
+
+export type {
+  LmsStatus,
+  Batch,
+  BatchInsert,
+  BatchUpdate,
+  BatchWithCounts,
+  BatchRow,
+  Subject,
+  SubjectInsert,
+  SubjectUpdate,
+  SubjectWithCounts,
+  SubjectRow,
+  Chapter,
+  ChapterInsert,
+  ChapterUpdate,
+  ChapterWithCounts,
+  ChapterRow,
+  Class,
+  ClassInsert,
+  ClassUpdate,
+  ClassRow,
+} from './lms';

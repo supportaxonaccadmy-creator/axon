@@ -25,3 +25,5 @@ export {
   fetchSystemStatus,
   fetchDashboardSummary,
 } from './dashboard';
+export { batchService, subjectService, chapterService, classService } from './lms';
+export type { BatchListOptions, SubjectListOptions, ChapterListOptions, ClassListOptions } from './lms';
