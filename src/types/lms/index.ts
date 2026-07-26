@@ -17,3 +17,26 @@ export type {
   McqSetWithQuestions,
 } from './mcq';
 export type { Attachment, AttachmentInsert, AttachmentUpdate, AttachmentRow } from './attachment';
+export type {
+  BatchPricing,
+  BatchPricingInsert,
+  BatchPricingUpdate,
+  BatchPricingRow,
+} from './pricing';
+export type {
+  PaymentStatus,
+  PaymentGateway,
+  Purchase,
+  PurchaseInsert,
+  PurchaseUpdate,
+  PurchaseRow,
+} from './purchase';
+export type {
+  EnrollmentType,
+  EnrollmentStatus,
+  Enrollment,
+  EnrollmentInsert,
+  EnrollmentUpdate,
+  EnrollmentRow,
+  EnrollmentWithDetails,
+} from './enrollment';
