@@ -38,3 +38,16 @@ export type {
   PublishHierarchyResult,
   ArchiveHierarchyResult,
 } from './transactionService';
+export { enhancedSearchService } from './enhancedSearchService';
+export type { EnhancedSearchResultItem, EnhancedSearchOptions } from './enhancedSearchService';
+export { performanceOptimizer, createLazyLoader } from './performanceOptimizer';
+export { integrityEngine } from './integrity';
+export { hierarchyValidator } from './integrity';
+export type { IntegrityIssue, IntegrityReport } from './integrity';
+export { relationshipValidator } from './integrity';
+export { enrollmentValidator } from './integrity';
+export { purchaseValidator } from './integrity';
+export { pricingValidator } from './integrity';
+export { duplicateDetector } from './integrity';
+export { missingReferenceDetector } from './integrity';
+export { brokenHierarchyDetector } from './integrity';
