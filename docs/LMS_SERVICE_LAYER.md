@@ -96,7 +96,7 @@ Validators: `validateBatch`, `validateSubject`, `validateChapter`, `validateClas
 import { validationEngine } from '@/lib/validation';
 
 const schema = {
-  title: { type: 'string', required: true, minLength: 2, maxLength:  200 },
+  title: { type: 'string', required: true, minLength: 2, maxLength: 200 },
   slug: { type: 'slug', required: true, maxLength: 150 },
   email: { type: 'email', required: false },
 };

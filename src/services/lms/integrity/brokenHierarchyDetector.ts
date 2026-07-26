@@ -44,12 +44,10 @@ export const brokenHierarchyDetector = {
     }
 
     for (const childTable of ['videos', 'pdf_notes', 'mcq_sets', 'attachments']) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { data: children } = await (supabase.from(childTable).select('id, class_id, title') as any);
-      for (const child of (children ?? []) as Record<string, unknown>[]) {
-        const classId = String(child.class_id ?? '');
-        if (classId && !validClassIds.has(classId)) {
-          issues.push({ type: 'broken_hierarchy', entity: childTable, id: String(child.id), message: `${childTable} "${child.title ?? child.id}" references broken class ${classId}`, severity: 'error' });
+      const { data: children } = await supabase.from(childTable).select('id, class_id, title');
+      for (const child of children ?? []) {
+        if (child.class_id && !validClassIds.has(child.class_id)) {
+          issues.push({ type: 'broken_hierarchy', entity: childTable, id: child.id, message: `${childTable} "${child.title ?? child.id}" references broken class ${child.class_id}`, severity: 'error' });
         }
       }
     }

@@ -140,12 +140,10 @@ export const enhancedSearchService = {
     const supabase = getSupabaseClient();
     const { data: subjects } = await supabase.from('subjects').select('id').eq('batch_id', batchId);
     const subjectIds = (subjects ?? []).map((s: { id: string }) => s.id);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data: chapters } = subjectIds.length > 0 ? await (supabase.from('chapters').select('id').in('subject_id', subjectIds) as any) : { data: [] };
-    const chapterIds = ((chapters as Record<string, unknown>[] | null) ?? []).map((c) => String(c.id));
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data: classes } = chapterIds.length > 0 ? await (supabase.from('classes').select('id').in('chapter_id', chapterIds) as any) : { data: [] };
-    const classIds = ((classes as Record<string, unknown>[] | null) ?? []).map((c) => String(c.id));
+    const { data: chapters } = subjectIds.length > 0 ? await supabase.from('chapters').select('id').in('subject_id', subjectIds) : { data: [] };
+    const chapterIds = (chapters ?? []).map((c: { id: string }) => c.id);
+    const { data: classes } = chapterIds.length > 0 ? await supabase.from('classes').select('id').in('chapter_id', chapterIds) : { data: [] };
+    const classIds = (classes ?? []).map((c: { id: string }) => c.id);
 
     const batchResults = await this.searchByType(query, 'batch', { ...options, batchId });
     const subjectResults = await this.searchByType(query, 'subject', { ...options, batchId });
