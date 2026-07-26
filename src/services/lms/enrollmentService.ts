@@ -103,7 +103,12 @@ export const enrollmentService = {
 
   async isStudentEnrolled(profileId: string, batchId: string): Promise<{ enrolled: boolean; error: string | null }> {
     const supabase = getSupabaseClient();
-    const { data, error } = await supabase.from(TABLE).select('id, access_status, expires_at').eq('profile_id', profileId).eq('batch_id', batchId).maybeSingle();
+    const { data, error } = await supabase
+      .from(TABLE)
+      .select('id, access_status, expires_at')
+      .eq('profile_id', profileId)
+      .eq('batch_id', batchId)
+      .maybeSingle();
     if (error) { logger.error('enrollmentService.isStudentEnrolled', { error: error.message }); return { enrolled: false, error: error.message }; }
     if (!data) return { enrolled: false, error: null };
     const row = data as EnrollmentRow;
@@ -115,17 +120,31 @@ export const enrollmentService = {
 
   async getAccessibleBatches(profileId: string): Promise<{ data: Enrollment[]; error: string | null }> {
     const supabase = getSupabaseClient();
-    const { data, error } = await supabase.from(TABLE).select('*').eq('profile_id', profileId).eq('access_status', 'active').order('enrolled_at', { ascending: false });
+    const { data, error } = await supabase
+      .from(TABLE)
+      .select('*')
+      .eq('profile_id', profileId)
+      .eq('access_status', 'active')
+      .order('enrolled_at', { ascending: false });
     if (error) { logger.error('enrollmentService.getAccessibleBatches', { error: error.message }); return { data: [], error: error.message }; }
     const enrollments = (data as EnrollmentRow[]).map(mapEnrollment);
     const now = new Date();
     return { data: enrollments.filter((e) => e.expiresAt === null || new Date(e.expiresAt) > now), error: null };
   },
 
-  async enrollStudent(profileId: string, batchId: string, pricingId: string, pricing?: BatchPricing | undefined, enrollmentType: EnrollmentType = 'purchase'): Promise<{ data: Enrollment | null; error: string | null }> {
+  async enrollStudent(
+    profileId: string,
+    batchId: string,
+    pricingId: string,
+    pricing?: BatchPricing | undefined,
+    enrollmentType: EnrollmentType = 'purchase',
+  ): Promise<{ data: Enrollment | null; error: string | null }> {
     const enrolledAt = new Date().toISOString();
     const expiresAt = pricing ? calculateExpiryFromPricing(pricing, enrolledAt) : null;
-    return this.create({ profileId, batchId, pricingId, enrollmentType, accessStatus: 'active', enrolledAt, expiresAt });
+    return this.create({
+      profileId, batchId, pricingId, enrollmentType,
+      accessStatus: 'active', enrolledAt, expiresAt,
+    });
   },
 
   async create(input: EnrollmentInsert): Promise<{ data: Enrollment | null; error: string | null }> {
@@ -161,15 +180,33 @@ export const enrollmentService = {
     return this.update(id, { accessStatus: 'active' });
   },
 
-  async purchaseBatch(profileId: string, batchId: string, pricingId: string, amount: number, currency: string = 'INR', paymentMethod: string | null = null, transactionReference: string | null = null, gateway: string = 'manual', pricing?: BatchPricing | undefined): Promise<{ purchase: import('@/types/lms').Purchase | null; enrollment: Enrollment | null; error: string | null }> {
-    const { data: purchase, error: purchaseError } = await this.createPurchase(profileId, batchId, pricingId, amount, currency, paymentMethod, transactionReference, gateway);
+  async purchaseBatch(
+    profileId: string,
+    batchId: string,
+    pricingId: string,
+    amount: number,
+    currency: string = 'INR',
+    paymentMethod: string | null = null,
+    transactionReference: string | null = null,
+    gateway: string = 'manual',
+    pricing?: BatchPricing | undefined,
+  ): Promise<{ purchase: import('@/types/lms').Purchase | null; enrollment: Enrollment | null; error: string | null }> {
+    const { data: purchase, error: purchaseError } = await this.createPurchase(
+      profileId, batchId, pricingId, amount, currency, paymentMethod, transactionReference, gateway,
+    );
     if (purchaseError || !purchase) return { purchase: null, enrollment: null, error: purchaseError };
-    const { data: enrollment, error: enrollError } = await this.enrollStudent(profileId, batchId, pricingId, pricing, 'purchase');
+
+    const { data: enrollment, error: enrollError } = await this.enrollStudent(
+      profileId, batchId, pricingId, pricing, 'purchase',
+    );
     if (enrollError) return { purchase, enrollment: null, error: enrollError };
     return { purchase, enrollment, error: null };
   },
 
-  async createPurchase(profileId: string, batchId: string, pricingId: string, amount: number, currency: string, paymentMethod: string | null, transactionReference: string | null, gateway: string): Promise<{ data: import('@/types/lms').Purchase | null; error: string | null }> {
+  async createPurchase(
+    profileId: string, batchId: string, pricingId: string, amount: number,
+    currency: string, paymentMethod: string | null, transactionReference: string | null, gateway: string,
+  ): Promise<{ data: import('@/types/lms').Purchase | null; error: string | null }> {
     const supabase = getSupabaseClient();
     const { data, error } = await supabase.from('purchases').insert({
       profile_id: profileId, batch_id: batchId, pricing_id: pricingId,

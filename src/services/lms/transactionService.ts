@@ -42,25 +42,38 @@ export const transactionService = {
     if (batchError || !batch) {
       return { batch: null, subjects: [], chapters: [], classes: [], error: batchError ?? 'Failed to create batch' };
     }
+
     const subjects: Subject[] = [];
     const chapters: Chapter[] = [];
     const classes: Class[] = [];
+
     for (const subjectData of input.subjects) {
-      const { data: subject, error: subjectError } = await subjectService.create({ ...subjectData.subject, batchId: batch.id });
+      const { data: subject, error: subjectError } = await subjectService.create({
+        ...subjectData.subject,
+        batchId: batch.id,
+      });
       if (subjectError || !subject) {
         await this.rollbackCreateHierarchy(batch.id, subjects.map((s) => s.id), chapters.map((c) => c.id), classes.map((c) => c.id));
         return { batch, subjects, chapters, classes, error: subjectError ?? 'Failed to create subject' };
       }
       subjects.push(subject);
+
       for (const chapterData of subjectData.chapters) {
-        const { data: chapter, error: chapterError } = await chapterService.create({ ...chapterData.chapter, subjectId: subject.id });
+        const { data: chapter, error: chapterError } = await chapterService.create({
+          ...chapterData.chapter,
+          subjectId: subject.id,
+        });
         if (chapterError || !chapter) {
           await this.rollbackCreateHierarchy(batch.id, subjects.map((s) => s.id), chapters.map((c) => c.id), classes.map((c) => c.id));
           return { batch, subjects, chapters, classes, error: chapterError ?? 'Failed to create chapter' };
         }
         chapters.push(chapter);
+
         for (const classInput of chapterData.classes) {
-          const { data: cls, error: classError } = await classService.create({ ...classInput, chapterId: chapter.id });
+          const { data: cls, error: classError } = await classService.create({
+            ...classInput,
+            chapterId: chapter.id,
+          });
           if (classError || !cls) {
             await this.rollbackCreateHierarchy(batch.id, subjects.map((s) => s.id), chapters.map((c) => c.id), classes.map((c) => c.id));
             return { batch, subjects, chapters, classes, error: classError ?? 'Failed to create class' };
@@ -69,6 +82,7 @@ export const transactionService = {
         }
       }
     }
+
     return { batch, subjects, chapters, classes, error: null };
   },
 
@@ -94,6 +108,7 @@ export const transactionService = {
     try {
       const { error: batchError } = await batchService.update(batchId, { status: 'published' });
       if (batchError) return { published: false, error: batchError };
+
       const { data: subjects } = await subjectService.list({ batchId });
       for (const subject of subjects) {
         await subjectService.update(subject.id, { status: 'published' });
@@ -101,7 +116,9 @@ export const transactionService = {
         for (const chapter of chapters) {
           await chapterService.update(chapter.id, { status: 'published' });
           const { data: classes } = await classService.list({ chapterId: chapter.id });
-          for (const cls of classes) { await classService.update(cls.id, { status: 'published' }); }
+          for (const cls of classes) {
+            await classService.update(cls.id, { status: 'published' });
+          }
         }
       }
       return { published: true, error: null };
@@ -116,6 +133,7 @@ export const transactionService = {
     try {
       const { error: batchError } = await batchService.update(batchId, { status: 'archived' });
       if (batchError) return { archived: false, error: batchError };
+
       const { data: subjects } = await subjectService.list({ batchId });
       for (const subject of subjects) {
         await subjectService.update(subject.id, { status: 'archived' });
@@ -123,7 +141,9 @@ export const transactionService = {
         for (const chapter of chapters) {
           await chapterService.update(chapter.id, { status: 'archived' });
           const { data: classes } = await classService.list({ chapterId: chapter.id });
-          for (const cls of classes) { await classService.update(cls.id, { status: 'archived' }); }
+          for (const cls of classes) {
+            await classService.update(cls.id, { status: 'archived' });
+          }
         }
       }
       return { archived: true, error: null };

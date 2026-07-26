@@ -98,6 +98,7 @@ export interface McqSetListOptions {
 }
 
 export const mcqService = {
+  // ---- MCQ Sets ----
   async getSetById(id: string): Promise<{ data: McqSet | null; error: string | null }> {
     const supabase = getSupabaseClient();
     const { data, error } = await supabase.from(SETS_TABLE).select('*').eq('id', id).maybeSingle();
@@ -188,6 +189,7 @@ export const mcqService = {
     return { data: { ...set, questions }, error: null };
   },
 
+  // ---- MCQ Questions ----
   async getQuestionById(id: string): Promise<{ data: McqQuestion | null; error: string | null }> {
     const supabase = getSupabaseClient();
     const { data, error } = await supabase.from(QUESTIONS_TABLE).select('*').eq('id', id).maybeSingle();

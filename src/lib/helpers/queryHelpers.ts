@@ -7,7 +7,10 @@ export interface AdvancedFilter {
   value: unknown;
 }
 
-export function buildFilters(base?: { column: string; value: unknown }[], advanced?: AdvancedFilter[]): FilterCondition[] {
+export function buildFilters(
+  base?: { column: string; value: unknown }[],
+  advanced?: AdvancedFilter[],
+): FilterCondition[] {
   const conditions: FilterCondition[] = [];
   if (base) {
     for (const f of base) {
@@ -31,7 +34,12 @@ export function buildSearchQuery(search: string | undefined, columns: string[]):
 export function buildPagination(page: number = 1, pageSize: number = 10): { offset: number; limit: number; page: number; pageSize: number } {
   const safePage = Math.max(1, page);
   const safeSize = Math.max(1, Math.min(100, pageSize));
-  return { offset: (safePage - 1) * safeSize, limit: safeSize, page: safePage, pageSize: safeSize };
+  return {
+    offset: (safePage - 1) * safeSize,
+    limit: safeSize,
+    page: safePage,
+    pageSize: safeSize,
+  };
 }
 
 export function buildSortOptions(sort?: SortOption | undefined, fallback?: SortOption): OrderCondition[] {

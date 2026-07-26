@@ -92,10 +92,18 @@ export const batchService = {
   async list(options?: BatchListOptions): Promise<{ data: Batch[]; error: string | null }> {
     const supabase = getSupabaseClient();
     let query = supabase.from(TABLE).select('*');
-    if (options?.publishedOnly) query = query.eq('status', 'published');
-    if (options?.search) query = query.ilike('title', `%${options.search}%`);
+
+    if (options?.publishedOnly) {
+      query = query.eq('status', 'published');
+    }
+
+    if (options?.search) {
+      query = query.ilike('title', `%${options.search}%`);
+    }
+
     const sort = options?.sort ?? { column: 'sort_order', direction: 'asc' };
     query = query.order(sort.column, { ascending: sort.direction === 'asc' });
+
     const { data, error } = await query;
     if (error) {
       logger.error('batchService.list', { error: error.message });
@@ -104,28 +112,44 @@ export const batchService = {
     return { data: (data as BatchRow[]).map(mapBatch), error: null };
   },
 
-  async paginate(page: number = 1, pageSize: number = 10, options?: BatchListOptions): Promise<PaginatedResult<Batch>> {
+  async paginate(
+    page: number = 1,
+    pageSize: number = 10,
+    options?: BatchListOptions,
+  ): Promise<PaginatedResult<Batch>> {
     const supabase = getSupabaseClient();
     let countQuery = supabase.from(TABLE).select('*', { count: 'exact', head: true });
     if (options?.publishedOnly) countQuery = countQuery.eq('status', 'published');
     if (options?.search) countQuery = countQuery.ilike('title', `%${options.search}%`);
     const { count, error: countError } = await countQuery;
-    if (countError) logger.error('batchService.paginate count', { error: countError.message });
+    if (countError) {
+      logger.error('batchService.paginate count', { error: countError.message });
+    }
     const total = count ?? 0;
     const totalPages = Math.ceil(total / pageSize) || 1;
     const offset = (page - 1) * pageSize;
+
     let query = supabase.from(TABLE).select('*');
     if (options?.publishedOnly) query = query.eq('status', 'published');
     if (options?.search) query = query.ilike('title', `%${options.search}%`);
     const sort = options?.sort ?? { column: 'sort_order', direction: 'asc' };
     query = query.order(sort.column, { ascending: sort.direction === 'asc' });
     query = query.range(offset, offset + pageSize - 1);
+
     const { data, error } = await query;
     if (error) {
       logger.error('batchService.paginate', { error: error.message });
       return { data: [], total: 0, page, pageSize, totalPages: 0, hasNext: false, hasPrev: false };
     }
-    return { data: (data as BatchRow[]).map(mapBatch), total, page, pageSize, totalPages, hasNext: page < totalPages, hasPrev: page > 1 };
+    return {
+      data: (data as BatchRow[]).map(mapBatch),
+      total,
+      page,
+      pageSize,
+      totalPages,
+      hasNext: page < totalPages,
+      hasPrev: page > 1,
+    };
   },
 
   async create(input: BatchInsert): Promise<{ data: Batch | null; error: string | null }> {

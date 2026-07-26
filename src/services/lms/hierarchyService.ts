@@ -169,10 +169,13 @@ export const hierarchyService = {
   async getFullHierarchy(publishedOnly: boolean = false): Promise<{ data: HierarchyNode[]; error: string | null }> {
     const { data: batches, error: batchError } = await batchService.list({ publishedOnly });
     if (batchError) return { data: [], error: batchError };
+
     const { data: subjects, error: subjectError } = await subjectService.list({ publishedOnly });
     if (subjectError) return { data: [], error: subjectError };
+
     const { data: chapters, error: chapterError } = await chapterService.list({ publishedOnly });
     if (chapterError) return { data: [], error: chapterError };
+
     const { data: classes, error: classError } = await classService.list({ publishedOnly });
     if (classError) return { data: [], error: classError };
 
@@ -199,7 +202,9 @@ export const hierarchyService = {
     const result: HierarchyNode[] = [];
     const walk = (node: HierarchyNode): void => {
       result.push(node);
-      for (const child of node.children) { walk(child); }
+      for (const child of node.children) {
+        walk(child);
+      }
     };
     for (const node of nodes) walk(node);
     return result;

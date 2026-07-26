@@ -81,6 +81,7 @@ export abstract class BaseLmsService<T, TInsert, TUpdate, TRow> {
     const total = count ?? 0;
     const totalPages = Math.ceil(total / pageSize) || 1;
     const offset = (page - 1) * pageSize;
+
     let query = this.client.from(this.tableName).select('*');
     query = this.applyFilters(query, options);
     query = this.applySearch(query, options);

@@ -36,6 +36,7 @@ export const searchService = {
     const types = options?.types ?? ['batch', 'subject', 'chapter', 'class', 'video', 'pdf', 'mcq'];
     const supabase = getSupabaseClient();
     const results: SearchResultItem[] = [];
+
     for (const typeKey of types) {
       const mapping = TABLE_MAP[typeKey];
       if (!mapping) continue;
@@ -45,11 +46,20 @@ export const searchService = {
       const { data, error } = await q;
       if (error) { logger.error(`searchService.search.${typeKey}`, { error: error.message }); continue; }
       for (const row of data ?? []) {
-        results.push({ id: row.id, type: mapping.type, title: row.title, slug: row.slug, description: row.description, status: row.status });
+        results.push({
+          id: row.id, type: mapping.type, title: row.title, slug: row.slug,
+          description: row.description, status: row.status,
+        });
       }
     }
+
     const sort = options?.sort ?? { column: 'title', direction: 'asc' };
-    results.sort((a, b) => { const dir = sort.direction === 'asc' ? 1 : -1; if (sort.column === 'title') return a.title.localeCompare(b.title) * dir; return 0; });
+    results.sort((a, b) => {
+      const dir = sort.direction === 'asc' ? 1 : -1;
+      if (sort.column === 'title') return a.title.localeCompare(b.title) * dir;
+      return 0;
+    });
+
     return { data: results, error: null };
   },
 

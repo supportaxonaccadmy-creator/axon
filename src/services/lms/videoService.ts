@@ -8,20 +8,36 @@ const TABLE = 'videos';
 
 function mapVideo(row: VideoRow): Video {
   return {
-    id: row.id, classId: row.class_id, title: row.title, slug: row.slug,
-    description: row.description, youtubeUrl: row.youtube_url, videoUrl: row.video_url,
-    duration: row.duration, thumbnail: row.thumbnail, isPreview: row.is_preview,
-    status: row.status, sortOrder: row.sort_order, createdAt: row.created_at, updatedAt: row.updated_at,
+    id: row.id,
+    classId: row.class_id,
+    title: row.title,
+    slug: row.slug,
+    description: row.description,
+    youtubeUrl: row.youtube_url,
+    videoUrl: row.video_url,
+    duration: row.duration,
+    thumbnail: row.thumbnail,
+    isPreview: row.is_preview,
+    status: row.status,
+    sortOrder: row.sort_order,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
   };
 }
 
 function toRow(input: VideoInsert): Record<string, unknown> {
   return {
-    class_id: input.classId, title: input.title, slug: input.slug,
-    description: input.description ?? null, youtube_url: input.youtubeUrl ?? null,
-    video_url: input.videoUrl ?? null, duration: input.duration ?? null,
-    thumbnail: input.thumbnail ?? null, is_preview: input.isPreview ?? false,
-    status: input.status ?? 'draft', sort_order: input.sortOrder ?? 0,
+    class_id: input.classId,
+    title: input.title,
+    slug: input.slug,
+    description: input.description ?? null,
+    youtube_url: input.youtubeUrl ?? null,
+    video_url: input.videoUrl ?? null,
+    duration: input.duration ?? null,
+    thumbnail: input.thumbnail ?? null,
+    is_preview: input.isPreview ?? false,
+    status: input.status ?? 'draft',
+    sort_order: input.sortOrder ?? 0,
   };
 }
 
