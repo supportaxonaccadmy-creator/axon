@@ -25,10 +25,12 @@ const BatchDetailsPage = lazy(() => import('@/pages/student/BatchDetailsPage').t
 const SubjectPage = lazy(() => import('@/pages/student/SubjectPage').then((m) => ({ default: m.SubjectPage })));
 const ChapterPage = lazy(() => import('@/pages/student/ChapterPage').then((m) => ({ default: m.ChapterPage })));
 const ClassPage = lazy(() => import('@/pages/student/ClassPage').then((m) => ({ default: m.ClassPage })));
+const McqDashboardPage = lazy(() => import('@/pages/student/McqDashboardPage').then((m) => ({ default: m.McqDashboardPage })));
+const McqPlayerPage = lazy(() => import('@/pages/student/McqPlayerPage').then((m) => ({ default: m.McqPlayerPage })));
+const McqResultPage = lazy(() => import('@/pages/student/McqResultPage').then((m) => ({ default: m.McqResultPage })));
+const McqReviewPage = lazy(() => import('@/pages/student/McqReviewPage').then((m) => ({ default: m.McqReviewPage })));
 
-function withSuspense(element: React.ReactNode) {
-  return <Suspense fallback={<PageLoader />}>{element}</Suspense>;
-}
+function withSuspense(element: React.ReactNode) { return <Suspense fallback={<PageLoader />}>{element}</Suspense>; }
 
 export const routes: RouteObject[] = [
   { path: ROUTES.HOME, element: <MainLayout />, children: [
@@ -50,6 +52,10 @@ export const routes: RouteObject[] = [
     { path: 'subjects/:slug', element: withSuspense(<SubjectPage />) },
     { path: 'chapters/:slug', element: withSuspense(<ChapterPage />) },
     { path: 'classes/:slug', element: withSuspense(<ClassPage />) },
+    { path: 'mcq', element: withSuspense(<McqDashboardPage />) },
+    { path: 'mcq/:setSlug', element: withSuspense(<McqPlayerPage />) },
+    { path: 'mcq/:setSlug/result', element: withSuspense(<McqResultPage />) },
+    { path: 'mcq/:setSlug/review', element: withSuspense(<McqReviewPage />) },
   ]},
   { path: '*', element: withSuspense(<NotFoundPage />) },
 ];
@@ -68,4 +74,8 @@ export { BatchDetailsPage } from './student/BatchDetailsPage';
 export { SubjectPage } from './student/SubjectPage';
 export { ChapterPage } from './student/ChapterPage';
 export { ClassPage } from './student/ClassPage';
+export { McqDashboardPage } from './student/McqDashboardPage';
+export { McqPlayerPage } from './student/McqPlayerPage';
+export { McqResultPage } from './student/McqResultPage';
+export { McqReviewPage } from './student/McqReviewPage';
 export { LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage } from './auth';

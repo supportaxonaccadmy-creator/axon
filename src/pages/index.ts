@@ -11,4 +11,8 @@ export { BatchDetailsPage } from './student/BatchDetailsPage';
 export { SubjectPage } from './student/SubjectPage';
 export { ChapterPage } from './student/ChapterPage';
 export { ClassPage } from './student/ClassPage';
+export { McqDashboardPage } from './student/McqDashboardPage';
+export { McqPlayerPage } from './student/McqPlayerPage';
+export { McqResultPage } from './student/McqResultPage';
+export { McqReviewPage } from './student/McqReviewPage';
 export { LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage } from './auth';
