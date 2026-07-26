@@ -20,3 +20,21 @@ export { purchaseService } from './purchaseService';
 export type { PurchaseListOptions } from './purchaseService';
 export { enrollmentService } from './enrollmentService';
 export type { EnrollmentListOptions } from './enrollmentService';
+export { BaseLmsService } from './base';
+export type { LmsServiceResult, LmsListResult, LmsFilter, LmsListOptions } from './base';
+export { hierarchyService } from './hierarchyService';
+export type { HierarchyNode, BreadcrumbItem } from './hierarchyService';
+export { searchService } from './searchService';
+export type { SearchResultItem, SearchOptions } from './searchService';
+export { statisticsService } from './statisticsService';
+export type { BatchStatistics, GlobalStatistics, ContentStatusCounts } from './statisticsService';
+export { validationService } from './validationService';
+export type { LmsValidationResult } from './validationService';
+export { transactionService } from './transactionService';
+export type {
+  CreateHierarchyInput,
+  CreateHierarchyResult,
+  DeleteHierarchyResult,
+  PublishHierarchyResult,
+  ArchiveHierarchyResult,
+} from './transactionService';
