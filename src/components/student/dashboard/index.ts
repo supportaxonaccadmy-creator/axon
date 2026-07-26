@@ -13,3 +13,8 @@ export { StudentDashboardGrid } from './StudentDashboardGrid';
 export { StudentDashboardSection } from './StudentDashboardSection';
 export { EmptyDashboard } from './EmptyDashboard';
 export { DashboardLoadingSkeleton, SectionLoadingSkeleton } from './LoadingSkeleton';
+export { StudyStreakCard } from './StudyStreakCard';
+export { WeeklyActivityChart } from './WeeklyActivityChart';
+export { LearningSummaryCard } from './LearningSummaryCard';
+export { UpcomingTasksCard } from './UpcomingTasksCard';
+export { RecentActivityCard } from './RecentActivityCard';
