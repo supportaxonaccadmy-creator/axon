@@ -5,4 +5,5 @@ export { ForbiddenPage } from './ForbiddenPage';
 export { NotFoundPage } from './NotFoundPage';
 export { ProfilePage } from './ProfilePage';
 export { DashboardPage } from './admin/DashboardPage';
+export { StudentDashboardPage } from './student/DashboardPage';
 export { LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage } from './auth';
