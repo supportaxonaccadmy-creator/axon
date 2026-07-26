@@ -1,48 +1,14 @@
-export {
-  isSessionExpired,
-  isSessionExpiringSoon,
-  ensureValidSession,
-  getSessionAge,
-} from './sessionHelpers';
-
-export {
-  uploadFile,
-  downloadFile,
-  deleteFile,
-  getPublicUrl,
-  getSignedUrl,
-} from './storageHelpers';
-
-export {
-  subscribeToTable,
-  unsubscribeChannel,
-  unsubscribeAllChannels,
-  listActiveChannels,
-} from './realtimeHelpers';
-
-export {
-  formatSupabaseError,
-  isAuthError,
-  getAuthErrorMessage,
-} from './supabaseErrorFormatter';
-
+export { isSessionExpired, isSessionExpiringSoon, ensureValidSession, getSessionAge } from './sessionHelpers';
+export { uploadFile, downloadFile, deleteFile, getPublicUrl, getSignedUrl } from './storageHelpers';
+export { subscribeToTable, unsubscribeChannel, unsubscribeAllChannels, listActiveChannels } from './realtimeHelpers';
+export { formatSupabaseError, isAuthError, getAuthErrorMessage } from './supabaseErrorFormatter';
 export { retry, retryWithBackoff } from './retryHelpers';
 export { generateSlug, normalizeSlug, isValidSlug, ensureUniqueSlug } from './slugHelper';
 export { buildHierarchyPath, buildHierarchyTree, findNodeInHierarchy } from './hierarchyHelper';
 export type { HierarchyPath, HierarchyNode } from './hierarchyHelper';
 export { DEFAULT_SORT, CREATED_AT_SORT, withDefaultSort, sortByStatus, sortBySortOrder, sortByTitle, filterPublished } from './sortingHelper';
 export type { SortDirection, SortOption } from './sortingHelper';
-export {
-  validateTitle,
-  validateSlug,
-  validateStatus,
-  validateSortOrder,
-  validatePrice,
-  validateBatchInput,
-  validateSubjectInput,
-  validateChapterInput,
-  validateClassInput,
-} from './validationHelper';
+export { validateTitle, validateSlug, validateStatus, validateSortOrder, validatePrice, validateBatchInput, validateSubjectInput, validateChapterInput, validateClassInput } from './validationHelper';
 export type { ValidationResult } from './validationHelper';
 export { buildVideoPath, extractYouTubeId, getYouTubeEmbedUrl, formatDuration, sortVideos } from './videoHelper';
 export type { VideoFilterOptions } from './videoHelper';
@@ -58,18 +24,7 @@ export { isActive, isEnrollmentExpired, isCancelled, hasAccess, getAccessStatus,
 export { lmsCache, LmsCache, buildCacheKey, buildEntityCacheKey, buildListCacheKey, buildSlugCacheKey, buildStatsCacheKey } from './cacheHelper';
 export { slugResolver } from './slugResolver';
 export type { SlugResolutionResult } from './slugResolver';
-export {
-  buildFilters,
-  buildSearchQuery,
-  buildPagination,
-  buildSortOptions,
-  buildStatusFilter,
-  buildPublishedFilter,
-  buildParentFilter,
-  mergeFilters,
-  calculateTotalPages,
-  calculateOffset,
-  hasMore,
-  hasPrevious,
-} from './queryHelpers';
+export { RESERVED_SLUGS, isReservedSlug, uniqueSlug, slugHistory, recordSlugHistory, clearSlugHistory, autoIncrementSlug, reservedWords, validateSlugAdvanced } from './slugSystem';
+export type { SlugHistoryEntry } from './slugSystem';
+export { buildFilters, buildSearchQuery, buildPagination, buildSortOptions, buildStatusFilter, buildPublishedFilter, buildParentFilter, mergeFilters, calculateTotalPages, calculateOffset, hasMore, hasPrevious } from './queryHelpers';
 export type { AdvancedFilter } from './queryHelpers';
