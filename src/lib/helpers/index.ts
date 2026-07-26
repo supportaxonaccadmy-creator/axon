@@ -44,3 +44,11 @@ export {
   validateClassInput,
 } from './validationHelper';
 export type { ValidationResult } from './validationHelper';
+export { buildVideoPath, extractYouTubeId, getYouTubeEmbedUrl, formatDuration, sortVideos } from './videoHelper';
+export type { VideoFilterOptions } from './videoHelper';
+export { buildPdfPath, formatFileSize, sortPdfNotes } from './pdfHelper';
+export type { PdfFilterOptions } from './pdfHelper';
+export { buildMcqPath, calculateScore, hasPassed, shuffleQuestions, sortMcqSets, sortMcqQuestions } from './mcqHelper';
+export type { McqFilterOptions } from './mcqHelper';
+export { buildAttachmentPath, getFileExtension, isImageType, isPdfType, sortAttachments } from './attachmentHelper';
+export type { AttachmentFilterOptions } from './attachmentHelper';

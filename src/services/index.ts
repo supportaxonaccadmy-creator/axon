@@ -25,5 +25,5 @@ export {
   fetchSystemStatus,
   fetchDashboardSummary,
 } from './dashboard';
-export { batchService, subjectService, chapterService, classService } from './lms';
-export type { BatchListOptions, SubjectListOptions, ChapterListOptions, ClassListOptions } from './lms';
+export { batchService, subjectService, chapterService, classService, videoService, pdfService, mcqService, attachmentService } from './lms';
+export type { BatchListOptions, SubjectListOptions, ChapterListOptions, ClassListOptions, VideoListOptions, PdfListOptions, McqSetListOptions, AttachmentListOptions } from './lms';
