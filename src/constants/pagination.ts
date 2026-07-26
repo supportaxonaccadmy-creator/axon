@@ -1,8 +1,12 @@
-export const PAGINATION = {
+export const PAGINATION_SETTINGS = {
   DEFAULT_PAGE: 1,
   DEFAULT_PAGE_SIZE: 10,
   PAGE_SIZE_OPTIONS: [10, 20, 50, 100],
   MAX_PAGE_SIZE: 100,
   MIN_PAGE: 1,
   MIN_PAGE_SIZE: 1,
+  DEFAULT_CURSOR_LIMIT: 10,
+  MAX_CURSOR_LIMIT: 100,
 } as const;
+
+export { PAGINATION } from './app';

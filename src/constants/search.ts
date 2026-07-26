@@ -1,0 +1,11 @@
+export const SEARCH = {
+  MIN_QUERY_LENGTH: 2,
+  MAX_QUERY_LENGTH: 200,
+  DEFAULT_LIMIT: 20,
+  MAX_LIMIT: 100,
+  DEFAULT_FIELDS: ['title', 'description'],
+  HIGHLIGHT_PRE_TAG: '<mark>',
+  HIGHLIGHT_POST_TAG: '</mark>',
+  MAX_SNIPPET_LENGTH: 150,
+  DEFAULT_MIN_SCORE: 1,
+} as const;

@@ -12,5 +12,21 @@ export const VALIDATION = {
   TEXT_MIN_LENGTH: 1,
   TEXT_MAX_LENGTH: 5000,
   TITLE_MAX_LENGTH: 200,
+  TITLE_MIN_LENGTH: 2,
   DESCRIPTION_MAX_LENGTH: 2000,
+  SLUG_MAX_LENGTH: 150,
+  SLUG_MIN_LENGTH: 2,
+  UUID_LENGTH: 36,
+} as const;
+
+export const FIELD_RULES = {
+  title: { type: 'string' as const, required: true, minLength: 2, maxLength: 200 },
+  slug: { type: 'slug' as const, required: true, minLength: 2, maxLength: 150 },
+  description: { type: 'string' as const, required: false, maxLength: 2000 },
+  sortOrder: { type: 'integer' as const, required: false, min: 0 },
+  price: { type: 'decimal' as const, required: false, min: 0 },
+  email: { type: 'email' as const, required: false, maxLength: 254 },
+  phone: { type: 'phone' as const, required: false, maxLength: 15 },
+  url: { type: 'url' as const, required: false, maxLength: 2048 },
+  uuid: { type: 'uuid' as const, required: false },
 } as const;
