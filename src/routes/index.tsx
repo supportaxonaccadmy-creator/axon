@@ -35,6 +35,9 @@ const AdminSubjectFormPage = lazy(() => import('@/pages/admin/SubjectFormPage').
 const AdminChapterListPage = lazy(() => import('@/pages/admin/ChapterListPage').then((m) => ({ default: m.ChapterListPage })));
 const AdminChapterDetailsPage = lazy(() => import('@/pages/admin/ChapterDetailsPage').then((m) => ({ default: m.ChapterDetailsPage })));
 const AdminChapterFormPage = lazy(() => import('@/pages/admin/ChapterFormPage').then((m) => ({ default: m.ChapterFormPage })));
+const AdminBatchListPage = lazy(() => import('@/pages/admin/BatchListPage').then((m) => ({ default: m.BatchListPage })));
+const AdminBatchDetailsPage = lazy(() => import('@/pages/admin/BatchDetailsPage').then((m) => ({ default: m.BatchDetailsPage })));
+const AdminBatchFormPage = lazy(() => import('@/pages/admin/BatchFormPage').then((m) => ({ default: m.BatchFormPage })));
 
 function withSuspense(element: React.ReactNode) { return <Suspense fallback={<PageLoader />}>{element}</Suspense>; }
 
@@ -52,6 +55,10 @@ export const routes: RouteObject[] = [
   { path: '/profile', element: (<ProtectedRoute><MainLayout /></ProtectedRoute>), children: [{ index: true, element: withSuspense(<ProfilePage />) }] },
   { path: ROUTES.ADMIN, element: (<AdminRoute><AdminLayout /></AdminRoute>), children: [
     { index: true, element: withSuspense(<DashboardPage />) },
+    { path: 'batches', element: withSuspense(<AdminBatchListPage />) },
+    { path: 'batches/new', element: withSuspense(<AdminBatchFormPage mode="create" />) },
+    { path: 'batches/:id', element: withSuspense(<AdminBatchDetailsPage />) },
+    { path: 'batches/:id/edit', element: withSuspense(<AdminBatchFormPage mode="edit" />) },
     { path: 'subjects', element: withSuspense(<AdminSubjectListPage />) },
     { path: 'subjects/new', element: withSuspense(<AdminSubjectFormPage mode="create" />) },
     { path: 'subjects/:id', element: withSuspense(<AdminSubjectDetailsPage />) },
@@ -100,4 +107,7 @@ export { SubjectFormPage } from '@/pages/admin/SubjectFormPage';
 export { ChapterListPage } from '@/pages/admin/ChapterListPage';
 export { ChapterDetailsPage } from '@/pages/admin/ChapterDetailsPage';
 export { ChapterFormPage } from '@/pages/admin/ChapterFormPage';
+export { BatchListPage as AdminBatchListPage } from '@/pages/admin/BatchListPage';
+export { BatchDetailsPage as AdminBatchDetailsPage } from '@/pages/admin/BatchDetailsPage';
+export { BatchFormPage as AdminBatchFormPage } from '@/pages/admin/BatchFormPage';
 export { LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage } from '@/pages/auth';
