@@ -38,6 +38,18 @@ const AdminChapterFormPage = lazy(() => import('@/pages/admin/ChapterFormPage').
 const AdminBatchListPage = lazy(() => import('@/pages/admin/BatchListPage').then((m) => ({ default: m.BatchListPage })));
 const AdminBatchDetailsPage = lazy(() => import('@/pages/admin/BatchDetailsPage').then((m) => ({ default: m.BatchDetailsPage })));
 const AdminBatchFormPage = lazy(() => import('@/pages/admin/BatchFormPage').then((m) => ({ default: m.BatchFormPage })));
+const AdminClassListPage = lazy(() => import('@/pages/admin/ClassListPage').then((m) => ({ default: m.ClassListPage })));
+const AdminClassDetailsPage = lazy(() => import('@/pages/admin/ClassDetailsPage').then((m) => ({ default: m.ClassDetailsPage })));
+const AdminClassFormPage = lazy(() => import('@/pages/admin/ClassFormPage').then((m) => ({ default: m.ClassFormPage })));
+const AdminVideoListPage = lazy(() => import('@/pages/admin/VideoListPage').then((m) => ({ default: m.VideoListPage })));
+const AdminVideoDetailsPage = lazy(() => import('@/pages/admin/VideoDetailsPage').then((m) => ({ default: m.VideoDetailsPage })));
+const AdminVideoFormPage = lazy(() => import('@/pages/admin/VideoFormPage').then((m) => ({ default: m.VideoFormPage })));
+const AdminPdfListPage = lazy(() => import('@/pages/admin/PdfListPage').then((m) => ({ default: m.PdfListPage })));
+const AdminPdfDetailsPage = lazy(() => import('@/pages/admin/PdfDetailsPage').then((m) => ({ default: m.PdfDetailsPage })));
+const AdminPdfFormPage = lazy(() => import('@/pages/admin/PdfFormPage').then((m) => ({ default: m.PdfFormPage })));
+const AdminAttachmentListPage = lazy(() => import('@/pages/admin/AttachmentListPage').then((m) => ({ default: m.AttachmentListPage })));
+const AdminAttachmentDetailsPage = lazy(() => import('@/pages/admin/AttachmentDetailsPage').then((m) => ({ default: m.AttachmentDetailsPage })));
+const AdminAttachmentFormPage = lazy(() => import('@/pages/admin/AttachmentFormPage').then((m) => ({ default: m.AttachmentFormPage })));
 
 function withSuspense(element: React.ReactNode) { return <Suspense fallback={<PageLoader />}>{element}</Suspense>; }
 
@@ -67,6 +79,22 @@ export const routes: RouteObject[] = [
     { path: 'chapters/new', element: withSuspense(<AdminChapterFormPage mode="create" />) },
     { path: 'chapters/:id', element: withSuspense(<AdminChapterDetailsPage />) },
     { path: 'chapters/:id/edit', element: withSuspense(<AdminChapterFormPage mode="edit" />) },
+    { path: 'classes', element: withSuspense(<AdminClassListPage />) },
+    { path: 'classes/new', element: withSuspense(<AdminClassFormPage mode="create" />) },
+    { path: 'classes/:id', element: withSuspense(<AdminClassDetailsPage />) },
+    { path: 'classes/:id/edit', element: withSuspense(<AdminClassFormPage mode="edit" />) },
+    { path: 'videos', element: withSuspense(<AdminVideoListPage />) },
+    { path: 'videos/new', element: withSuspense(<AdminVideoFormPage mode="create" />) },
+    { path: 'videos/:id', element: withSuspense(<AdminVideoDetailsPage />) },
+    { path: 'videos/:id/edit', element: withSuspense(<AdminVideoFormPage mode="edit" />) },
+    { path: 'pdfs', element: withSuspense(<AdminPdfListPage />) },
+    { path: 'pdfs/new', element: withSuspense(<AdminPdfFormPage mode="create" />) },
+    { path: 'pdfs/:id', element: withSuspense(<AdminPdfDetailsPage />) },
+    { path: 'pdfs/:id/edit', element: withSuspense(<AdminPdfFormPage mode="edit" />) },
+    { path: 'attachments', element: withSuspense(<AdminAttachmentListPage />) },
+    { path: 'attachments/new', element: withSuspense(<AdminAttachmentFormPage mode="create" />) },
+    { path: 'attachments/:id', element: withSuspense(<AdminAttachmentDetailsPage />) },
+    { path: 'attachments/:id/edit', element: withSuspense(<AdminAttachmentFormPage mode="edit" />) },
   ] },
   { path: ROUTES.STUDENT, element: (<StudentRoute><StudentLayout /></StudentRoute>), children: [
     { index: true, element: withSuspense(<StudentDashboardPage />) },
@@ -110,4 +138,16 @@ export { ChapterFormPage } from '@/pages/admin/ChapterFormPage';
 export { BatchListPage as AdminBatchListPage } from '@/pages/admin/BatchListPage';
 export { BatchDetailsPage as AdminBatchDetailsPage } from '@/pages/admin/BatchDetailsPage';
 export { BatchFormPage as AdminBatchFormPage } from '@/pages/admin/BatchFormPage';
+export { ClassListPage as AdminClassListPage } from '@/pages/admin/ClassListPage';
+export { ClassDetailsPage as AdminClassDetailsPage } from '@/pages/admin/ClassDetailsPage';
+export { ClassFormPage as AdminClassFormPage } from '@/pages/admin/ClassFormPage';
+export { VideoListPage as AdminVideoListPage } from '@/pages/admin/VideoListPage';
+export { VideoDetailsPage as AdminVideoDetailsPage } from '@/pages/admin/VideoDetailsPage';
+export { VideoFormPage as AdminVideoFormPage } from '@/pages/admin/VideoFormPage';
+export { PdfListPage as AdminPdfListPage } from '@/pages/admin/PdfListPage';
+export { PdfDetailsPage as AdminPdfDetailsPage } from '@/pages/admin/PdfDetailsPage';
+export { PdfFormPage as AdminPdfFormPage } from '@/pages/admin/PdfFormPage';
+export { AttachmentListPage as AdminAttachmentListPage } from '@/pages/admin/AttachmentListPage';
+export { AttachmentDetailsPage as AdminAttachmentDetailsPage } from '@/pages/admin/AttachmentDetailsPage';
+export { AttachmentFormPage as AdminAttachmentFormPage } from '@/pages/admin/AttachmentFormPage';
 export { LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage } from '@/pages/auth';
