@@ -5,3 +5,5 @@ export {
   fetchSystemStatus,
   fetchDashboardSummary,
 } from './dashboardService';
+
+export { adminDashboardService } from './adminDashboardService';
