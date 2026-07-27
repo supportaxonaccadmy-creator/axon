@@ -50,6 +50,10 @@ const AdminPdfFormPage = lazy(() => import('@/pages/admin/PdfFormPage').then((m)
 const AdminAttachmentListPage = lazy(() => import('@/pages/admin/AttachmentListPage').then((m) => ({ default: m.AttachmentListPage })));
 const AdminAttachmentDetailsPage = lazy(() => import('@/pages/admin/AttachmentDetailsPage').then((m) => ({ default: m.AttachmentDetailsPage })));
 const AdminAttachmentFormPage = lazy(() => import('@/pages/admin/AttachmentFormPage').then((m) => ({ default: m.AttachmentFormPage })));
+const AdminMcqListPage = lazy(() => import('@/pages/admin/McqListPage').then((m) => ({ default: m.McqListPage })));
+const AdminMcqDetailsPage = lazy(() => import('@/pages/admin/McqDetailsPage').then((m) => ({ default: m.McqDetailsPage })));
+const AdminMcqFormPage = lazy(() => import('@/pages/admin/McqFormPage').then((m) => ({ default: m.McqFormPage })));
+const AdminMcqQuestionFormPage = lazy(() => import('@/pages/admin/McqQuestionFormPage').then((m) => ({ default: m.McqQuestionFormPage })));
 
 function withSuspense(element: React.ReactNode) { return <Suspense fallback={<PageLoader />}>{element}</Suspense>; }
 
@@ -95,6 +99,12 @@ export const routes: RouteObject[] = [
     { path: 'attachments/new', element: withSuspense(<AdminAttachmentFormPage mode="create" />) },
     { path: 'attachments/:id', element: withSuspense(<AdminAttachmentDetailsPage />) },
     { path: 'attachments/:id/edit', element: withSuspense(<AdminAttachmentFormPage mode="edit" />) },
+    { path: 'mcq', element: withSuspense(<AdminMcqListPage />) },
+    { path: 'mcq/new', element: withSuspense(<AdminMcqFormPage mode="create" />) },
+    { path: 'mcq/:id', element: withSuspense(<AdminMcqDetailsPage />) },
+    { path: 'mcq/:id/edit', element: withSuspense(<AdminMcqFormPage mode="edit" />) },
+    { path: 'mcq/:id/questions/new', element: withSuspense(<AdminMcqQuestionFormPage mode="create" />) },
+    { path: 'mcq/:id/questions/:questionId/edit', element: withSuspense(<AdminMcqQuestionFormPage mode="edit" />) },
   ] },
   { path: ROUTES.STUDENT, element: (<StudentRoute><StudentLayout /></StudentRoute>), children: [
     { index: true, element: withSuspense(<StudentDashboardPage />) },
@@ -150,4 +160,8 @@ export { PdfFormPage as AdminPdfFormPage } from '@/pages/admin/PdfFormPage';
 export { AttachmentListPage as AdminAttachmentListPage } from '@/pages/admin/AttachmentListPage';
 export { AttachmentDetailsPage as AdminAttachmentDetailsPage } from '@/pages/admin/AttachmentDetailsPage';
 export { AttachmentFormPage as AdminAttachmentFormPage } from '@/pages/admin/AttachmentFormPage';
+export { McqListPage as AdminMcqListPage } from '@/pages/admin/McqListPage';
+export { McqDetailsPage as AdminMcqDetailsPage } from '@/pages/admin/McqDetailsPage';
+export { McqFormPage as AdminMcqFormPage } from '@/pages/admin/McqFormPage';
+export { McqQuestionFormPage as AdminMcqQuestionFormPage } from '@/pages/admin/McqQuestionFormPage';
 export { LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage } from '@/pages/auth';
