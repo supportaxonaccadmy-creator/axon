@@ -29,6 +29,12 @@ const McqDashboardPage = lazy(() => import('@/pages/student/McqDashboardPage').t
 const McqPlayerPage = lazy(() => import('@/pages/student/McqPlayerPage').then((m) => ({ default: m.McqPlayerPage })));
 const McqResultPage = lazy(() => import('@/pages/student/McqResultPage').then((m) => ({ default: m.McqResultPage })));
 const McqReviewPage = lazy(() => import('@/pages/student/McqReviewPage').then((m) => ({ default: m.McqReviewPage })));
+const AdminSubjectListPage = lazy(() => import('@/pages/admin/SubjectListPage').then((m) => ({ default: m.SubjectListPage })));
+const AdminSubjectDetailsPage = lazy(() => import('@/pages/admin/SubjectDetailsPage').then((m) => ({ default: m.SubjectDetailsPage })));
+const AdminSubjectFormPage = lazy(() => import('@/pages/admin/SubjectFormPage').then((m) => ({ default: m.SubjectFormPage })));
+const AdminChapterListPage = lazy(() => import('@/pages/admin/ChapterListPage').then((m) => ({ default: m.ChapterListPage })));
+const AdminChapterDetailsPage = lazy(() => import('@/pages/admin/ChapterDetailsPage').then((m) => ({ default: m.ChapterDetailsPage })));
+const AdminChapterFormPage = lazy(() => import('@/pages/admin/ChapterFormPage').then((m) => ({ default: m.ChapterFormPage })));
 
 function withSuspense(element: React.ReactNode) { return <Suspense fallback={<PageLoader />}>{element}</Suspense>; }
 
@@ -44,7 +50,17 @@ export const routes: RouteObject[] = [
   { path: '/forgot-password', element: (<GuestRoute><AuthLayout /></GuestRoute>), children: [{ index: true, element: withSuspense(<ForgotPasswordPage />) }] },
   { path: '/reset-password', element: (<GuestRoute><AuthLayout /></GuestRoute>), children: [{ index: true, element: withSuspense(<ResetPasswordPage />) }] },
   { path: '/profile', element: (<ProtectedRoute><MainLayout /></ProtectedRoute>), children: [{ index: true, element: withSuspense(<ProfilePage />) }] },
-  { path: ROUTES.ADMIN, element: (<AdminRoute><AdminLayout /></AdminRoute>), children: [{ index: true, element: withSuspense(<DashboardPage />) }] },
+  { path: ROUTES.ADMIN, element: (<AdminRoute><AdminLayout /></AdminRoute>), children: [
+    { index: true, element: withSuspense(<DashboardPage />) },
+    { path: 'subjects', element: withSuspense(<AdminSubjectListPage />) },
+    { path: 'subjects/new', element: withSuspense(<AdminSubjectFormPage mode="create" />) },
+    { path: 'subjects/:id', element: withSuspense(<AdminSubjectDetailsPage />) },
+    { path: 'subjects/:id/edit', element: withSuspense(<AdminSubjectFormPage mode="edit" />) },
+    { path: 'chapters', element: withSuspense(<AdminChapterListPage />) },
+    { path: 'chapters/new', element: withSuspense(<AdminChapterFormPage mode="create" />) },
+    { path: 'chapters/:id', element: withSuspense(<AdminChapterDetailsPage />) },
+    { path: 'chapters/:id/edit', element: withSuspense(<AdminChapterFormPage mode="edit" />) },
+  ] },
   { path: ROUTES.STUDENT, element: (<StudentRoute><StudentLayout /></StudentRoute>), children: [
     { index: true, element: withSuspense(<StudentDashboardPage />) },
     { path: 'batches', element: withSuspense(<BatchListPage />) },
@@ -78,4 +94,10 @@ export { McqDashboardPage } from '@/pages/student/McqDashboardPage';
 export { McqPlayerPage } from '@/pages/student/McqPlayerPage';
 export { McqResultPage } from '@/pages/student/McqResultPage';
 export { McqReviewPage } from '@/pages/student/McqReviewPage';
+export { SubjectListPage } from '@/pages/admin/SubjectListPage';
+export { SubjectDetailsPage } from '@/pages/admin/SubjectDetailsPage';
+export { SubjectFormPage } from '@/pages/admin/SubjectFormPage';
+export { ChapterListPage } from '@/pages/admin/ChapterListPage';
+export { ChapterDetailsPage } from '@/pages/admin/ChapterDetailsPage';
+export { ChapterFormPage } from '@/pages/admin/ChapterFormPage';
 export { LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage } from '@/pages/auth';
