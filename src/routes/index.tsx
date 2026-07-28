@@ -54,6 +54,13 @@ const AdminMcqListPage = lazy(() => import('@/pages/admin/McqListPage').then((m)
 const AdminMcqDetailsPage = lazy(() => import('@/pages/admin/McqDetailsPage').then((m) => ({ default: m.McqDetailsPage })));
 const AdminMcqFormPage = lazy(() => import('@/pages/admin/McqFormPage').then((m) => ({ default: m.McqFormPage })));
 const AdminMcqQuestionFormPage = lazy(() => import('@/pages/admin/McqQuestionFormPage').then((m) => ({ default: m.McqQuestionFormPage })));
+const AdminStudentListPage = lazy(() => import('@/pages/admin/StudentListPage').then((m) => ({ default: m.StudentListPage })));
+const AdminStudentDetailsPage = lazy(() => import('@/pages/admin/StudentDetailsPage').then((m) => ({ default: m.StudentDetailsPage })));
+const AdminStudentFormPage = lazy(() => import('@/pages/admin/StudentFormPage').then((m) => ({ default: m.StudentFormPage })));
+const AdminEnrollmentListPage = lazy(() => import('@/pages/admin/EnrollmentListPage').then((m) => ({ default: m.EnrollmentListPage })));
+const AdminEnrollmentDetailsPage = lazy(() => import('@/pages/admin/EnrollmentDetailsPage').then((m) => ({ default: m.EnrollmentDetailsPage })));
+const AdminPurchaseListPage = lazy(() => import('@/pages/admin/PurchaseListPage').then((m) => ({ default: m.PurchaseListPage })));
+const AdminPurchaseDetailsPage = lazy(() => import('@/pages/admin/PurchaseDetailsPage').then((m) => ({ default: m.PurchaseDetailsPage })));
 
 function withSuspense(element: React.ReactNode) { return <Suspense fallback={<PageLoader />}>{element}</Suspense>; }
 
@@ -105,6 +112,14 @@ export const routes: RouteObject[] = [
     { path: 'mcq/:id/edit', element: withSuspense(<AdminMcqFormPage mode="edit" />) },
     { path: 'mcq/:id/questions/new', element: withSuspense(<AdminMcqQuestionFormPage mode="create" />) },
     { path: 'mcq/:id/questions/:questionId/edit', element: withSuspense(<AdminMcqQuestionFormPage mode="edit" />) },
+    { path: 'students', element: withSuspense(<AdminStudentListPage />) },
+    { path: 'students/new', element: withSuspense(<AdminStudentFormPage mode="create" />) },
+    { path: 'students/:id', element: withSuspense(<AdminStudentDetailsPage />) },
+    { path: 'students/:id/edit', element: withSuspense(<AdminStudentFormPage mode="edit" />) },
+    { path: 'enrollments', element: withSuspense(<AdminEnrollmentListPage />) },
+    { path: 'enrollments/:id', element: withSuspense(<AdminEnrollmentDetailsPage />) },
+    { path: 'purchases', element: withSuspense(<AdminPurchaseListPage />) },
+    { path: 'purchases/:id', element: withSuspense(<AdminPurchaseDetailsPage />) },
   ] },
   { path: ROUTES.STUDENT, element: (<StudentRoute><StudentLayout /></StudentRoute>), children: [
     { index: true, element: withSuspense(<StudentDashboardPage />) },
@@ -164,4 +179,11 @@ export { McqListPage as AdminMcqListPage } from '@/pages/admin/McqListPage';
 export { McqDetailsPage as AdminMcqDetailsPage } from '@/pages/admin/McqDetailsPage';
 export { McqFormPage as AdminMcqFormPage } from '@/pages/admin/McqFormPage';
 export { McqQuestionFormPage as AdminMcqQuestionFormPage } from '@/pages/admin/McqQuestionFormPage';
+export { StudentListPage as AdminStudentListPage } from '@/pages/admin/StudentListPage';
+export { StudentDetailsPage as AdminStudentDetailsPage } from '@/pages/admin/StudentDetailsPage';
+export { StudentFormPage as AdminStudentFormPage } from '@/pages/admin/StudentFormPage';
+export { EnrollmentListPage as AdminEnrollmentListPage } from '@/pages/admin/EnrollmentListPage';
+export { EnrollmentDetailsPage as AdminEnrollmentDetailsPage } from '@/pages/admin/EnrollmentDetailsPage';
+export { PurchaseListPage as AdminPurchaseListPage } from '@/pages/admin/PurchaseListPage';
+export { PurchaseDetailsPage as AdminPurchaseDetailsPage } from '@/pages/admin/PurchaseDetailsPage';
 export { LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage } from '@/pages/auth';
