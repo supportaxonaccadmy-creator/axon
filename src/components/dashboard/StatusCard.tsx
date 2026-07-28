@@ -4,9 +4,11 @@ import { cn } from '@/utils/cn';
 import type { DashboardSystemStatus, DashboardSystemStatusLevel } from '@/types/dashboard';
 
 const STATUS_CONFIG: Record<DashboardSystemStatusLevel, { icon: typeof CheckCircle2; color: string; bg: string; dot: string; label: string }> = {
-  operational: { icon: CheckCircle2, color: 'text-success-600', bg: 'bg-success-50', dot: 'bg-success-500', label: 'Operational' },
+  operational:  { icon: CheckCircle2, color: 'text-success-600', bg: 'bg-success-50', dot: 'bg-success-500', label: 'Operational' },
   degraded:     { icon: AlertCircle,  color: 'text-warning-600', bg: 'bg-warning-50', dot: 'bg-warning-500', label: 'Degraded' },
   outage:       { icon: XCircle,     color: 'text-error-600',   bg: 'bg-error-50',   dot: 'bg-error-500',   label: 'Outage' },
+  down:         { icon: XCircle,     color: 'text-error-600',   bg: 'bg-error-50',   dot: 'bg-error-500',   label: 'Down' },
+  maintenance:  { icon: AlertCircle,  color: 'text-warning-600', bg: 'bg-warning-50', dot: 'bg-warning-500', label: 'Maintenance' },
 };
 
 interface StatusCardProps {
