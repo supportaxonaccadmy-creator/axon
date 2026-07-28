@@ -61,6 +61,7 @@ const AdminEnrollmentListPage = lazy(() => import('@/pages/admin/EnrollmentListP
 const AdminEnrollmentDetailsPage = lazy(() => import('@/pages/admin/EnrollmentDetailsPage').then((m) => ({ default: m.EnrollmentDetailsPage })));
 const AdminPurchaseListPage = lazy(() => import('@/pages/admin/PurchaseListPage').then((m) => ({ default: m.PurchaseListPage })));
 const AdminPurchaseDetailsPage = lazy(() => import('@/pages/admin/PurchaseDetailsPage').then((m) => ({ default: m.PurchaseDetailsPage })));
+const AdminReportsPage = lazy(() => import('@/pages/admin/ReportsPage').then((m) => ({ default: m.ReportsPage })));
 
 function withSuspense(element: React.ReactNode) { return <Suspense fallback={<PageLoader />}>{element}</Suspense>; }
 
@@ -120,6 +121,7 @@ export const routes: RouteObject[] = [
     { path: 'enrollments/:id', element: withSuspense(<AdminEnrollmentDetailsPage />) },
     { path: 'purchases', element: withSuspense(<AdminPurchaseListPage />) },
     { path: 'purchases/:id', element: withSuspense(<AdminPurchaseDetailsPage />) },
+    { path: 'reports', element: withSuspense(<AdminReportsPage />) },
   ] },
   { path: ROUTES.STUDENT, element: (<StudentRoute><StudentLayout /></StudentRoute>), children: [
     { index: true, element: withSuspense(<StudentDashboardPage />) },
@@ -186,4 +188,5 @@ export { EnrollmentListPage as AdminEnrollmentListPage } from '@/pages/admin/Enr
 export { EnrollmentDetailsPage as AdminEnrollmentDetailsPage } from '@/pages/admin/EnrollmentDetailsPage';
 export { PurchaseListPage as AdminPurchaseListPage } from '@/pages/admin/PurchaseListPage';
 export { PurchaseDetailsPage as AdminPurchaseDetailsPage } from '@/pages/admin/PurchaseDetailsPage';
+export { ReportsPage as AdminReportsPage } from '@/pages/admin/ReportsPage';
 export { LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage } from '@/pages/auth';
