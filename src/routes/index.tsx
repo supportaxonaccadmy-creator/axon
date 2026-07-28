@@ -78,6 +78,11 @@ const AdminSystemSettingsPage = lazy(() => import('@/pages/admin/settings/System
 const AdminBackupPage = lazy(() => import('@/pages/admin/settings/BackupPage').then((m) => ({ default: m.BackupPage })));
 const AdminAuditLogPage = lazy(() => import('@/pages/admin/settings/AuditLogPage').then((m) => ({ default: m.AuditLogPage })));
 const AdminSystemHealthPage = lazy(() => import('@/pages/admin/settings/SystemHealthPage').then((m) => ({ default: m.SystemHealthPage })));
+const StudentCheckoutPage = lazy(() => import('@/pages/student/CheckoutPage').then((m) => ({ default: m.CheckoutPage })));
+const StudentPaymentSuccessPage = lazy(() => import('@/pages/student/PaymentSuccessPage').then((m) => ({ default: m.PaymentSuccessPage })));
+const StudentPaymentFailurePage = lazy(() => import('@/pages/student/PaymentFailurePage').then((m) => ({ default: m.PaymentFailurePage })));
+const StudentPurchaseHistoryPage = lazy(() => import('@/pages/student/PurchaseHistoryPage').then((m) => ({ default: m.PurchaseHistoryPage })));
+const StudentInvoicePage = lazy(() => import('@/pages/student/InvoicePage').then((m) => ({ default: m.InvoicePage })));
 
 function withSuspense(element: React.ReactNode) { return <Suspense fallback={<PageLoader />}>{element}</Suspense>; }
 
@@ -168,6 +173,11 @@ export const routes: RouteObject[] = [
     { path: 'mcq/:setSlug', element: withSuspense(<McqPlayerPage />) },
     { path: 'mcq/:setSlug/result', element: withSuspense(<McqResultPage />) },
     { path: 'mcq/:setSlug/review', element: withSuspense(<McqReviewPage />) },
+    { path: 'checkout/:batchSlug', element: withSuspense(<StudentCheckoutPage />) },
+    { path: 'payment/success', element: withSuspense(<StudentPaymentSuccessPage />) },
+    { path: 'payment/failure', element: withSuspense(<StudentPaymentFailurePage />) },
+    { path: 'purchases', element: withSuspense(<StudentPurchaseHistoryPage />) },
+    { path: 'invoice/:purchaseId', element: withSuspense(<StudentInvoicePage />) },
   ]},
   { path: '*', element: withSuspense(<NotFoundPage />) },
 ];
@@ -239,4 +249,9 @@ export { SystemSettingsPage as AdminSystemSettingsPage } from '@/pages/admin/set
 export { BackupPage as AdminBackupPage } from '@/pages/admin/settings/BackupPage';
 export { AuditLogPage as AdminAuditLogPage } from '@/pages/admin/settings/AuditLogPage';
 export { SystemHealthPage as AdminSystemHealthPage } from '@/pages/admin/settings/SystemHealthPage';
+export { CheckoutPage as StudentCheckoutPage } from '@/pages/student/CheckoutPage';
+export { PaymentSuccessPage as StudentPaymentSuccessPage } from '@/pages/student/PaymentSuccessPage';
+export { PaymentFailurePage as StudentPaymentFailurePage } from '@/pages/student/PaymentFailurePage';
+export { PurchaseHistoryPage as StudentPurchaseHistoryPage } from '@/pages/student/PurchaseHistoryPage';
+export { InvoicePage as StudentInvoicePage } from '@/pages/student/InvoicePage';
 export { LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage } from '@/pages/auth';
