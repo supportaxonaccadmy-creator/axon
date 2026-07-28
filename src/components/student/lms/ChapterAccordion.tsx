@@ -1,4 +1,5 @@
 import { memo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { ChevronDown, ChevronRight, BookOpen, Lock, FolderOpen } from 'lucide-react';
 import { cn } from '@/utils/cn';
 import { Badge } from '@/components/ui/Badge';
