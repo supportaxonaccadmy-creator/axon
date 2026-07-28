@@ -83,6 +83,9 @@ const StudentPaymentSuccessPage = lazy(() => import('@/pages/student/PaymentSucc
 const StudentPaymentFailurePage = lazy(() => import('@/pages/student/PaymentFailurePage').then((m) => ({ default: m.PaymentFailurePage })));
 const StudentPurchaseHistoryPage = lazy(() => import('@/pages/student/PurchaseHistoryPage').then((m) => ({ default: m.PurchaseHistoryPage })));
 const StudentInvoicePage = lazy(() => import('@/pages/student/InvoicePage').then((m) => ({ default: m.InvoicePage })));
+const AdminStorageDashboardPage = lazy(() => import('@/pages/admin/storage/StorageDashboardPage').then((m) => ({ default: m.StorageDashboardPage })));
+const AdminStorageUploadPage = lazy(() => import('@/pages/admin/storage/StorageUploadPage').then((m) => ({ default: m.StorageUploadPage })));
+const AdminStorageDetailsPage = lazy(() => import('@/pages/admin/storage/StorageDetailsPage').then((m) => ({ default: m.StorageDetailsPage })));
 
 function withSuspense(element: React.ReactNode) { return <Suspense fallback={<PageLoader />}>{element}</Suspense>; }
 
@@ -161,6 +164,9 @@ export const routes: RouteObject[] = [
     { path: 'settings/backups', element: withSuspense(<AdminBackupPage />) },
     { path: 'settings/audit', element: withSuspense(<AdminAuditLogPage />) },
     { path: 'settings/health', element: withSuspense(<AdminSystemHealthPage />) },
+    { path: 'storage', element: withSuspense(<AdminStorageDashboardPage />) },
+    { path: 'storage/upload', element: withSuspense(<AdminStorageUploadPage />) },
+    { path: 'storage/:id', element: withSuspense(<AdminStorageDetailsPage />) },
   ] },
   { path: ROUTES.STUDENT, element: (<StudentRoute><StudentLayout /></StudentRoute>), children: [
     { index: true, element: withSuspense(<StudentDashboardPage />) },
@@ -254,4 +260,7 @@ export { PaymentSuccessPage as StudentPaymentSuccessPage } from '@/pages/student
 export { PaymentFailurePage as StudentPaymentFailurePage } from '@/pages/student/PaymentFailurePage';
 export { PurchaseHistoryPage as StudentPurchaseHistoryPage } from '@/pages/student/PurchaseHistoryPage';
 export { InvoicePage as StudentInvoicePage } from '@/pages/student/InvoicePage';
+export { StorageDashboardPage as AdminStorageDashboardPage } from '@/pages/admin/storage/StorageDashboardPage';
+export { StorageUploadPage as AdminStorageUploadPage } from '@/pages/admin/storage/StorageUploadPage';
+export { StorageDetailsPage as AdminStorageDetailsPage } from '@/pages/admin/storage/StorageDetailsPage';
 export { LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage } from '@/pages/auth';
