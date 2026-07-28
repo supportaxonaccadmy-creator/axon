@@ -62,6 +62,22 @@ const AdminEnrollmentDetailsPage = lazy(() => import('@/pages/admin/EnrollmentDe
 const AdminPurchaseListPage = lazy(() => import('@/pages/admin/PurchaseListPage').then((m) => ({ default: m.PurchaseListPage })));
 const AdminPurchaseDetailsPage = lazy(() => import('@/pages/admin/PurchaseDetailsPage').then((m) => ({ default: m.PurchaseDetailsPage })));
 const AdminReportsPage = lazy(() => import('@/pages/admin/ReportsPage').then((m) => ({ default: m.ReportsPage })));
+const AdminSettingsDashboardPage = lazy(() => import('@/pages/admin/settings/SettingsDashboardPage').then((m) => ({ default: m.SettingsDashboardPage })));
+const AdminRoleListPage = lazy(() => import('@/pages/admin/settings/RoleListPage').then((m) => ({ default: m.RoleListPage })));
+const AdminRoleFormPage = lazy(() => import('@/pages/admin/settings/RoleFormPage').then((m) => ({ default: m.RoleFormPage })));
+const AdminAdminUserListPage = lazy(() => import('@/pages/admin/settings/AdminUserListPage').then((m) => ({ default: m.AdminUserListPage })));
+const AdminAdminUserFormPage = lazy(() => import('@/pages/admin/settings/AdminUserFormPage').then((m) => ({ default: m.AdminUserFormPage })));
+const AdminWebsiteSettingsPage = lazy(() => import('@/pages/admin/settings/WebsiteSettingsPage').then((m) => ({ default: m.WebsiteSettingsPage })));
+const AdminSeoSettingsPage = lazy(() => import('@/pages/admin/settings/SeoSettingsPage').then((m) => ({ default: m.SeoSettingsPage })));
+const AdminEmailSettingsPage = lazy(() => import('@/pages/admin/settings/EmailSettingsPage').then((m) => ({ default: m.EmailSettingsPage })));
+const AdminPaymentSettingsPage = lazy(() => import('@/pages/admin/settings/PaymentSettingsPage').then((m) => ({ default: m.PaymentSettingsPage })));
+const AdminStorageSettingsPage = lazy(() => import('@/pages/admin/settings/StorageSettingsPage').then((m) => ({ default: m.StorageSettingsPage })));
+const AdminNotificationSettingsPage = lazy(() => import('@/pages/admin/settings/NotificationSettingsPage').then((m) => ({ default: m.NotificationSettingsPage })));
+const AdminSecuritySettingsPage = lazy(() => import('@/pages/admin/settings/SecuritySettingsPage').then((m) => ({ default: m.SecuritySettingsPage })));
+const AdminSystemSettingsPage = lazy(() => import('@/pages/admin/settings/SystemSettingsPage').then((m) => ({ default: m.SystemSettingsPage })));
+const AdminBackupPage = lazy(() => import('@/pages/admin/settings/BackupPage').then((m) => ({ default: m.BackupPage })));
+const AdminAuditLogPage = lazy(() => import('@/pages/admin/settings/AuditLogPage').then((m) => ({ default: m.AuditLogPage })));
+const AdminSystemHealthPage = lazy(() => import('@/pages/admin/settings/SystemHealthPage').then((m) => ({ default: m.SystemHealthPage })));
 
 function withSuspense(element: React.ReactNode) { return <Suspense fallback={<PageLoader />}>{element}</Suspense>; }
 
@@ -122,6 +138,24 @@ export const routes: RouteObject[] = [
     { path: 'purchases', element: withSuspense(<AdminPurchaseListPage />) },
     { path: 'purchases/:id', element: withSuspense(<AdminPurchaseDetailsPage />) },
     { path: 'reports', element: withSuspense(<AdminReportsPage />) },
+    { path: 'settings', element: withSuspense(<AdminSettingsDashboardPage />) },
+    { path: 'settings/roles', element: withSuspense(<AdminRoleListPage />) },
+    { path: 'settings/roles/new', element: withSuspense(<AdminRoleFormPage mode="create" />) },
+    { path: 'settings/roles/:id/edit', element: withSuspense(<AdminRoleFormPage mode="edit" />) },
+    { path: 'settings/admin-users', element: withSuspense(<AdminAdminUserListPage />) },
+    { path: 'settings/admin-users/new', element: withSuspense(<AdminAdminUserFormPage mode="create" />) },
+    { path: 'settings/admin-users/:id/edit', element: withSuspense(<AdminAdminUserFormPage mode="edit" />) },
+    { path: 'settings/website', element: withSuspense(<AdminWebsiteSettingsPage />) },
+    { path: 'settings/seo', element: withSuspense(<AdminSeoSettingsPage />) },
+    { path: 'settings/email', element: withSuspense(<AdminEmailSettingsPage />) },
+    { path: 'settings/payment', element: withSuspense(<AdminPaymentSettingsPage />) },
+    { path: 'settings/storage', element: withSuspense(<AdminStorageSettingsPage />) },
+    { path: 'settings/notifications', element: withSuspense(<AdminNotificationSettingsPage />) },
+    { path: 'settings/security', element: withSuspense(<AdminSecuritySettingsPage />) },
+    { path: 'settings/system', element: withSuspense(<AdminSystemSettingsPage />) },
+    { path: 'settings/backups', element: withSuspense(<AdminBackupPage />) },
+    { path: 'settings/audit', element: withSuspense(<AdminAuditLogPage />) },
+    { path: 'settings/health', element: withSuspense(<AdminSystemHealthPage />) },
   ] },
   { path: ROUTES.STUDENT, element: (<StudentRoute><StudentLayout /></StudentRoute>), children: [
     { index: true, element: withSuspense(<StudentDashboardPage />) },
@@ -189,4 +223,20 @@ export { EnrollmentDetailsPage as AdminEnrollmentDetailsPage } from '@/pages/adm
 export { PurchaseListPage as AdminPurchaseListPage } from '@/pages/admin/PurchaseListPage';
 export { PurchaseDetailsPage as AdminPurchaseDetailsPage } from '@/pages/admin/PurchaseDetailsPage';
 export { ReportsPage as AdminReportsPage } from '@/pages/admin/ReportsPage';
+export { SettingsDashboardPage as AdminSettingsDashboardPage } from '@/pages/admin/settings/SettingsDashboardPage';
+export { RoleListPage as AdminRoleListPage } from '@/pages/admin/settings/RoleListPage';
+export { RoleFormPage as AdminRoleFormPage } from '@/pages/admin/settings/RoleFormPage';
+export { AdminUserListPage as AdminAdminUserListPage } from '@/pages/admin/settings/AdminUserListPage';
+export { AdminUserFormPage as AdminAdminUserFormPage } from '@/pages/admin/settings/AdminUserFormPage';
+export { WebsiteSettingsPage as AdminWebsiteSettingsPage } from '@/pages/admin/settings/WebsiteSettingsPage';
+export { SeoSettingsPage as AdminSeoSettingsPage } from '@/pages/admin/settings/SeoSettingsPage';
+export { EmailSettingsPage as AdminEmailSettingsPage } from '@/pages/admin/settings/EmailSettingsPage';
+export { PaymentSettingsPage as AdminPaymentSettingsPage } from '@/pages/admin/settings/PaymentSettingsPage';
+export { StorageSettingsPage as AdminStorageSettingsPage } from '@/pages/admin/settings/StorageSettingsPage';
+export { NotificationSettingsPage as AdminNotificationSettingsPage } from '@/pages/admin/settings/NotificationSettingsPage';
+export { SecuritySettingsPage as AdminSecuritySettingsPage } from '@/pages/admin/settings/SecuritySettingsPage';
+export { SystemSettingsPage as AdminSystemSettingsPage } from '@/pages/admin/settings/SystemSettingsPage';
+export { BackupPage as AdminBackupPage } from '@/pages/admin/settings/BackupPage';
+export { AuditLogPage as AdminAuditLogPage } from '@/pages/admin/settings/AuditLogPage';
+export { SystemHealthPage as AdminSystemHealthPage } from '@/pages/admin/settings/SystemHealthPage';
 export { LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage } from '@/pages/auth';
