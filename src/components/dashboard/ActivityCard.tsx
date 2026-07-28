@@ -13,6 +13,11 @@ const TYPE_CONFIG: Record<DashboardActivityType, { icon: LucideIcon; color: stri
   assessment_submitted:  { icon: FileText,    color: 'text-warning-600',  bg: 'bg-warning-50' },
   certificate_issued:    { icon: Award,       color: 'text-success-600',  bg: 'bg-success-50' },
   system_event:          { icon: Zap,         color: 'text-neutral-500',  bg: 'bg-neutral-100' },
+  enrollment:            { icon: BookMarked,  color: 'text-accent-600',   bg: 'bg-accent-50' },
+  purchase:              { icon: CheckCircle, color: 'text-success-600',  bg: 'bg-success-50' },
+  completion:            { icon: Award,       color: 'text-success-600',  bg: 'bg-success-50' },
+  login:                 { icon: UserPlus,    color: 'text-primary-600',  bg: 'bg-primary-50' },
+  content:               { icon: FileText,     color: 'text-warning-600',  bg: 'bg-warning-50' },
 };
 
 interface ActivityCardProps {
