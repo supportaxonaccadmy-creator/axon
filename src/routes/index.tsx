@@ -86,6 +86,8 @@ const StudentInvoicePage = lazy(() => import('@/pages/student/InvoicePage').then
 const AdminStorageDashboardPage = lazy(() => import('@/pages/admin/storage/StorageDashboardPage').then((m) => ({ default: m.StorageDashboardPage })));
 const AdminStorageUploadPage = lazy(() => import('@/pages/admin/storage/StorageUploadPage').then((m) => ({ default: m.StorageUploadPage })));
 const AdminStorageDetailsPage = lazy(() => import('@/pages/admin/storage/StorageDetailsPage').then((m) => ({ default: m.StorageDetailsPage })));
+const StudentVideoWatchPage = lazy(() => import('@/pages/student/VideoWatchPage').then((m) => ({ default: m.VideoWatchPage })));
+const AdminVideoAnalyticsPage = lazy(() => import('@/pages/admin/VideoAnalyticsPage').then((m) => ({ default: m.VideoAnalyticsPage })));
 
 function withSuspense(element: React.ReactNode) { return <Suspense fallback={<PageLoader />}>{element}</Suspense>; }
 
@@ -167,6 +169,7 @@ export const routes: RouteObject[] = [
     { path: 'storage', element: withSuspense(<AdminStorageDashboardPage />) },
     { path: 'storage/upload', element: withSuspense(<AdminStorageUploadPage />) },
     { path: 'storage/:id', element: withSuspense(<AdminStorageDetailsPage />) },
+    { path: 'video-analytics', element: withSuspense(<AdminVideoAnalyticsPage />) },
   ] },
   { path: ROUTES.STUDENT, element: (<StudentRoute><StudentLayout /></StudentRoute>), children: [
     { index: true, element: withSuspense(<StudentDashboardPage />) },
@@ -175,6 +178,7 @@ export const routes: RouteObject[] = [
     { path: 'subjects/:slug', element: withSuspense(<SubjectPage />) },
     { path: 'chapters/:slug', element: withSuspense(<ChapterPage />) },
     { path: 'classes/:slug', element: withSuspense(<ClassPage />) },
+    { path: 'watch/:slug', element: withSuspense(<StudentVideoWatchPage />) },
     { path: 'mcq', element: withSuspense(<McqDashboardPage />) },
     { path: 'mcq/:setSlug', element: withSuspense(<McqPlayerPage />) },
     { path: 'mcq/:setSlug/result', element: withSuspense(<McqResultPage />) },
@@ -263,4 +267,6 @@ export { InvoicePage as StudentInvoicePage } from '@/pages/student/InvoicePage';
 export { StorageDashboardPage as AdminStorageDashboardPage } from '@/pages/admin/storage/StorageDashboardPage';
 export { StorageUploadPage as AdminStorageUploadPage } from '@/pages/admin/storage/StorageUploadPage';
 export { StorageDetailsPage as AdminStorageDetailsPage } from '@/pages/admin/storage/StorageDetailsPage';
+export { VideoWatchPage as StudentVideoWatchPage } from '@/pages/student/VideoWatchPage';
+export { VideoAnalyticsPage as AdminVideoAnalyticsPage } from '@/pages/admin/VideoAnalyticsPage';
 export { LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage } from '@/pages/auth';
