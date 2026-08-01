@@ -1,53 +1,42 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { recordingService } from '@/services/live';
-import type { LiveRecording } from '@/services/live';
+import type { LiveRecording, CreateRecordingInput, UpdateRecordingInput } from '@/services/live';
 
-export function useRecordings(isAdmin: boolean, studentId: string | null, batchId?: string | null) {
+export function useRecordings(liveClassId?: string) {
   const [recordings, setRecordings] = useState<LiveRecording[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchRecordings = useCallback(async () => {
+  const fetchRecordings = useCallback(async (classId?: string) => {
+    const targetId = classId ?? liveClassId;
+    if (!targetId) return;
     setLoading(true);
-    if (isAdmin) {
-      const { data, error: err } = await recordingService.getAll();
-      if (err) setError(err);
-      else { setRecordings(data); setError(null); }
-    } else if (studentId) {
-      const { data, error: err } = await recordingService.getForStudent(studentId);
-      if (err) setError(err);
-      else { setRecordings(data); setError(null); }
-    } else if (batchId) {
-      const { data, error: err } = await recordingService.getByBatch(batchId);
-      if (err) setError(err);
-      else { setRecordings(data); setError(null); }
-    }
+    const { data, error: err } = await recordingService.getByLiveClass(targetId);
+    if (err) setError(err);
+    else { setRecordings(data); setError(null); }
     setLoading(false);
-  }, [isAdmin, studentId, batchId]);
+  }, [liveClassId]);
 
-  useEffect(() => { void fetchRecordings(); }, [fetchRecordings]);
-
-  const createRecording = useCallback(async (adminId: string, input: Parameters<typeof recordingService.create>[1]) => {
-    const { data, error: err } = await recordingService.create(adminId, input);
-    if (!err) void fetchRecordings();
+  const create = useCallback(async (input: CreateRecordingInput) => {
+    const { data, error: err } = await recordingService.create(input);
+    if (!err && data) setRecordings((prev) => [data, ...prev]);
     return { data, error: err };
-  }, [fetchRecordings]);
+  }, []);
 
-  const updateRecording = useCallback(async (id: string, input: Parameters<typeof recordingService.update>[1]) => {
+  const update = useCallback(async (id: string, input: UpdateRecordingInput) => {
     const { data, error: err } = await recordingService.update(id, input);
-    if (!err) void fetchRecordings();
+    if (!err && data) setRecordings((prev) => prev.map((r) => (r.id === id ? data : r)));
     return { data, error: err };
-  }, [fetchRecordings]);
+  }, []);
 
-  const deleteRecording = useCallback(async (id: string) => {
+  const remove = useCallback(async (id: string) => {
     const { error: err } = await recordingService.delete(id);
-    if (!err) void fetchRecordings();
+    if (!err) setRecordings((prev) => prev.filter((r) => r.id !== id));
     return { error: err };
-  }, [fetchRecordings]);
+  }, []);
 
   return {
     recordings, loading, error,
-    createRecording, updateRecording, deleteRecording,
-    refetch: fetchRecordings,
+    fetchRecordings, create, update, remove,
   };
 }
