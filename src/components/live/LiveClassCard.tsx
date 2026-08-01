@@ -1,85 +1,93 @@
 import { memo } from 'react';
-import { Video, Clock, Users, PlayCircle } from 'lucide-react';
 import { cn } from '@/utils/cn';
+import { Card, CardContent } from '@/components/ui/Card';
+import { Badge } from '@/components/ui/Badge';
+import { Button } from '@/components/ui/Button';
+import { Calendar, Clock, Users, Video, MoreVertical } from 'lucide-react';
+import type { LiveClass } from '@/services/live';
+import { formatDateTime, isLiveNow, isUpcoming } from '@/services/live';
 import { LiveStatusBadge } from './LiveStatusBadge';
 import { MeetingProviderBadge } from './MeetingProviderBadge';
-import { formatDateTime, isLiveNow, isUpcoming } from '@/services/live';
-import type { LiveClass } from '@/services/live';
 
 interface LiveClassCardProps {
   liveClass: LiveClass;
-  onClick?: (liveClass: LiveClass) => void;
   onJoin?: (liveClass: LiveClass) => void;
-  showActions?: boolean;
+  onEdit?: (liveClass: LiveClass) => void;
+  onDelete?: (liveClass: LiveClass) => void;
   className?: string | undefined;
 }
 
-function LiveClassCardComponent({ liveClass, onClick, onJoin, showActions = true, className }: LiveClassCardProps) {
-  const live = isLiveNow(liveClass.startTime, liveClass.endTime, liveClass.status);
-  const upcoming = isUpcoming(liveClass.startTime);
+function LiveClassCardComponent({ liveClass, onJoin, onEdit, onDelete, className }: LiveClassCardProps) {
+  const live = isLiveNow(liveClass);
+  const upcoming = isUpcoming(liveClass);
 
   return (
-    <div
-      className={cn(
-        'overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm transition-all hover:shadow-md',
-        onClick && 'cursor-pointer',
-        className,
+    <Card hover className={cn('overflow-hidden', className)}>
+      {liveClass.bannerUrl && (
+        <div className="h-32 w-full bg-neutral-100" style={{ backgroundImage: `url(${liveClass.bannerUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
       )}
-      onClick={() => onClick?.(liveClass)}
-      role={onClick ? 'button' : undefined}
-    >
-      {liveClass.thumbnailUrl && (
-        <div className="relative h-32 overflow-hidden bg-neutral-100">
-          <img src={liveClass.thumbnailUrl} alt={liveClass.title} className="h-full w-full object-cover" />
-          {live && (
-            <div className="absolute left-2 top-2 flex items-center gap-1 rounded-full bg-red-500 px-2 py-0.5 text-xs font-bold text-white">
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-white" /> LIVE
-            </div>
-          )}
-        </div>
-      )}
-
-      <div className="p-4">
-        <div className="mb-2 flex items-center gap-2">
-          <LiveStatusBadge status={liveClass.status} />
-          <MeetingProviderBadge providerType={liveClass.providerType} />
+      <CardContent className="space-y-3">
+        <div className="flex items-start justify-between gap-2">
+          <div className="space-y-1">
+            <h3 className="text-base font-semibold text-neutral-900">{liveClass.title}</h3>
+            {liveClass.description && <p className="text-sm text-neutral-600 line-clamp-2">{liveClass.description}</p>}
+          </div>
+          <div className="flex items-center gap-2">
+            <LiveStatusBadge status={liveClass.status} />
+            {onEdit && (
+              <button type="button" onClick={() => onEdit(liveClass)} className="text-neutral-400 hover:text-neutral-600" aria-label="Edit">
+                <MoreVertical className="h-4 w-4" />
+              </button>
+            )}
+          </div>
         </div>
 
-        <h3 className="text-sm font-semibold text-neutral-900 line-clamp-1">{liveClass.title}</h3>
-        {liveClass.description && (
-          <p className="mt-1 text-xs text-neutral-500 line-clamp-2">{liveClass.description}</p>
-        )}
-
-        <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-neutral-400">
-          <span className="flex items-center gap-1">
-            <Clock className="h-3 w-3" />
+        <div className="flex flex-wrap items-center gap-3 text-sm text-neutral-500">
+          <span className="inline-flex items-center gap-1">
+            <Calendar className="h-3.5 w-3.5" />
             {formatDateTime(liveClass.startTime, liveClass.timezone)}
           </span>
+          <span className="inline-flex items-center gap-1">
+            <Clock className="h-3.5 w-3.5" />
+            {formatDateTime(liveClass.endTime, liveClass.timezone)}
+          </span>
           {liveClass.maxParticipants && (
-            <span className="flex items-center gap-1">
-              <Users className="h-3 w-3" /> Max {liveClass.maxParticipants}
-            </span>
-          )}
-          {liveClass.waitingRoom && (
-            <span className="flex items-center gap-1">
-              <Video className="h-3 w-3" /> Waiting Room
+            <span className="inline-flex items-center gap-1">
+              <Users className="h-3.5 w-3.5" />
+              {liveClass.maxParticipants}
             </span>
           )}
         </div>
 
-        {showActions && onJoin && (live || upcoming) && (
-          <button
-            onClick={(e) => { e.stopPropagation(); onJoin(liveClass); }}
-            className={cn(
-              'mt-3 flex w-full items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
-              live ? 'bg-red-500 text-white hover:bg-red-600' : 'bg-primary-600 text-white hover:bg-primary-700',
-            )}
-          >
-            <PlayCircle className="h-4 w-4" /> {live ? 'Join Now' : 'Join'}
-          </button>
-        )}
-      </div>
-    </div>
+        <div className="flex items-center justify-between">
+          <MeetingProviderBadge providerType={liveClass.providerType} />
+          {liveClass.waitingRoom && (
+            <Badge variant="default" className="text-xs">
+              <Video className="mr-1 h-3 w-3" />
+              Waiting Room
+            </Badge>
+          )}
+        </div>
+
+        <div className="flex items-center gap-2">
+          {live && onJoin && (
+            <Button size="sm" variant="danger" onClick={() => onJoin(liveClass)}>
+              Join Now
+            </Button>
+          )}
+          {upcoming && onJoin && (
+            <Button size="sm" variant="primary" onClick={() => onJoin(liveClass)} disabled={!liveClass.meetingUrl}>
+              {liveClass.meetingUrl ? 'Join Meeting' : 'No URL'}
+            </Button>
+          )}
+          {onDelete && !live && (
+            <Button size="sm" variant="ghost" onClick={() => onDelete(liveClass)}>
+              Delete
+            </Button>
+          )}
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 
