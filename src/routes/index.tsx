@@ -88,6 +88,12 @@ const AdminStorageUploadPage = lazy(() => import('@/pages/admin/storage/StorageU
 const AdminStorageDetailsPage = lazy(() => import('@/pages/admin/storage/StorageDetailsPage').then((m) => ({ default: m.StorageDetailsPage })));
 const StudentVideoWatchPage = lazy(() => import('@/pages/student/VideoWatchPage').then((m) => ({ default: m.VideoWatchPage })));
 const AdminVideoAnalyticsPage = lazy(() => import('@/pages/admin/VideoAnalyticsPage').then((m) => ({ default: m.VideoAnalyticsPage })));
+const AdminNotificationDashboardPage = lazy(() => import('@/pages/admin/NotificationDashboardPage').then((m) => ({ default: m.NotificationDashboardPage })));
+const AdminAnnouncementManagementPage = lazy(() => import('@/pages/admin/AnnouncementManagementPage').then((m) => ({ default: m.AnnouncementManagementPage })));
+const AdminEmailTemplatesPage = lazy(() => import('@/pages/admin/EmailTemplatesPage').then((m) => ({ default: m.EmailTemplatesPage })));
+const AdminBroadcastPage = lazy(() => import('@/pages/admin/BroadcastPage').then((m) => ({ default: m.BroadcastPage })));
+const StudentNotificationsPage = lazy(() => import('@/pages/student/NotificationsPage').then((m) => ({ default: m.NotificationsPage })));
+const StudentAnnouncementsPage = lazy(() => import('@/pages/student/AnnouncementsPage').then((m) => ({ default: m.AnnouncementsPage })));
 
 function withSuspense(element: React.ReactNode) { return <Suspense fallback={<PageLoader />}>{element}</Suspense>; }
 
@@ -170,6 +176,10 @@ export const routes: RouteObject[] = [
     { path: 'storage/upload', element: withSuspense(<AdminStorageUploadPage />) },
     { path: 'storage/:id', element: withSuspense(<AdminStorageDetailsPage />) },
     { path: 'video-analytics', element: withSuspense(<AdminVideoAnalyticsPage />) },
+    { path: 'notifications', element: withSuspense(<AdminNotificationDashboardPage />) },
+    { path: 'announcements', element: withSuspense(<AdminAnnouncementManagementPage />) },
+    { path: 'email-templates', element: withSuspense(<AdminEmailTemplatesPage />) },
+    { path: 'broadcast', element: withSuspense(<AdminBroadcastPage />) },
   ] },
   { path: ROUTES.STUDENT, element: (<StudentRoute><StudentLayout /></StudentRoute>), children: [
     { index: true, element: withSuspense(<StudentDashboardPage />) },
@@ -179,6 +189,8 @@ export const routes: RouteObject[] = [
     { path: 'chapters/:slug', element: withSuspense(<ChapterPage />) },
     { path: 'classes/:slug', element: withSuspense(<ClassPage />) },
     { path: 'watch/:slug', element: withSuspense(<StudentVideoWatchPage />) },
+    { path: 'notifications', element: withSuspense(<StudentNotificationsPage />) },
+    { path: 'announcements', element: withSuspense(<StudentAnnouncementsPage />) },
     { path: 'mcq', element: withSuspense(<McqDashboardPage />) },
     { path: 'mcq/:setSlug', element: withSuspense(<McqPlayerPage />) },
     { path: 'mcq/:setSlug/result', element: withSuspense(<McqResultPage />) },
@@ -269,4 +281,10 @@ export { StorageUploadPage as AdminStorageUploadPage } from '@/pages/admin/stora
 export { StorageDetailsPage as AdminStorageDetailsPage } from '@/pages/admin/storage/StorageDetailsPage';
 export { VideoWatchPage as StudentVideoWatchPage } from '@/pages/student/VideoWatchPage';
 export { VideoAnalyticsPage as AdminVideoAnalyticsPage } from '@/pages/admin/VideoAnalyticsPage';
+export { NotificationDashboardPage as AdminNotificationDashboardPage } from '@/pages/admin/NotificationDashboardPage';
+export { AnnouncementManagementPage as AdminAnnouncementManagementPage } from '@/pages/admin/AnnouncementManagementPage';
+export { EmailTemplatesPage as AdminEmailTemplatesPage } from '@/pages/admin/EmailTemplatesPage';
+export { BroadcastPage as AdminBroadcastPage } from '@/pages/admin/BroadcastPage';
+export { NotificationsPage as StudentNotificationsPage } from '@/pages/student/NotificationsPage';
+export { AnnouncementsPage as StudentAnnouncementsPage } from '@/pages/student/AnnouncementsPage';
 export { LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage } from '@/pages/auth';
