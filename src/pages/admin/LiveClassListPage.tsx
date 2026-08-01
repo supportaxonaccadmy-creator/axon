@@ -12,14 +12,14 @@ import type { Option } from '@/types/common';
 
 export function LiveClassListPage() {
   const navigate = useNavigate();
-  const { liveClasses, loading, error, filterByStatus, searchClasses } = useLiveClasses(true, null);
+  const { classes, loading, error, search, filterByStatus } = useLiveClasses();
   const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string>('');
+  const [statusFilter, setStatusFilter] = useState('');
 
   const handleSearch = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
-    searchClasses(e.target.value || null);
-  }, [searchClasses]);
+    search(e.target.value || null);
+  }, [search]);
 
   const handleStatusChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
     setStatusFilter(e.target.value);
@@ -41,11 +41,8 @@ export function LiveClassListPage() {
           <h1 className="text-xl font-bold text-neutral-900">Live Classes</h1>
           <p className="mt-1 text-sm text-neutral-500">Manage all live classes and meetings</p>
         </div>
-        <Button onClick={() => navigate('/admin/live-classes/new')}>
-          <Plus className="h-4 w-4" /> Create Live Class
-        </Button>
+        <Button onClick={() => navigate('/admin/live-classes/new')}><Plus className="h-4 w-4" /> Create Live Class</Button>
       </div>
-
       <Card>
         <CardContent className="p-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -60,26 +57,12 @@ export function LiveClassListPage() {
           </div>
         </CardContent>
       </Card>
-
       {error && <p className="text-sm text-error-600">{error}</p>}
-
-      {loading ? (
-        <div className="py-12 text-center text-sm text-neutral-500">Loading...</div>
-      ) : liveClasses.length === 0 ? (
-        <Card>
-          <CardContent className="flex flex-col items-center justify-center py-12 text-center">
-            <Video className="h-10 w-10 text-neutral-300" />
-            <p className="mt-2 text-sm text-neutral-500">No live classes found</p>
-            <Button className="mt-4" onClick={() => navigate('/admin/live-classes/new')}>
-              <Plus className="h-4 w-4" /> Create Live Class
-            </Button>
-          </CardContent>
-        </Card>
+      {loading ? <div className="py-12 text-center text-sm text-neutral-500">Loading...</div> : classes.length === 0 ? (
+        <Card><CardContent className="flex flex-col items-center justify-center py-12 text-center"><Video className="h-10 w-10 text-neutral-300" /><p className="mt-2 text-sm text-neutral-500">No live classes found</p><Button className="mt-4" onClick={() => navigate('/admin/live-classes/new')}><Plus className="h-4 w-4" /> Create Live Class</Button></CardContent></Card>
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {liveClasses.map((lc) => (
-            <LiveClassCard key={lc.id} liveClass={lc} onClick={() => navigate(`/admin/live-classes/${lc.id}`)} showActions={false} />
-          ))}
+          {classes.map((lc) => <LiveClassCard key={lc.id} liveClass={lc} onEdit={() => navigate(`/admin/live-classes/${lc.id}`)} />)}
         </div>
       )}
     </div>
