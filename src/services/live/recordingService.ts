@@ -1,14 +1,58 @@
 import { getSupabaseClient } from '@/lib/supabase';
 import { logger } from '@/lib/logger';
-import type { LiveRecording, CreateRecordingInput } from './live.types';
+import type { LiveRecording, CreateRecordingInput, UpdateRecordingInput } from './live.types';
 import { mapRecordingRow } from './liveHelpers';
 
 export const recordingService = {
-  async create(adminId: string, input: CreateRecordingInput): Promise<{ data: LiveRecording | null; error: string | null }> {
+  async getById(id: string): Promise<{ data: LiveRecording | null; error: string | null }> {
+    try {
+      const supabase = getSupabaseClient();
+      const { data, error } = await supabase.from('live_recordings').select('*').eq('id', id).maybeSingle();
+      if (error) { logger.error('recordingService.getById', { error: error.message }); return { data: null, error: error.message }; }
+      return { data: data ? mapRecordingRow(data as Record<string, unknown>) : null, error: null };
+    } catch (err) {
+      return { data: null, error: err instanceof Error ? err.message : 'Unknown error' };
+    }
+  },
+
+  async getByLiveClass(liveClassId: string): Promise<{ data: LiveRecording[]; error: string | null }> {
+    try {
+      const supabase = getSupabaseClient();
+      const { data, error } = await supabase.from('live_recordings').select('*').eq('live_class_id', liveClassId).order('created_at', { ascending: false });
+      if (error) { logger.error('recordingService.getByLiveClass', { error: error.message }); return { data: [], error: error.message }; }
+      return { data: (data ?? []).map((r) => mapRecordingRow(r as Record<string, unknown>)), error: null };
+    } catch (err) {
+      return { data: [], error: err instanceof Error ? err.message : 'Unknown error' };
+    }
+  },
+
+  async getByBatch(batchId: string): Promise<{ data: LiveRecording[]; error: string | null }> {
+    try {
+      const supabase = getSupabaseClient();
+      const { data, error } = await supabase.from('live_recordings').select('*').eq('batch_id', batchId).order('created_at', { ascending: false });
+      if (error) { logger.error('recordingService.getByBatch', { error: error.message }); return { data: [], error: error.message }; }
+      return { data: (data ?? []).map((r) => mapRecordingRow(r as Record<string, unknown>)), error: null };
+    } catch (err) {
+      return { data: [], error: err instanceof Error ? err.message : 'Unknown error' };
+    }
+  },
+
+  async getAll(): Promise<{ data: LiveRecording[]; error: string | null }> {
+    try {
+      const supabase = getSupabaseClient();
+      const { data, error } = await supabase.from('live_recordings').select('*').order('created_at', { ascending: false });
+      if (error) { logger.error('recordingService.getAll', { error: error.message }); return { data: [], error: error.message }; }
+      return { data: (data ?? []).map((r) => mapRecordingRow(r as Record<string, unknown>)), error: null };
+    } catch (err) {
+      return { data: [], error: err instanceof Error ? err.message : 'Unknown error' };
+    }
+  },
+
+  async create(input: CreateRecordingInput): Promise<{ data: LiveRecording | null; error: string | null }> {
     try {
       const supabase = getSupabaseClient();
       const { data, error } = await supabase.from('live_recordings').insert({
-        live_class_id: input.liveClassId ?? null,
+        live_class_id: input.liveClassId,
         title: input.title,
         description: input.description ?? null,
         source: input.source,
@@ -18,9 +62,8 @@ export const recordingService = {
         duration_seconds: input.durationSeconds ?? null,
         file_size_bytes: input.fileSizeBytes ?? null,
         batch_id: input.batchId ?? null,
-        created_by: adminId,
+        created_by: input.createdBy ?? null,
       }).select('*').maybeSingle();
-
       if (error) { logger.error('recordingService.create', { error: error.message }); return { data: null, error: error.message }; }
       return { data: data ? mapRecordingRow(data as Record<string, unknown>) : null, error: null };
     } catch (err) {
@@ -28,10 +71,10 @@ export const recordingService = {
     }
   },
 
-  async update(id: string, input: Partial<CreateRecordingInput>): Promise<{ data: LiveRecording | null; error: string | null }> {
+  async update(id: string, input: UpdateRecordingInput): Promise<{ data: LiveRecording | null; error: string | null }> {
     try {
       const supabase = getSupabaseClient();
-      const updateData: Record<string, unknown> = {};
+      const updateData: Record<string, unknown> = { updated_at: new Date().toISOString() };
       if (input.title !== undefined) updateData.title = input.title;
       if (input.description !== undefined) updateData.description = input.description;
       if (input.source !== undefined) updateData.source = input.source;
@@ -40,7 +83,6 @@ export const recordingService = {
       if (input.thumbnailUrl !== undefined) updateData.thumbnail_url = input.thumbnailUrl;
       if (input.durationSeconds !== undefined) updateData.duration_seconds = input.durationSeconds;
       if (input.fileSizeBytes !== undefined) updateData.file_size_bytes = input.fileSizeBytes;
-      if (input.batchId !== undefined) updateData.batch_id = input.batchId;
 
       const { data, error } = await supabase.from('live_recordings').update(updateData).eq('id', id).select('*').maybeSingle();
       if (error) { logger.error('recordingService.update', { error: error.message }); return { data: null, error: error.message }; }
@@ -54,86 +96,10 @@ export const recordingService = {
     try {
       const supabase = getSupabaseClient();
       const { error } = await supabase.from('live_recordings').delete().eq('id', id);
-      if (error) return { error: error.message };
+      if (error) { logger.error('recordingService.delete', { error: error.message }); return { error: error.message }; }
       return { error: null };
     } catch (err) {
       return { error: err instanceof Error ? err.message : 'Unknown error' };
-    }
-  },
-
-  async getById(id: string): Promise<{ data: LiveRecording | null; error: string | null }> {
-    try {
-      const supabase = getSupabaseClient();
-      const { data, error } = await supabase.from('live_recordings').select('*').eq('id', id).maybeSingle();
-      if (error) return { data: null, error: error.message };
-      return { data: data ? mapRecordingRow(data as Record<string, unknown>) : null, error: null };
-    } catch (err) {
-      return { data: null, error: err instanceof Error ? err.message : 'Unknown error' };
-    }
-  },
-
-  async getAll(limit: number = 50, offset: number = 0): Promise<{ data: LiveRecording[]; error: string | null }> {
-    try {
-      const supabase = getSupabaseClient();
-      const { data, error } = await supabase.from('live_recordings')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .range(offset, offset + limit - 1);
-      if (error) return { data: [], error: error.message };
-      return { data: (data ?? []).map((r) => mapRecordingRow(r as Record<string, unknown>)), error: null };
-    } catch (err) {
-      return { data: [], error: err instanceof Error ? err.message : 'Unknown error' };
-    }
-  },
-
-  async getByLiveClass(liveClassId: string): Promise<{ data: LiveRecording[]; error: string | null }> {
-    try {
-      const supabase = getSupabaseClient();
-      const { data, error } = await supabase.from('live_recordings')
-        .select('*')
-        .eq('live_class_id', liveClassId)
-        .order('created_at', { ascending: false });
-      if (error) return { data: [], error: error.message };
-      return { data: (data ?? []).map((r) => mapRecordingRow(r as Record<string, unknown>)), error: null };
-    } catch (err) {
-      return { data: [], error: err instanceof Error ? err.message : 'Unknown error' };
-    }
-  },
-
-  async getForStudent(studentId: string, limit: number = 50): Promise<{ data: LiveRecording[]; error: string | null }> {
-    try {
-      const supabase = getSupabaseClient();
-      const { data: enrollments } = await supabase.from('enrollments')
-        .select('batch_id')
-        .eq('profile_id', studentId)
-        .eq('access_status', 'active');
-      const batchIds = ((enrollments ?? []) as Array<Record<string, unknown>>).map((e) => String(e.batch_id));
-      if (batchIds.length === 0) return { data: [], error: null };
-
-      const { data, error } = await supabase.from('live_recordings')
-        .select('*')
-        .in('batch_id', batchIds)
-        .order('created_at', { ascending: false })
-        .limit(limit);
-      if (error) return { data: [], error: error.message };
-      return { data: (data ?? []).map((r) => mapRecordingRow(r as Record<string, unknown>)), error: null };
-    } catch (err) {
-      return { data: [], error: err instanceof Error ? err.message : 'Unknown error' };
-    }
-  },
-
-  async getByBatch(batchId: string, limit: number = 50): Promise<{ data: LiveRecording[]; error: string | null }> {
-    try {
-      const supabase = getSupabaseClient();
-      const { data, error } = await supabase.from('live_recordings')
-        .select('*')
-        .eq('batch_id', batchId)
-        .order('created_at', { ascending: false })
-        .limit(limit);
-      if (error) return { data: [], error: error.message };
-      return { data: (data ?? []).map((r) => mapRecordingRow(r as Record<string, unknown>)), error: null };
-    } catch (err) {
-      return { data: [], error: err instanceof Error ? err.message : 'Unknown error' };
     }
   },
 };
