@@ -1,31 +1,97 @@
-import { memo } from 'react';
-import { Clock, Users } from 'lucide-react';
+import { memo, useState, useEffect, useCallback } from 'react';
 import { cn } from '@/utils/cn';
-import { formatDateTime } from '@/services/live';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Users, UserCheck, UserX, Clock } from 'lucide-react';
 import type { LiveClass } from '@/services/live';
+import { attendanceService } from '@/services/live';
+import { formatDateTime } from '@/services/live';
 
 interface WaitingRoomCardProps {
   liveClass: LiveClass;
+  onAdmitAll?: (liveClass: LiveClass) => void;
+  onAdmit?: (studentId: string) => void;
   className?: string | undefined;
 }
 
-function WaitingRoomCardComponent({ liveClass, className }: WaitingRoomCardProps) {
+interface WaitingParticipant {
+  studentId: string;
+  joinTime: string | null;
+}
+
+function WaitingRoomCardComponent({ liveClass, onAdmitAll, onAdmit, className }: WaitingRoomCardProps) {
+  const [participants, setParticipants] = useState<WaitingParticipant[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchParticipants = useCallback(async () => {
+    if (!liveClass.waitingRoom) { setParticipants([]); setLoading(false); return; }
+    const { data } = await attendanceService.getByClass(liveClass.id);
+    setParticipants(data.filter((a) => !a.leaveTime).map((a) => ({ studentId: a.studentId, joinTime: a.joinTime })));
+    setLoading(false);
+  }, [liveClass.id, liveClass.waitingRoom]);
+
+  useEffect(() => {
+    void fetchParticipants();
+  }, [fetchParticipants]);
+
+  if (!liveClass.waitingRoom) return null;
+
   return (
-    <div className={cn('rounded-xl border border-amber-200 bg-amber-50 p-6 text-center', className)}>
-      <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-amber-100">
-        <Clock className="h-6 w-6 text-amber-600" />
-      </div>
-      <h3 className="text-base font-semibold text-neutral-900">Waiting Room</h3>
-      <p className="mt-1 text-sm text-neutral-600">{liveClass.title}</p>
-      <p className="mt-2 text-xs text-neutral-500">
-        Starts at {formatDateTime(liveClass.startTime, liveClass.timezone)}
-      </p>
-      {liveClass.maxParticipants && (
-        <p className="mt-1 flex items-center justify-center gap-1 text-xs text-neutral-400">
-          <Users className="h-3 w-3" /> Max {liveClass.maxParticipants} participants
-        </p>
-      )}
-    </div>
+    <Card className={cn(className)}>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <CardTitle>
+          <Users className="mr-2 inline h-4 w-4" />
+          Waiting Room
+        </CardTitle>
+        <span className="rounded-full bg-warning-100 px-2 py-0.5 text-xs font-medium text-warning-700">
+          {participants.length} waiting
+        </span>
+      </CardHeader>
+      <CardContent>
+        {loading ? (
+          <div className="flex items-center justify-center py-4 text-sm text-neutral-500">Loading...</div>
+        ) : participants.length === 0 ? (
+          <div className="flex items-center justify-center py-4 text-sm text-neutral-500">No participants waiting</div>
+        ) : (
+          <div className="space-y-2">
+            {participants.map((p) => (
+              <div key={p.studentId} className="flex items-center justify-between rounded-lg border border-neutral-100 p-2">
+                <div className="flex items-center gap-2">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-neutral-100 text-xs font-medium text-neutral-600">
+                    {p.studentId.slice(0, 2).toUpperCase()}
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-neutral-900">{p.studentId}</p>
+                    {p.joinTime && (
+                      <p className="text-xs text-neutral-400 flex items-center gap-1">
+                        <Clock className="h-3 w-3" />
+                        {formatDateTime(p.joinTime)}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <div className="flex items-center gap-1">
+                  {onAdmit && (
+                    <Button size="sm" variant="success" onClick={() => onAdmit(p.studentId)}>
+                      <UserCheck className="h-3.5 w-3.5" />
+                      Admit
+                    </Button>
+                  )}
+                  <Button size="sm" variant="ghost" onClick={() => setParticipants((prev) => prev.filter((x) => x.studentId !== p.studentId))}>
+                    <UserX className="h-3.5 w-3.5" />
+                  </Button>
+                </div>
+              </div>
+            ))}
+            {onAdmitAll && participants.length > 1 && (
+              <Button size="sm" variant="primary" fullWidth onClick={() => onAdmitAll(liveClass)}>
+                Admit All ({participants.length})
+              </Button>
+            )}
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 }
 
