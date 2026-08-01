@@ -4,13 +4,10 @@ import { Card, CardContent } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { RecordingCard, RecordingPlayer } from '@/components/live';
 import { useRecordings } from '@/hooks/useRecordings';
-import { useCurrentUser } from '@/hooks/useProfile';
 import type { LiveRecording } from '@/services/live';
 
 export function RecordingLibraryPage() {
-  const profile = useCurrentUser();
-  const studentId = profile?.id ?? null;
-  const { recordings, loading } = useRecordings(false, studentId);
+  const { recordings, loading } = useRecordings();
   const [searchQuery, setSearchQuery] = useState('');
   const [playingRecording, setPlayingRecording] = useState<LiveRecording | null>(null);
 
@@ -20,9 +17,7 @@ export function RecordingLibraryPage() {
     return recordings.filter((r) => r.title.toLowerCase().includes(q) || (r.description ?? '').toLowerCase().includes(q));
   }, [recordings, searchQuery]);
 
-  const handleSearch = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-  }, []);
+  const handleSearch = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value), []);
 
   return (
     <div className="space-y-6">
@@ -30,7 +25,6 @@ export function RecordingLibraryPage() {
         <h1 className="text-xl font-bold text-neutral-900">Recording Library</h1>
         <p className="mt-1 text-sm text-neutral-500">Watch recorded live class sessions</p>
       </div>
-
       <Card>
         <CardContent className="p-4">
           <div className="relative">
@@ -39,16 +33,10 @@ export function RecordingLibraryPage() {
           </div>
         </CardContent>
       </Card>
-
       {loading ? (
         <div className="py-12 text-center text-sm text-neutral-500">Loading recordings...</div>
       ) : filtered.length === 0 ? (
-        <Card>
-          <CardContent className="flex flex-col items-center justify-center py-12 text-center">
-            <Video className="h-10 w-10 text-neutral-300" />
-            <p className="mt-2 text-sm text-neutral-500">{searchQuery ? 'No recordings match your search' : 'No recordings available'}</p>
-          </CardContent>
-        </Card>
+        <Card><CardContent className="flex flex-col items-center justify-center py-12 text-center"><Video className="h-10 w-10 text-neutral-300" /><p className="mt-2 text-sm text-neutral-500">{searchQuery ? 'No recordings match your search' : 'No recordings available'}</p></CardContent></Card>
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((r) => (
@@ -61,8 +49,13 @@ export function RecordingLibraryPage() {
           ))}
         </div>
       )}
-
-      <RecordingPlayer recording={playingRecording} onClose={() => setPlayingRecording(null)} />
+      {playingRecording && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4" onClick={() => setPlayingRecording(null)}>
+          <div className="w-full max-w-3xl" onClick={(e) => e.stopPropagation()}>
+            <RecordingPlayer recording={playingRecording} onClose={() => setPlayingRecording(null)} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
