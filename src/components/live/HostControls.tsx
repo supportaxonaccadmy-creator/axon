@@ -1,68 +1,79 @@
-import { memo } from 'react';
-import { Settings, Video, Users, Lock, Radio } from 'lucide-react';
+import { memo, useCallback } from 'react';
 import { cn } from '@/utils/cn';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
+import { Play, Square, Ban, Settings, Users, Video } from 'lucide-react';
 import type { LiveClass } from '@/services/live';
+import { isLiveNow } from '@/services/live';
 
 interface HostControlsProps {
   liveClass: LiveClass;
-  onStart?: () => void;
-  onEnd?: () => void;
-  onCancel?: () => void;
-  isHost?: boolean | undefined;
+  onStart?: (liveClass: LiveClass) => void;
+  onEnd?: (liveClass: LiveClass) => void;
+  onCancel?: (liveClass: LiveClass) => void;
+  onSettings?: (liveClass: LiveClass) => void;
   className?: string | undefined;
 }
 
-function HostControlsComponent({ liveClass, onStart, onEnd, onCancel, isHost = true, className }: HostControlsProps) {
-  if (!isHost) return null;
-
-  const isLive = liveClass.status === 'live';
-  const isScheduled = liveClass.status === 'scheduled';
+function HostControlsComponent({ liveClass, onStart, onEnd, onCancel, onSettings, className }: HostControlsProps) {
+  const live = isLiveNow(liveClass);
   const isCompleted = liveClass.status === 'completed';
   const isCancelled = liveClass.status === 'cancelled';
 
+  const handleStart = useCallback(() => onStart?.(liveClass), [onStart, liveClass]);
+  const handleEnd = useCallback(() => onEnd?.(liveClass), [onEnd, liveClass]);
+  const handleCancel = useCallback(() => onCancel?.(liveClass), [onCancel, liveClass]);
+  const handleSettings = useCallback(() => onSettings?.(liveClass), [onSettings, liveClass]);
+
   return (
-    <div className={cn('rounded-xl border border-neutral-200 bg-white p-4', className)}>
-      <div className="mb-3 flex items-center gap-2">
-        <Settings className="h-4 w-4 text-neutral-500" />
-        <h3 className="text-sm font-semibold text-neutral-900">Host Controls</h3>
-      </div>
-
-      <div className="mb-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
-        <div className={cn('flex items-center gap-2 rounded-lg border p-2 text-xs', liveClass.waitingRoom ? 'border-amber-200 bg-amber-50 text-amber-700' : 'border-neutral-100 text-neutral-500')}>
-          <Lock className="h-3.5 w-3.5" /> Waiting Room
-        </div>
-        <div className={cn('flex items-center gap-2 rounded-lg border p-2 text-xs', liveClass.allowRecording ? 'border-green-200 bg-green-50 text-green-700' : 'border-neutral-100 text-neutral-500')}>
-          <Video className="h-3.5 w-3.5" /> Recording
-        </div>
-        <div className={cn('flex items-center gap-2 rounded-lg border p-2 text-xs', liveClass.autoRecording ? 'border-green-200 bg-green-50 text-green-700' : 'border-neutral-100 text-neutral-500')}>
-          <Radio className="h-3.5 w-3.5" /> Auto Record
-        </div>
-        {liveClass.maxParticipants && (
-          <div className="flex items-center gap-2 rounded-lg border border-neutral-100 p-2 text-xs text-neutral-500">
-            <Users className="h-3.5 w-3.5" /> Max {liveClass.maxParticipants}
-          </div>
-        )}
-      </div>
-
-      <div className="flex flex-wrap items-center gap-2">
-        {isScheduled && onStart && (
-          <Button size="sm" variant="danger" onClick={onStart}>
-            <Radio className="h-3.5 w-3.5" /> Start Live
+    <Card className={cn(className)}>
+      <CardHeader>
+        <CardTitle>Host Controls</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <div className="flex items-center gap-2">
+          <Button size="sm" variant="success" onClick={handleStart} disabled={live || isCompleted || isCancelled}>
+            <Play className="h-4 w-4" />
+            Start Class
           </Button>
-        )}
-        {isLive && onEnd && (
-          <Button size="sm" variant="primary" onClick={onEnd}>
+          <Button size="sm" variant="danger" onClick={handleEnd} disabled={!live}>
+            <Square className="h-4 w-4" />
             End Class
           </Button>
-        )}
-        {!isCancelled && !isCompleted && onCancel && (
-          <Button size="sm" variant="outline" onClick={onCancel}>
+          <Button size="sm" variant="outline" onClick={handleCancel} disabled={isCompleted || isCancelled}>
+            <Ban className="h-4 w-4" />
             Cancel
           </Button>
-        )}
-      </div>
-    </div>
+        </div>
+
+        <div className="flex flex-wrap gap-2 border-t border-neutral-100 pt-3">
+          {onSettings && (
+            <Button size="sm" variant="ghost" onClick={handleSettings}>
+              <Settings className="h-4 w-4" />
+              Settings
+            </Button>
+          )}
+          {liveClass.waitingRoom && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-warning-100 px-2.5 py-0.5 text-xs font-medium text-warning-700">
+              <Users className="h-3 w-3" />
+              Waiting Room On
+            </span>
+          )}
+          {liveClass.allowRecording && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-info-100 px-2.5 py-0.5 text-xs font-medium text-blue-700">
+              <Video className="h-3 w-3" />
+              Recording Allowed
+            </span>
+          )}
+          {liveClass.autoRecording && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-success-100 px-2.5 py-0.5 text-xs font-medium text-success-700">
+              <Video className="h-3 w-3" />
+              Auto-Recording
+            </span>
+          )}
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 
