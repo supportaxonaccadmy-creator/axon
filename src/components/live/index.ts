@@ -1,8 +1,8 @@
+export { AttendanceBadge } from './AttendanceBadge';
 export { LiveClassCard } from './LiveClassCard';
 export { LiveStatusBadge } from './LiveStatusBadge';
 export { MeetingProviderBadge } from './MeetingProviderBadge';
 export { JoinMeetingButton } from './JoinMeetingButton';
-export { AttendanceBadge } from './AttendanceBadge';
 export { AttendanceTable } from './AttendanceTable';
 export { RecordingCard } from './RecordingCard';
 export { RecordingPlayer } from './RecordingPlayer';
