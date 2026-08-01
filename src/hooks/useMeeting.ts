@@ -1,63 +1,69 @@
 import { useState, useCallback } from 'react';
-import { liveClassService } from '@/services/live';
-import { attendanceService } from '@/services/live';
-import { liveReminderService } from '@/services/live';
-import type { LiveClass } from '@/services/live';
+import { liveClassService, attendanceService } from '@/services/live';
+import type { LiveClass, LiveClassStatus } from '@/services/live';
 
 export function useMeeting() {
-  const [joining, setJoining] = useState(false);
+  const [currentClass, setCurrentClass] = useState<LiveClass | null>(null);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [activeClass, setActiveClass] = useState<LiveClass | null>(null);
 
-  const joinMeeting = useCallback(async (liveClass: LiveClass, studentId: string) => {
-    setJoining(true);
-    setError(null);
-
+  const joinMeeting = useCallback(async (liveClass: LiveClass): Promise<{ error: string | null }> => {
+    if (!liveClass.meetingUrl) return { error: 'No meeting URL available' };
     try {
-      const { error: joinError } = await attendanceService.recordJoin(liveClass.id, studentId);
-      if (joinError) { setError(joinError); setJoining(false); return { error: joinError }; }
-
-      setActiveClass(liveClass);
-      setJoining(false);
+      window.open(liveClass.meetingUrl, '_blank', 'noopener,noreferrer');
       return { error: null };
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Unknown error';
-      setError(msg);
-      setJoining(false);
-      return { error: msg };
+    } catch {
+      return { error: 'Failed to open meeting URL' };
     }
   }, []);
 
-  const leaveMeeting = useCallback(async (studentId: string) => {
-    if (!activeClass) return;
-    const { error: err } = await attendanceService.recordLeave(activeClass.id, studentId);
+  const leaveMeeting = useCallback(async (attendanceId: string): Promise<{ error: string | null }> => {
+    setLoading(true);
+    const { error: err } = await attendanceService.recordLeave(attendanceId);
+    setLoading(false);
     if (err) setError(err);
-    setActiveClass(null);
-    return { error: err };
-  }, [activeClass]);
-
-  const cancelClass = useCallback(async (id: string) => {
-    const { error: err } = await liveClassService.updateStatus(id, 'cancelled');
-    if (err) setError(err);
-    await liveReminderService.deleteByLiveClass(id);
+    else setCurrentClass(null);
     return { error: err };
   }, []);
 
-  const startClass = useCallback(async (id: string) => {
-    const { error: err } = await liveClassService.updateStatus(id, 'live');
+  const startClass = useCallback(async (id: string): Promise<{ data: LiveClass | null; error: string | null }> => {
+    setLoading(true);
+    const { data, error: err } = await liveClassService.updateStatus(id, 'live');
+    setLoading(false);
     if (err) setError(err);
-    return { error: err };
+    else if (data) setCurrentClass(data);
+    return { data, error: err };
   }, []);
 
-  const endClass = useCallback(async (id: string) => {
-    const { error: err } = await liveClassService.updateStatus(id, 'completed');
+  const endClass = useCallback(async (id: string): Promise<{ data: LiveClass | null; error: string | null }> => {
+    setLoading(true);
+    const { data, error: err } = await liveClassService.updateStatus(id, 'completed');
+    setLoading(false);
     if (err) setError(err);
-    return { error: err };
+    else setCurrentClass(null);
+    return { data, error: err };
+  }, []);
+
+  const cancelClass = useCallback(async (id: string): Promise<{ data: LiveClass | null; error: string | null }> => {
+    setLoading(true);
+    const { data, error: err } = await liveClassService.updateStatus(id, 'cancelled');
+    setLoading(false);
+    if (err) setError(err);
+    else setCurrentClass(null);
+    return { data, error: err };
+  }, []);
+
+  const setStatus = useCallback(async (id: string, status: LiveClassStatus): Promise<{ data: LiveClass | null; error: string | null }> => {
+    setLoading(true);
+    const { data, error: err } = await liveClassService.updateStatus(id, status);
+    setLoading(false);
+    if (err) setError(err);
+    else if (data) setCurrentClass(data);
+    return { data, error: err };
   }, []);
 
   return {
-    joining, error, activeClass,
-    joinMeeting, leaveMeeting,
-    cancelClass, startClass, endClass,
+    currentClass, loading, error,
+    joinMeeting, leaveMeeting, startClass, endClass, cancelClass, setStatus,
   };
 }
