@@ -94,6 +94,17 @@ const AdminEmailTemplatesPage = lazy(() => import('@/pages/admin/EmailTemplatesP
 const AdminBroadcastPage = lazy(() => import('@/pages/admin/BroadcastPage').then((m) => ({ default: m.BroadcastPage })));
 const StudentNotificationsPage = lazy(() => import('@/pages/student/NotificationsPage').then((m) => ({ default: m.NotificationsPage })));
 const StudentAnnouncementsPage = lazy(() => import('@/pages/student/AnnouncementsPage').then((m) => ({ default: m.AnnouncementsPage })));
+const AdminLiveDashboardPage = lazy(() => import('@/pages/admin/LiveDashboardPage').then((m) => ({ default: m.LiveDashboardPage })));
+const AdminLiveClassListPage = lazy(() => import('@/pages/admin/LiveClassListPage').then((m) => ({ default: m.LiveClassListPage })));
+const AdminLiveClassFormPage = lazy(() => import('@/pages/admin/LiveClassFormPage').then((m) => ({ default: m.LiveClassFormPage })));
+const AdminLiveClassDetailsPage = lazy(() => import('@/pages/admin/LiveClassDetailsPage').then((m) => ({ default: m.LiveClassDetailsPage })));
+const AdminAttendanceManagementPage = lazy(() => import('@/pages/admin/AttendanceManagementPage').then((m) => ({ default: m.AttendanceManagementPage })));
+const AdminRecordingManagementPage = lazy(() => import('@/pages/admin/RecordingManagementPage').then((m) => ({ default: m.RecordingManagementPage })));
+const AdminMeetingProvidersPage = lazy(() => import('@/pages/admin/MeetingProvidersPage').then((m) => ({ default: m.MeetingProvidersPage })));
+const StudentLiveClassesPage = lazy(() => import('@/pages/student/LiveClassesPage').then((m) => ({ default: m.LiveClassesPage })));
+const StudentUpcomingLivePage = lazy(() => import('@/pages/student/UpcomingLivePage').then((m) => ({ default: m.UpcomingLivePage })));
+const StudentRecordingLibraryPage = lazy(() => import('@/pages/student/RecordingLibraryPage').then((m) => ({ default: m.RecordingLibraryPage })));
+const StudentAttendanceHistoryPage = lazy(() => import('@/pages/student/AttendanceHistoryPage').then((m) => ({ default: m.AttendanceHistoryPage })));
 
 function withSuspense(element: React.ReactNode) { return <Suspense fallback={<PageLoader />}>{element}</Suspense>; }
 
@@ -180,6 +191,14 @@ export const routes: RouteObject[] = [
     { path: 'announcements', element: withSuspense(<AdminAnnouncementManagementPage />) },
     { path: 'email-templates', element: withSuspense(<AdminEmailTemplatesPage />) },
     { path: 'broadcast', element: withSuspense(<AdminBroadcastPage />) },
+    { path: 'live', element: withSuspense(<AdminLiveDashboardPage />) },
+    { path: 'live-classes', element: withSuspense(<AdminLiveClassListPage />) },
+    { path: 'live-classes/new', element: withSuspense(<AdminLiveClassFormPage />) },
+    { path: 'live-classes/:id', element: withSuspense(<AdminLiveClassDetailsPage />) },
+    { path: 'live-classes/:id/edit', element: withSuspense(<AdminLiveClassFormPage />) },
+    { path: 'live-classes/:liveClassId/attendance', element: withSuspense(<AdminAttendanceManagementPage />) },
+    { path: 'recordings', element: withSuspense(<AdminRecordingManagementPage />) },
+    { path: 'meeting-providers', element: withSuspense(<AdminMeetingProvidersPage />) },
   ] },
   { path: ROUTES.STUDENT, element: (<StudentRoute><StudentLayout /></StudentRoute>), children: [
     { index: true, element: withSuspense(<StudentDashboardPage />) },
@@ -191,6 +210,10 @@ export const routes: RouteObject[] = [
     { path: 'watch/:slug', element: withSuspense(<StudentVideoWatchPage />) },
     { path: 'notifications', element: withSuspense(<StudentNotificationsPage />) },
     { path: 'announcements', element: withSuspense(<StudentAnnouncementsPage />) },
+    { path: 'live-classes', element: withSuspense(<StudentLiveClassesPage />) },
+    { path: 'live-classes/upcoming', element: withSuspense(<StudentUpcomingLivePage />) },
+    { path: 'recordings', element: withSuspense(<StudentRecordingLibraryPage />) },
+    { path: 'attendance', element: withSuspense(<StudentAttendanceHistoryPage />) },
     { path: 'mcq', element: withSuspense(<McqDashboardPage />) },
     { path: 'mcq/:setSlug', element: withSuspense(<McqPlayerPage />) },
     { path: 'mcq/:setSlug/result', element: withSuspense(<McqResultPage />) },
@@ -287,4 +310,15 @@ export { EmailTemplatesPage as AdminEmailTemplatesPage } from '@/pages/admin/Ema
 export { BroadcastPage as AdminBroadcastPage } from '@/pages/admin/BroadcastPage';
 export { NotificationsPage as StudentNotificationsPage } from '@/pages/student/NotificationsPage';
 export { AnnouncementsPage as StudentAnnouncementsPage } from '@/pages/student/AnnouncementsPage';
+export { LiveDashboardPage as AdminLiveDashboardPage } from '@/pages/admin/LiveDashboardPage';
+export { LiveClassListPage as AdminLiveClassListPage } from '@/pages/admin/LiveClassListPage';
+export { LiveClassFormPage as AdminLiveClassFormPage } from '@/pages/admin/LiveClassFormPage';
+export { LiveClassDetailsPage as AdminLiveClassDetailsPage } from '@/pages/admin/LiveClassDetailsPage';
+export { AttendanceManagementPage as AdminAttendanceManagementPage } from '@/pages/admin/AttendanceManagementPage';
+export { RecordingManagementPage as AdminRecordingManagementPage } from '@/pages/admin/RecordingManagementPage';
+export { MeetingProvidersPage as AdminMeetingProvidersPage } from '@/pages/admin/MeetingProvidersPage';
+export { LiveClassesPage as StudentLiveClassesPage } from '@/pages/student/LiveClassesPage';
+export { UpcomingLivePage as StudentUpcomingLivePage } from '@/pages/student/UpcomingLivePage';
+export { RecordingLibraryPage as StudentRecordingLibraryPage } from '@/pages/student/RecordingLibraryPage';
+export { AttendanceHistoryPage as StudentAttendanceHistoryPage } from '@/pages/student/AttendanceHistoryPage';
 export { LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage } from '@/pages/auth';
