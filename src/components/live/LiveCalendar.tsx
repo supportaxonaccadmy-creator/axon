@@ -1,156 +1,116 @@
-import { memo, useState, useMemo, useCallback } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { memo, useState, useEffect, useCallback } from 'react';
 import { cn } from '@/utils/cn';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
-import { LiveStatusBadge } from './LiveStatusBadge';
-import { STATUS_COLORS } from '@/services/live';
+import { ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
 import type { CalendarEvent } from '@/services/live';
+import { calendarService } from '@/services/live';
+import { STATUS_VARIANT } from '@/services/live';
 
 interface LiveCalendarProps {
-  events: CalendarEvent[];
+  events?: CalendarEvent[];
   onEventClick?: (event: CalendarEvent) => void;
   className?: string | undefined;
 }
 
-const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-function LiveCalendarComponent({ events, onEventClick, className }: LiveCalendarProps) {
+function LiveCalendarComponent({ events: propEvents, onEventClick, className }: LiveCalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [view, setView] = useState<'month' | 'week' | 'agenda'>('month');
-  void view;
+  const [events, setEvents] = useState<CalendarEvent[]>(propEvents ?? []);
 
-  const eventsByDay = useMemo(() => {
-    const map = new Map<string, CalendarEvent[]>();
-    for (const event of events) {
-      const dateKey = new Date(event.start).toDateString();
-      const existing = map.get(dateKey) ?? [];
+  useEffect(() => {
+    if (propEvents) { setEvents(propEvents); return; }
+    void (async () => {
+      const year = currentDate.getFullYear();
+      const month = currentDate.getMonth();
+      const startDate = new Date(year, month, 1).toISOString();
+      const endDate = new Date(year, month + 1, 0, 23, 59, 59).toISOString();
+      const { data } = await calendarService.getByDateRange(startDate, endDate);
+      setEvents(data);
+    })();
+  }, [currentDate, propEvents]);
+
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  const eventsByDay = new Map<number, CalendarEvent[]>();
+  for (const event of events) {
+    const day = new Date(event.startTime).getDate();
+    if (new Date(event.startTime).getMonth() === month && new Date(event.startTime).getFullYear() === year) {
+      const existing = eventsByDay.get(day) ?? [];
       existing.push(event);
-      map.set(dateKey, existing);
+      eventsByDay.set(day, existing);
     }
-    return map;
-  }, [events]);
-
-  const daysInMonth = useMemo(() => {
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth();
-    const firstDay = new Date(year, month, 1).getDay();
-    const lastDate = new Date(year, month + 1, 0).getDate();
-    const days: Array<Date | null> = [];
-    for (let i = 0; i < firstDay; i++) days.push(null);
-    for (let d = 1; d <= lastDate; d++) days.push(new Date(year, month, d));
-    return days;
-  }, [currentDate]);
-
-  const prevMonth = useCallback(() => {
-    setCurrentDate((prev) => new Date(prev.getFullYear(), prev.getMonth() - 1, 1));
-  }, []);
-
-  const nextMonth = useCallback(() => {
-    setCurrentDate((prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1));
-  }, []);
-
-  const today = new Date().toDateString();
-
-  if (view === 'agenda') {
-    const sorted = [...events].sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
-    return (
-      <div className={className}>
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-sm font-semibold text-neutral-900">Agenda</h3>
-          <div className="flex gap-1">
-            <Button size="sm" variant="outline" onClick={() => setView('month')}>Month</Button>
-            <Button size="sm" variant="outline" onClick={() => setView('week')}>Week</Button>
-            <Button size="sm" variant="primary" onClick={() => setView('agenda')}>Agenda</Button>
-          </div>
-        </div>
-        <div className="space-y-2">
-          {sorted.length === 0 ? (
-            <p className="py-8 text-center text-sm text-neutral-500">No upcoming events</p>
-          ) : (
-            sorted.map((event) => (
-              <button
-                key={event.id}
-                onClick={() => onEventClick?.(event)}
-                className="flex w-full items-center gap-3 rounded-lg border border-neutral-100 p-3 text-left transition-colors hover:bg-neutral-50"
-              >
-                <div className={cn('h-10 w-1 rounded-full', STATUS_COLORS[event.status])} />
-                <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium text-neutral-900">{event.title}</p>
-                  <p className="text-xs text-neutral-400">
-                    {new Date(event.start).toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
-                  </p>
-                </div>
-                <LiveStatusBadge status={event.status} />
-              </button>
-            ))
-          )}
-        </div>
-      </div>
-    );
   }
 
-  return (
-    <div className={className}>
-      <div className="mb-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <button onClick={prevMonth} className="rounded-md p-1 text-neutral-400 hover:bg-neutral-100" aria-label="Previous month">
-            <ChevronLeft className="h-5 w-5" />
-          </button>
-          <h3 className="text-sm font-semibold text-neutral-900 min-w-32 text-center">
-            {MONTH_NAMES[currentDate.getMonth()]} {currentDate.getFullYear()}
-          </h3>
-          <button onClick={nextMonth} className="rounded-md p-1 text-neutral-400 hover:bg-neutral-100" aria-label="Next month">
-            <ChevronRight className="h-5 w-5" />
-          </button>
-        </div>
-        <div className="flex gap-1">
-          <Button size="sm" variant={view === 'month' ? 'primary' : 'outline'} onClick={() => setView('month')}>Month</Button>
-          <Button size="sm" variant={view === 'week' ? 'primary' : 'outline'} onClick={() => setView('week')}>Week</Button>
-          <Button size="sm" variant="outline" onClick={() => setView('agenda')}>Agenda</Button>
-        </div>
-      </div>
+  const prevMonth = useCallback(() => setCurrentDate(new Date(year, month - 1, 1)), [year, month]);
+  const nextMonth = useCallback(() => setCurrentDate(new Date(year, month + 1, 1)), [year, month]);
 
-      <div className="grid grid-cols-7 gap-1">
-        {DAY_NAMES.map((day) => (
-          <div key={day} className="text-center text-xs font-medium text-neutral-400 pb-2">{day}</div>
-        ))}
-        {daysInMonth.map((date, i) => {
-          if (!date) return <div key={`empty-${i}`} />;
-          const dateKey = date.toDateString();
-          const dayEvents = eventsByDay.get(dateKey) ?? [];
-          const isToday = dateKey === today;
-          return (
+  const cells: Array<number | null> = [];
+  for (let i = 0; i < firstDay; i++) cells.push(null);
+  for (let d = 1; d <= daysInMonth; d++) cells.push(d);
+  while (cells.length % 7 !== 0) cells.push(null);
+
+  return (
+    <Card className={cn(className)}>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <CardTitle>
+      <Calendar className="mr-2 inline h-4 w-4" />
+      {currentDate.toLocaleDateString(undefined, { month: 'long', year: 'numeric' })}
+    </CardTitle>
+        <div className="flex items-center gap-1">
+          <Button size="icon" variant="ghost" onClick={prevMonth} aria-label="Previous month">
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+          <Button size="icon" variant="ghost" onClick={nextMonth} aria-label="Next month">
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="grid grid-cols-7 gap-1">
+          {WEEKDAYS.map((day) => (
+            <div key={day} className="pb-2 text-center text-xs font-medium text-neutral-400">{day}</div>
+          ))}
+          {cells.map((day, i) => (
             <div
-              key={date.toISOString()}
+              key={i}
               className={cn(
-                'min-h-16 rounded-lg border p-1.5 text-xs',
-                isToday ? 'border-primary-300 bg-primary-50' : 'border-neutral-100',
+                'min-h-[60px] rounded-lg border border-neutral-100 p-1',
+                day === null && 'bg-neutral-50',
+                day === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear() && 'border-primary-300 bg-primary-50',
               )}
             >
-              <div className={cn('mb-1 font-medium', isToday ? 'text-primary-700' : 'text-neutral-600')}>{date.getDate()}</div>
-              <div className="space-y-0.5">
-                {dayEvents.slice(0, 2).map((event) => (
-                  <button
-                    key={event.id}
-                    onClick={() => onEventClick?.(event)}
-                    className={cn(
-                      'block w-full truncate rounded px-1 py-0.5 text-left text-[10px] font-medium',
-                      STATUS_COLORS[event.status],
+              {day && (
+                <>
+                  <span className="text-xs font-medium text-neutral-600">{day}</span>
+                  <div className="mt-1 space-y-0.5">
+                    {(eventsByDay.get(day) ?? []).slice(0, 2).map((event) => (
+                      <button
+                        key={event.id}
+                        type="button"
+                        onClick={() => onEventClick?.(event)}
+                        className="block w-full truncate rounded px-1 py-0.5 text-left text-xs text-white"
+                        style={{ backgroundColor: STATUS_VARIANT[event.status] === 'error' ? '#dc2626' : STATUS_VARIANT[event.status] === 'success' ? '#16a34a' : STATUS_VARIANT[event.status] === 'info' ? '#2563eb' : '#737373' }}
+                        title={event.title}
+                      >
+                        {event.title}
+                      </button>
+                    ))}
+                    {(eventsByDay.get(day) ?? []).length > 2 && (
+                      <span className="text-xs text-neutral-400">+{(eventsByDay.get(day) ?? []).length - 2} more</span>
                     )}
-                  >
-                    {event.title}
-                  </button>
-                ))}
-                {dayEvents.length > 2 && (
-                  <p className="text-[10px] text-neutral-400">+{dayEvents.length - 2} more</p>
-                )}
-              </div>
+                  </div>
+                </>
+              )}
             </div>
-          );
-        })}
-      </div>
-    </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 
