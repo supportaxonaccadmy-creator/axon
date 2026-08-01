@@ -7,17 +7,13 @@ import { Input } from '@/components/ui/Input';
 import { Textarea } from '@/components/ui/Textarea';
 import { Select } from '@/components/ui/Select';
 import { liveClassService, liveReminderService } from '@/services/live';
-import { useCurrentUser } from '@/hooks/useProfile';
 import type { MeetingProviderType, RecurringPattern, CreateLiveClassInput } from '@/services/live';
 import type { Option } from '@/types/common';
 
 export function LiveClassFormPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const profile = useCurrentUser();
-  const adminId = profile?.id ?? '';
   const isEdit = Boolean(id);
-
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [form, setForm] = useState<CreateLiveClassInput>({
@@ -50,48 +46,33 @@ export function LiveClassFormPage() {
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.title.trim() || !form.meetingUrl.trim() || !form.batchId || !form.startTime || !form.endTime) return;
-
+    if (!form.title.trim() || !form.meetingUrl || !form.meetingUrl.trim() || !form.batchId || !form.startTime || !form.endTime) return;
     setSaving(true);
     setError(null);
-
-    const input = {
-      ...form,
-      startTime: new Date(form.startTime).toISOString(),
-      endTime: new Date(form.endTime).toISOString(),
-    };
-
+    const input = { ...form, startTime: new Date(form.startTime).toISOString(), endTime: new Date(form.endTime).toISOString() };
     if (isEdit && id) {
       const { error: err } = await liveClassService.update(id, input);
       if (err) setError(err);
       else navigate(`/admin/live-classes/${id}`);
     } else {
-      const { data, error: err } = await liveClassService.create(adminId, input);
+      const { data, error: err } = await liveClassService.create(input);
       if (err) setError(err);
       else if (data) {
         await liveReminderService.createDefaultReminders(data.id, data.startTime);
         navigate(`/admin/live-classes/${data.id}`);
       }
     }
-
     setSaving(false);
-  }, [form, isEdit, id, adminId, navigate]);
+  }, [form, isEdit, id, navigate]);
 
   const providerOptions: Option[] = [
-    { value: 'zoom', label: 'Zoom' },
-    { value: 'google_meet', label: 'Google Meet' },
-    { value: 'jitsi_meet', label: 'Jitsi Meet' },
-    { value: 'microsoft_teams', label: 'Microsoft Teams' },
-    { value: 'youtube_live', label: 'YouTube Live' },
-    { value: 'custom_url', label: 'Custom URL' },
+    { value: 'zoom', label: 'Zoom' }, { value: 'google_meet', label: 'Google Meet' },
+    { value: 'jitsi_meet', label: 'Jitsi Meet' }, { value: 'microsoft_teams', label: 'Microsoft Teams' },
+    { value: 'youtube_live', label: 'YouTube Live' }, { value: 'custom_url', label: 'Custom URL' },
   ];
-
   const recurringOptions: Option[] = [
-    { value: 'none', label: 'One-time' },
-    { value: 'daily', label: 'Daily' },
-    { value: 'weekly', label: 'Weekly' },
-    { value: 'monthly', label: 'Monthly' },
-    { value: 'custom', label: 'Custom' },
+    { value: 'none', label: 'One-time' }, { value: 'daily', label: 'Daily' },
+    { value: 'weekly', label: 'Weekly' }, { value: 'monthly', label: 'Monthly' }, { value: 'custom', label: 'Custom' },
   ];
 
   const update = (field: keyof typeof form, value: unknown) => setForm((prev) => ({ ...prev, [field]: value }));
@@ -99,66 +80,42 @@ export function LiveClassFormPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
-        <button onClick={() => navigate(-1)} className="rounded-md p-1 text-neutral-400 hover:bg-neutral-100" aria-label="Go back">
-          <ArrowLeft className="h-5 w-5" />
-        </button>
+        <button onClick={() => navigate(-1)} className="rounded-md p-1 text-neutral-400 hover:bg-neutral-100" aria-label="Go back"><ArrowLeft className="h-5 w-5" /></button>
         <h1 className="text-xl font-bold text-neutral-900">{isEdit ? 'Edit Live Class' : 'Create Live Class'}</h1>
       </div>
-
       <Card>
         <CardHeader><CardTitle>Class Details</CardTitle></CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <Input label="Title" value={form.title} onChange={(e) => update('title', e.target.value)} placeholder="Live class title..." required />
-            <Textarea label="Description" value={form.description ?? ''} onChange={(e) => update('description', e.target.value)} placeholder="Class description..." rows={3} />
-
+            <Input label="Title" value={form.title} onChange={(e) => update('title', e.target.value)} required />
+            <Textarea label="Description" value={form.description ?? ''} onChange={(e) => update('description', e.target.value)} rows={3} />
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <Select label="Meeting Provider" options={providerOptions} value={form.providerType} onChange={(e) => update('providerType', e.target.value as MeetingProviderType)} />
-              <Input label="Meeting URL" value={form.meetingUrl} onChange={(e) => update('meetingUrl', e.target.value)} placeholder="https://..." required />
+              <Input label="Meeting URL" value={form.meetingUrl ?? ''} onChange={(e) => update('meetingUrl', e.target.value)} required />
             </div>
-
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <Input label="Meeting Password (optional)" value={form.meetingPassword ?? ''} onChange={(e) => update('meetingPassword', e.target.value)} />
-              <Input label="Meeting ID (optional)" value={form.meetingId ?? ''} onChange={(e) => update('meetingId', e.target.value)} />
+              <Input label="Meeting Password" value={form.meetingPassword ?? ''} onChange={(e) => update('meetingPassword', e.target.value)} />
+              <Input label="Meeting ID" value={form.meetingId ?? ''} onChange={(e) => update('meetingId', e.target.value)} />
             </div>
-
-            <Input label="Batch ID" value={form.batchId} onChange={(e) => update('batchId', e.target.value)} placeholder="UUID of the batch" required />
-
+            <Input label="Batch ID" value={form.batchId ?? ''} onChange={(e) => update('batchId', e.target.value)} required />
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <Input label="Start Time" type="datetime-local" value={form.startTime} onChange={(e) => update('startTime', e.target.value)} required />
-              <Input label="End Time" type="datetime-local" value={form.endTime} onChange={(e) => update('endTime', e.target.value)} required />
+              <Input label="Start Time" type="datetime-local" value={form.startTime ?? ''} onChange={(e) => update('startTime', e.target.value)} required />
+              <Input label="End Time" type="datetime-local" value={form.endTime ?? ''} onChange={(e) => update('endTime', e.target.value)} required />
             </div>
-
-            <Input label="Timezone" value={form.timezone} onChange={(e) => update('timezone', e.target.value)} placeholder="UTC" />
-
+            <Input label="Timezone" value={form.timezone ?? 'UTC'} onChange={(e) => update('timezone', e.target.value)} />
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <Select label="Recurring" options={recurringOptions} value={form.recurring} onChange={(e) => update('recurring', e.target.value as RecurringPattern)} />
-              <Input label="Max Participants (optional)" type="number" value={form.maxParticipants ?? ''} onChange={(e) => update('maxParticipants', e.target.value ? Number(e.target.value) : null)} />
+              <Select label="Recurring" options={recurringOptions} value={form.recurring ?? 'none'} onChange={(e) => update('recurring', e.target.value as RecurringPattern)} />
+              <Input label="Max Participants" type="number" value={form.maxParticipants ?? ''} onChange={(e) => update('maxParticipants', e.target.value ? Number(e.target.value) : null)} />
             </div>
-
             <div className="flex flex-wrap items-center gap-4">
-              <label className="flex items-center gap-2 text-sm text-neutral-700">
-                <input type="checkbox" checked={form.waitingRoom} onChange={(e) => update('waitingRoom', e.target.checked)} className="h-4 w-4 rounded border-neutral-300 text-primary-600 focus:ring-primary-500" />
-                Waiting Room
-              </label>
-              <label className="flex items-center gap-2 text-sm text-neutral-700">
-                <input type="checkbox" checked={form.allowRecording} onChange={(e) => update('allowRecording', e.target.checked)} className="h-4 w-4 rounded border-neutral-300 text-primary-600 focus:ring-primary-500" />
-                Allow Recording
-              </label>
-              <label className="flex items-center gap-2 text-sm text-neutral-700">
-                <input type="checkbox" checked={form.autoRecording} onChange={(e) => update('autoRecording', e.target.checked)} className="h-4 w-4 rounded border-neutral-300 text-primary-600 focus:ring-primary-500" />
-                Auto Recording
-              </label>
+              <label className="flex items-center gap-2 text-sm text-neutral-700"><input type="checkbox" checked={form.waitingRoom} onChange={(e) => update('waitingRoom', e.target.checked)} className="h-4 w-4 rounded border-neutral-300 text-primary-600 focus:ring-primary-500" /> Waiting Room</label>
+              <label className="flex items-center gap-2 text-sm text-neutral-700"><input type="checkbox" checked={form.allowRecording} onChange={(e) => update('allowRecording', e.target.checked)} className="h-4 w-4 rounded border-neutral-300 text-primary-600 focus:ring-primary-500" /> Allow Recording</label>
+              <label className="flex items-center gap-2 text-sm text-neutral-700"><input type="checkbox" checked={form.autoRecording} onChange={(e) => update('autoRecording', e.target.checked)} className="h-4 w-4 rounded border-neutral-300 text-primary-600 focus:ring-primary-500" /> Auto Recording</label>
             </div>
-
-            <Input label="Thumbnail URL (optional)" value={form.thumbnailUrl ?? ''} onChange={(e) => update('thumbnailUrl', e.target.value)} placeholder="https://..." />
-
+            <Input label="Thumbnail URL" value={form.thumbnailUrl ?? ''} onChange={(e) => update('thumbnailUrl', e.target.value)} />
             {error && <p className="text-sm text-error-600">{error}</p>}
-
             <div className="flex items-center gap-2">
-              <Button type="submit" loading={saving}>
-                <Save className="h-4 w-4" /> {isEdit ? 'Update' : 'Create'}
-              </Button>
+              <Button type="submit" loading={saving}><Save className="h-4 w-4" /> {isEdit ? 'Update' : 'Create'}</Button>
               <Button type="button" variant="outline" onClick={() => navigate(-1)}>Cancel</Button>
             </div>
           </form>
