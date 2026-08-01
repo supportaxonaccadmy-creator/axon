@@ -1,7 +1,8 @@
 import { memo } from 'react';
 import { cn } from '@/utils/cn';
-import { STATUS_LABELS, STATUS_DOT_COLORS } from '@/services/live';
+import { Badge } from '@/components/ui/Badge';
 import type { LiveClassStatus } from '@/services/live';
+import { STATUS_LABELS, STATUS_VARIANT } from '@/services/live';
 
 interface LiveStatusBadgeProps {
   status: LiveClassStatus;
@@ -9,19 +10,15 @@ interface LiveStatusBadgeProps {
 }
 
 function LiveStatusBadgeComponent({ status, className }: LiveStatusBadgeProps) {
-  const dotColor = STATUS_DOT_COLORS[status];
-  const textColor: Record<LiveClassStatus, string> = {
-    scheduled: 'text-blue-600',
-    live: 'text-red-600',
-    completed: 'text-green-600',
-    cancelled: 'text-neutral-500',
-  };
+  const variant = STATUS_VARIANT[status];
+  const label = STATUS_LABELS[status];
+  const isLive = status === 'live';
 
   return (
-    <span className={cn('inline-flex items-center gap-1.5 text-xs font-medium', textColor[status], className)}>
-      <span className={cn('h-2 w-2 rounded-full', dotColor)} />
-      {STATUS_LABELS[status]}
-    </span>
+    <Badge variant={variant} className={cn(isLive && 'animate-pulse', className)}>
+      {isLive && <span className="mr-1 h-1.5 w-1.5 rounded-full bg-current" />}
+      {label}
+    </Badge>
   );
 }
 
