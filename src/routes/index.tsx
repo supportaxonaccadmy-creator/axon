@@ -105,6 +105,21 @@ const StudentLiveClassesPage = lazy(() => import('@/pages/student/LiveClassesPag
 const StudentUpcomingLivePage = lazy(() => import('@/pages/student/UpcomingLivePage').then((m) => ({ default: m.UpcomingLivePage })));
 const StudentRecordingLibraryPage = lazy(() => import('@/pages/student/RecordingLibraryPage').then((m) => ({ default: m.RecordingLibraryPage })));
 const StudentAttendanceHistoryPage = lazy(() => import('@/pages/student/AttendanceHistoryPage').then((m) => ({ default: m.AttendanceHistoryPage })));
+const AdminCertificateDashboardPage = lazy(() => import('@/pages/admin/CertificateDashboardPage').then((m) => ({ default: m.CertificateDashboardPage })));
+const AdminCertificateTemplatePage = lazy(() => import('@/pages/admin/CertificateTemplatePage').then((m) => ({ default: m.CertificateTemplatePage })));
+const AdminAchievementManagementPage = lazy(() => import('@/pages/admin/AchievementManagementPage').then((m) => ({ default: m.AchievementManagementPage })));
+const AdminBadgeManagementPage = lazy(() => import('@/pages/admin/BadgeManagementPage').then((m) => ({ default: m.BadgeManagementPage })));
+const AdminMissionManagementPage = lazy(() => import('@/pages/admin/MissionManagementPage').then((m) => ({ default: m.MissionManagementPage })));
+const AdminLeaderboardManagementPage = lazy(() => import('@/pages/admin/LeaderboardManagementPage').then((m) => ({ default: m.LeaderboardManagementPage })));
+const AdminRewardManagementPage = lazy(() => import('@/pages/admin/RewardManagementPage').then((m) => ({ default: m.RewardManagementPage })));
+const AdminStudentRewardHistoryPage = lazy(() => import('@/pages/admin/StudentRewardHistoryPage').then((m) => ({ default: m.StudentRewardHistoryPage })));
+const StudentMyCertificatesPage = lazy(() => import('@/pages/student/MyCertificatesPage').then((m) => ({ default: m.MyCertificatesPage })));
+const StudentCertificateVerificationPage = lazy(() => import('@/pages/student/CertificateVerificationPage').then((m) => ({ default: m.CertificateVerificationPage })));
+const StudentMyAchievementsPage = lazy(() => import('@/pages/student/MyAchievementsPage').then((m) => ({ default: m.MyAchievementsPage })));
+const StudentMyBadgesPage = lazy(() => import('@/pages/student/MyBadgesPage').then((m) => ({ default: m.MyBadgesPage })));
+const StudentMyRewardsPage = lazy(() => import('@/pages/student/MyRewardsPage').then((m) => ({ default: m.MyRewardsPage })));
+const StudentMyMissionsPage = lazy(() => import('@/pages/student/MyMissionsPage').then((m) => ({ default: m.MyMissionsPage })));
+const StudentLeaderboardPage = lazy(() => import('@/pages/student/LeaderboardPage').then((m) => ({ default: m.LeaderboardPage })));
 
 function withSuspense(element: React.ReactNode) { return <Suspense fallback={<PageLoader />}>{element}</Suspense>; }
 
@@ -199,6 +214,14 @@ export const routes: RouteObject[] = [
     { path: 'live-classes/:liveClassId/attendance', element: withSuspense(<AdminAttendanceManagementPage />) },
     { path: 'recordings', element: withSuspense(<AdminRecordingManagementPage />) },
     { path: 'meeting-providers', element: withSuspense(<AdminMeetingProvidersPage />) },
+    { path: 'certificates', element: withSuspense(<AdminCertificateDashboardPage />) },
+    { path: 'certificate-templates', element: withSuspense(<AdminCertificateTemplatePage />) },
+    { path: 'achievements', element: withSuspense(<AdminAchievementManagementPage />) },
+    { path: 'badges', element: withSuspense(<AdminBadgeManagementPage />) },
+    { path: 'missions', element: withSuspense(<AdminMissionManagementPage />) },
+    { path: 'leaderboards', element: withSuspense(<AdminLeaderboardManagementPage />) },
+    { path: 'rewards', element: withSuspense(<AdminRewardManagementPage />) },
+    { path: 'student-rewards', element: withSuspense(<AdminStudentRewardHistoryPage />) },
   ] },
   { path: ROUTES.STUDENT, element: (<StudentRoute><StudentLayout /></StudentRoute>), children: [
     { index: true, element: withSuspense(<StudentDashboardPage />) },
@@ -214,6 +237,13 @@ export const routes: RouteObject[] = [
     { path: 'live-classes/upcoming', element: withSuspense(<StudentUpcomingLivePage />) },
     { path: 'recordings', element: withSuspense(<StudentRecordingLibraryPage />) },
     { path: 'attendance', element: withSuspense(<StudentAttendanceHistoryPage />) },
+    { path: 'my-certificates', element: withSuspense(<StudentMyCertificatesPage />) },
+    { path: 'verify-certificate', element: withSuspense(<StudentCertificateVerificationPage />) },
+    { path: 'my-achievements', element: withSuspense(<StudentMyAchievementsPage />) },
+    { path: 'my-badges', element: withSuspense(<StudentMyBadgesPage />) },
+    { path: 'my-rewards', element: withSuspense(<StudentMyRewardsPage />) },
+    { path: 'my-missions', element: withSuspense(<StudentMyMissionsPage />) },
+    { path: 'leaderboard', element: withSuspense(<StudentLeaderboardPage />) },
     { path: 'mcq', element: withSuspense(<McqDashboardPage />) },
     { path: 'mcq/:setSlug', element: withSuspense(<McqPlayerPage />) },
     { path: 'mcq/:setSlug/result', element: withSuspense(<McqResultPage />) },
@@ -321,4 +351,19 @@ export { LiveClassesPage as StudentLiveClassesPage } from '@/pages/student/LiveC
 export { UpcomingLivePage as StudentUpcomingLivePage } from '@/pages/student/UpcomingLivePage';
 export { RecordingLibraryPage as StudentRecordingLibraryPage } from '@/pages/student/RecordingLibraryPage';
 export { AttendanceHistoryPage as StudentAttendanceHistoryPage } from '@/pages/student/AttendanceHistoryPage';
+export { CertificateDashboardPage as AdminCertificateDashboardPage } from '@/pages/admin/CertificateDashboardPage';
+export { CertificateTemplatePage as AdminCertificateTemplatePage } from '@/pages/admin/CertificateTemplatePage';
+export { AchievementManagementPage as AdminAchievementManagementPage } from '@/pages/admin/AchievementManagementPage';
+export { BadgeManagementPage as AdminBadgeManagementPage } from '@/pages/admin/BadgeManagementPage';
+export { MissionManagementPage as AdminMissionManagementPage } from '@/pages/admin/MissionManagementPage';
+export { LeaderboardManagementPage as AdminLeaderboardManagementPage } from '@/pages/admin/LeaderboardManagementPage';
+export { RewardManagementPage as AdminRewardManagementPage } from '@/pages/admin/RewardManagementPage';
+export { StudentRewardHistoryPage as AdminStudentRewardHistoryPage } from '@/pages/admin/StudentRewardHistoryPage';
+export { MyCertificatesPage as StudentMyCertificatesPage } from '@/pages/student/MyCertificatesPage';
+export { CertificateVerificationPage as StudentCertificateVerificationPage } from '@/pages/student/CertificateVerificationPage';
+export { MyAchievementsPage as StudentMyAchievementsPage } from '@/pages/student/MyAchievementsPage';
+export { MyBadgesPage as StudentMyBadgesPage } from '@/pages/student/MyBadgesPage';
+export { MyRewardsPage as StudentMyRewardsPage } from '@/pages/student/MyRewardsPage';
+export { MyMissionsPage as StudentMyMissionsPage } from '@/pages/student/MyMissionsPage';
+export { LeaderboardPage as StudentLeaderboardPage } from '@/pages/student/LeaderboardPage';
 export { LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage } from '@/pages/auth';
