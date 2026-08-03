@@ -105,11 +105,13 @@ const StudentLiveClassesPage = lazy(() => import('@/pages/student/LiveClassesPag
 const StudentUpcomingLivePage = lazy(() => import('@/pages/student/UpcomingLivePage').then((m) => ({ default: m.UpcomingLivePage })));
 const StudentRecordingLibraryPage = lazy(() => import('@/pages/student/RecordingLibraryPage').then((m) => ({ default: m.RecordingLibraryPage })));
 const StudentAttendanceHistoryPage = lazy(() => import('@/pages/student/AttendanceHistoryPage').then((m) => ({ default: m.AttendanceHistoryPage })));
-const StudentAiDashboardPage = lazy(() => import('@/pages/student/AiDashboardPage').then((m) => ({ default: m.AiDashboardPage })));
-const StudentStudyPlannerPage = lazy(() => import('@/pages/student/StudyPlannerPage').then((m) => ({ default: m.StudyPlannerPage })));
-const StudentRecommendationsPage = lazy(() => import('@/pages/student/RecommendationsPage').then((m) => ({ default: m.RecommendationsPage })));
+const AdminAnalyticsDashboardPage = lazy(() => import('@/pages/admin/AnalyticsDashboardPage').then((m) => ({ default: m.AnalyticsDashboardPage })));
+const AdminStudentIntelligencePage = lazy(() => import('@/pages/admin/StudentIntelligencePage').then((m) => ({ default: m.StudentIntelligencePage })));
+const AdminRevenueAnalyticsPage = lazy(() => import('@/pages/admin/RevenueAnalyticsPage').then((m) => ({ default: m.RevenueAnalyticsPage })));
+const AdminContentAnalyticsPage = lazy(() => import('@/pages/admin/ContentAnalyticsPage').then((m) => ({ default: m.ContentAnalyticsPage })));
+const StudentMyAnalyticsPage = lazy(() => import('@/pages/student/MyAnalyticsPage').then((m) => ({ default: m.MyAnalyticsPage })));
+const StudentPerformancePredictionPage = lazy(() => import('@/pages/student/PerformancePredictionPage').then((m) => ({ default: m.PerformancePredictionPage })));
 const StudentLearningInsightsPage = lazy(() => import('@/pages/student/LearningInsightsPage').then((m) => ({ default: m.LearningInsightsPage })));
-const StudentRevisionPlannerPage = lazy(() => import('@/pages/student/RevisionPlannerPage').then((m) => ({ default: m.RevisionPlannerPage })));
 
 function withSuspense(element: React.ReactNode) { return <Suspense fallback={<PageLoader />}>{element}</Suspense>; }
 
@@ -204,6 +206,10 @@ export const routes: RouteObject[] = [
     { path: 'live-classes/:liveClassId/attendance', element: withSuspense(<AdminAttendanceManagementPage />) },
     { path: 'recordings', element: withSuspense(<AdminRecordingManagementPage />) },
     { path: 'meeting-providers', element: withSuspense(<AdminMeetingProvidersPage />) },
+    { path: 'analytics', element: withSuspense(<AdminAnalyticsDashboardPage />) },
+    { path: 'student-intelligence', element: withSuspense(<AdminStudentIntelligencePage />) },
+    { path: 'revenue-analytics', element: withSuspense(<AdminRevenueAnalyticsPage />) },
+    { path: 'content-analytics', element: withSuspense(<AdminContentAnalyticsPage />) },
   ] },
   { path: ROUTES.STUDENT, element: (<StudentRoute><StudentLayout /></StudentRoute>), children: [
     { index: true, element: withSuspense(<StudentDashboardPage />) },
@@ -228,11 +234,9 @@ export const routes: RouteObject[] = [
     { path: 'payment/failure', element: withSuspense(<StudentPaymentFailurePage />) },
     { path: 'purchases', element: withSuspense(<StudentPurchaseHistoryPage />) },
     { path: 'invoice/:purchaseId', element: withSuspense(<StudentInvoicePage />) },
-    { path: 'ai-dashboard', element: withSuspense(<StudentAiDashboardPage />) },
-    { path: 'study-planner', element: withSuspense(<StudentStudyPlannerPage />) },
-    { path: 'recommendations', element: withSuspense(<StudentRecommendationsPage />) },
+    { path: 'my-analytics', element: withSuspense(<StudentMyAnalyticsPage />) },
+    { path: 'performance-prediction', element: withSuspense(<StudentPerformancePredictionPage />) },
     { path: 'learning-insights', element: withSuspense(<StudentLearningInsightsPage />) },
-    { path: 'revision-planner', element: withSuspense(<StudentRevisionPlannerPage />) },
   ]},
   { path: '*', element: withSuspense(<NotFoundPage />) },
 ];
