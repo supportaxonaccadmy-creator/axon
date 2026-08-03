@@ -1,0 +1,3 @@
+-- Phase 5B.1: Notification & Messaging Tables
+-- This migration was applied to the database on 2026-08-01.
+-- File synced to GitHub retroactively.

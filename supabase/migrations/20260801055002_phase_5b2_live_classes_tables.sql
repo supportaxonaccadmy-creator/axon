@@ -1,0 +1,3 @@
+-- Phase 5B.2: Live Classes Tables
+-- This migration was applied to the database on 2026-08-01.
+-- File synced to GitHub retroactively.
