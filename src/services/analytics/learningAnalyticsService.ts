@@ -9,52 +9,26 @@ export const learningAnalyticsService = {
   async getByStudent(studentId: string): Promise<{ data: StudentLearningAnalytics | null; error: string | null }> {
     const supabase = getSupabaseClient();
     const { data, error } = await supabase.from(TABLE).select('*').eq('student_id', studentId).maybeSingle();
-    if (error) {
-      logger.error('learningAnalyticsService.getByStudent', { error: error.message });
-      return { data: null, error: error.message };
-    }
+    if (error) { logger.error('learningAnalyticsService.getByStudent', { error: error.message }); return { data: null, error: error.message }; }
     return { data: data ? mapLearningAnalytics(data as never) : null, error: null };
   },
-
   async getByBatch(batchId: string): Promise<{ data: StudentLearningAnalytics[]; error: string | null }> {
     const supabase = getSupabaseClient();
     const { data, error } = await supabase.from(TABLE).select('*').eq('batch_id', batchId);
-    if (error) {
-      logger.error('learningAnalyticsService.getByBatch', { error: error.message });
-      return { data: [], error: error.message };
-    }
+    if (error) { logger.error('learningAnalyticsService.getByBatch', { error: error.message }); return { data: [], error: error.message }; }
     return { data: (data as never[]).map(mapLearningAnalytics), error: null };
   },
-
   async getAll(): Promise<{ data: StudentLearningAnalytics[]; error: string | null }> {
     const supabase = getSupabaseClient();
     const { data, error } = await supabase.from(TABLE).select('*').order('learning_score', { ascending: false });
-    if (error) {
-      logger.error('learningAnalyticsService.getAll', { error: error.message });
-      return { data: [], error: error.message };
-    }
+    if (error) { logger.error('learningAnalyticsService.getAll', { error: error.message }); return { data: [], error: error.message }; }
     return { data: (data as never[]).map(mapLearningAnalytics), error: null };
   },
-
   async upsert(input: {
-    studentId: string;
-    batchId?: string | null;
-    totalStudyMinutes?: number;
-    weeklyStudyMinutes?: number;
-    monthlyStudyMinutes?: number;
-    completionPercentage?: number;
-    attendancePercentage?: number;
-    mcqAccuracy?: number;
-    videoCompletionPercentage?: number;
-    pdfReadingPercentage?: number;
-    revisionFrequency?: number;
-    engagementScore?: number;
-    learningScore?: number;
-    consistencyScore?: number;
-    streakDays?: number;
-    xpTotal?: number;
-    levelNumber?: number;
-    lastActivityAt?: string;
+    studentId: string; batchId?: string | null; totalStudyMinutes?: number; weeklyStudyMinutes?: number;
+    monthlyStudyMinutes?: number; completionPercentage?: number; attendancePercentage?: number; mcqAccuracy?: number;
+    videoCompletionPercentage?: number; pdfReadingPercentage?: number; revisionFrequency?: number; engagementScore?: number;
+    learningScore?: number; consistencyScore?: number; streakDays?: number; xpTotal?: number; levelNumber?: number; lastActivityAt?: string;
   }): Promise<{ data: StudentLearningAnalytics | null; error: string | null }> {
     const supabase = getSupabaseClient();
     const row: Record<string, unknown> = { student_id: input.studentId };
@@ -75,12 +49,8 @@ export const learningAnalyticsService = {
     if (input.xpTotal !== undefined) row.xp_total = input.xpTotal;
     if (input.levelNumber !== undefined) row.level_number = input.levelNumber;
     if (input.lastActivityAt !== undefined) row.last_activity_at = input.lastActivityAt;
-
     const { data, error } = await supabase.from(TABLE).upsert(row, { onConflict: 'student_id,batch_id' }).select('*').maybeSingle();
-    if (error) {
-      logger.error('learningAnalyticsService.upsert', { error: error.message });
-      return { data: null, error: error.message };
-    }
+    if (error) { logger.error('learningAnalyticsService.upsert', { error: error.message }); return { data: null, error: error.message }; }
     return { data: data ? mapLearningAnalytics(data as never) : null, error: null };
   },
 };
