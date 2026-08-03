@@ -112,6 +112,10 @@ const AdminContentAnalyticsPage = lazy(() => import('@/pages/admin/ContentAnalyt
 const StudentMyAnalyticsPage = lazy(() => import('@/pages/student/MyAnalyticsPage').then((m) => ({ default: m.MyAnalyticsPage })));
 const StudentPerformancePredictionPage = lazy(() => import('@/pages/student/PerformancePredictionPage').then((m) => ({ default: m.PerformancePredictionPage })));
 const StudentLearningInsightsPage = lazy(() => import('@/pages/student/LearningInsightsPage').then((m) => ({ default: m.LearningInsightsPage })));
+const AdminPerformanceDashboardPage = lazy(() => import('@/pages/admin/PerformanceDashboardPage').then((m) => ({ default: m.PerformanceDashboardPage })));
+const AdminCacheManagementPage = lazy(() => import('@/pages/admin/CacheManagementPage').then((m) => ({ default: m.CacheManagementPage })));
+const StudentOfflineDownloadsPage = lazy(() => import('@/pages/student/OfflineDownloadsPage').then((m) => ({ default: m.OfflineDownloadsPage })));
+const StudentOfflineLibraryPage = lazy(() => import('@/pages/student/OfflineLibraryPage').then((m) => ({ default: m.OfflineLibraryPage })));
 
 function withSuspense(element: React.ReactNode) { return <Suspense fallback={<PageLoader />}>{element}</Suspense>; }
 
@@ -210,6 +214,8 @@ export const routes: RouteObject[] = [
     { path: 'student-intelligence', element: withSuspense(<AdminStudentIntelligencePage />) },
     { path: 'revenue-analytics', element: withSuspense(<AdminRevenueAnalyticsPage />) },
     { path: 'content-analytics', element: withSuspense(<AdminContentAnalyticsPage />) },
+    { path: 'performance', element: withSuspense(<AdminPerformanceDashboardPage />) },
+    { path: 'cache-management', element: withSuspense(<AdminCacheManagementPage />) },
   ] },
   { path: ROUTES.STUDENT, element: (<StudentRoute><StudentLayout /></StudentRoute>), children: [
     { index: true, element: withSuspense(<StudentDashboardPage />) },
@@ -237,6 +243,8 @@ export const routes: RouteObject[] = [
     { path: 'my-analytics', element: withSuspense(<StudentMyAnalyticsPage />) },
     { path: 'performance-prediction', element: withSuspense(<StudentPerformancePredictionPage />) },
     { path: 'learning-insights', element: withSuspense(<StudentLearningInsightsPage />) },
+    { path: 'offline-downloads', element: withSuspense(<StudentOfflineDownloadsPage />) },
+    { path: 'offline-library', element: withSuspense(<StudentOfflineLibraryPage />) },
   ]},
   { path: '*', element: withSuspense(<NotFoundPage />) },
 ];
