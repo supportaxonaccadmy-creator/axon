@@ -30,4 +30,8 @@ export {
 } from './useAuthorization';
 export { useFilteredNavItems } from './useFilteredNavItems';
 export type { SecureNavItem } from './useFilteredNavItems';
+export { usePWA } from './usePWA';
+export { useOffline } from './useOffline';
+export { useInstallPrompt } from './useInstallPrompt';
+export { usePerformance } from './usePerformance';
 export { useDashboard, useDashboardStats, useDashboardActivity, useDashboardQuickActions, useDashboardSystemStatus } from './useDashboard';
