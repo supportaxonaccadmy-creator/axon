@@ -43,4 +43,8 @@ export { useMetaTags } from './useMetaTags';
 export { useStructuredData } from './useStructuredData';
 export { useAnalytics } from './useAnalytics';
 export { useMarketing } from './useMarketing';
+export { useDeployment } from './useDeployment';
+export { useEnvironment } from './useEnvironment';
+export { useHealthChecks } from './useHealthChecks';
+export { useRelease } from './useRelease';
 export { useDashboard, useDashboardStats, useDashboardActivity, useDashboardQuickActions, useDashboardSystemStatus } from './useDashboard';
