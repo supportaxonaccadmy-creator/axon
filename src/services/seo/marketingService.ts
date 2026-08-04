@@ -1,0 +1,21 @@
+import type { MarketingLead, NewsletterSubscriber } from './seo.types';
+import { utmService } from './utmService';
+
+class MarketingService {
+  async subscribeNewsletter(email: string, source?: string): Promise<{ success: boolean; error?: string }> {
+    try { const { getSupabaseClient } = await import('@/lib/supabase'); const supabase = getSupabaseClient(); const utm = utmService.getStoredUTMParams(); const { error } = await supabase.from('newsletter_subscribers').insert({ email, source: source ?? 'website', utm_source: utm.utm_source ?? null, utm_medium: utm.utm_medium ?? null, utm_campaign: utm.utm_campaign ?? null }); if (error) { if (error.code === '23505') return { success: false, error: 'Already subscribed' }; return { success: false, error: 'Failed to subscribe' }; } return { success: true }; } catch { return { success: false, error: 'Network error' }; }
+  }
+  async unsubscribeNewsletter(email: string): Promise<{ success: boolean; error?: string }> {
+    try { const { getSupabaseClient } = await import('@/lib/supabase'); const supabase = getSupabaseClient(); const { error } = await supabase.from('newsletter_subscribers').update({ status: 'unsubscribed', unsubscribed_at: new Date().toISOString() }).eq('email', email); if (error) return { success: false, error: 'Failed to unsubscribe' }; return { success: true }; } catch { return { success: false, error: 'Network error' }; }
+  }
+  async captureLead(data: { name?: string; email: string; phone?: string; examTarget?: string; source?: string; landingPage?: string }): Promise<{ success: boolean; error?: string }> {
+    try { const { getSupabaseClient } = await import('@/lib/supabase'); const supabase = getSupabaseClient(); const utm = utmService.getStoredUTMParams(); const { error } = await supabase.from('marketing_leads').insert({ name: data.name ?? null, email: data.email, phone: data.phone ?? null, exam_target: data.examTarget ?? null, source: data.source ?? 'landing_page', landing_page: data.landingPage ?? null, utm_source: utm.utm_source ?? null, utm_medium: utm.utm_medium ?? null, utm_campaign: utm.utm_campaign ?? null, utm_term: utm.utm_term ?? null, utm_content: utm.utm_content ?? null }); if (error) return { success: false, error: 'Failed to submit' }; return { success: true }; } catch { return { success: false, error: 'Network error' }; }
+  }
+  async getLeads(limit: number = 50, offset: number = 0): Promise<MarketingLead[]> { try { const { getSupabaseClient } = await import('@/lib/supabase'); const supabase = getSupabaseClient(); const { data, error } = await supabase.from('marketing_leads').select('*').order('created_at', { ascending: false }).range(offset, offset + limit - 1); if (error || !data) return []; return data as unknown as MarketingLead[]; } catch { return []; } }
+  async getSubscribers(limit: number = 50, offset: number = 0): Promise<NewsletterSubscriber[]> { try { const { getSupabaseClient } = await import('@/lib/supabase'); const supabase = getSupabaseClient(); const { data, error } = await supabase.from('newsletter_subscribers').select('*').order('subscribed_at', { ascending: false }).range(offset, offset + limit - 1); if (error || !data) return []; return data as unknown as NewsletterSubscriber[]; } catch { return []; } }
+  async updateLeadStatus(leadId: string, status: string): Promise<boolean> { try { const { getSupabaseClient } = await import('@/lib/supabase'); const supabase = getSupabaseClient(); const { error } = await supabase.from('marketing_leads').update({ status }).eq('id', leadId); return !error; } catch { return false; } }
+  async getLeadCount(): Promise<number> { try { const { getSupabaseClient } = await import('@/lib/supabase'); const supabase = getSupabaseClient(); const { count } = await supabase.from('marketing_leads').select('*', { count: 'exact', head: true }); return count ?? 0; } catch { return 0; } }
+  async getSubscriberCount(): Promise<number> { try { const { getSupabaseClient } = await import('@/lib/supabase'); const supabase = getSupabaseClient(); const { count } = await supabase.from('newsletter_subscribers').select('*', { count: 'exact', head: true }).eq('status', 'active'); return count ?? 0; } catch { return 0; } }
+}
+
+export const marketingService = new MarketingService();
