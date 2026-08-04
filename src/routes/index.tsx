@@ -120,6 +120,14 @@ const AdminSecurityDashboardPage = lazy(() => import('@/pages/admin/SecurityDash
 const AdminPermissionManagementPage = lazy(() => import('@/pages/admin/PermissionManagementPage').then((m) => ({ default: m.PermissionManagementPage })));
 const AdminActiveSessionsPage = lazy(() => import('@/pages/admin/ActiveSessionsPage').then((m) => ({ default: m.ActiveSessionsPage })));
 const AdminAuditSecurityPage = lazy(() => import('@/pages/admin/AuditSecurityPage').then((m) => ({ default: m.AuditSecurityPage })));
+const AdminSEODashboardPage = lazy(() => import('@/pages/admin/SEODashboardPage').then((m) => ({ default: m.SEODashboardPage })));
+const AdminMarketingDashboardPage = lazy(() => import('@/pages/admin/MarketingDashboardPage').then((m) => ({ default: m.MarketingDashboardPage })));
+const AdminBlogManagementPage = lazy(() => import('@/pages/admin/BlogManagementPage').then((m) => ({ default: m.BlogManagementPage })));
+const AdminLandingPageManagementPage = lazy(() => import('@/pages/admin/LandingPageManagementPage').then((m) => ({ default: m.LandingPageManagementPage })));
+const PublicBlogPage = lazy(() => import('@/pages/public/BlogPage').then((m) => ({ default: m.BlogPage })));
+const PublicBlogDetailsPage = lazy(() => import('@/pages/public/BlogDetailsPage').then((m) => ({ default: m.BlogDetailsPage })));
+const PublicCategoryPage = lazy(() => import('@/pages/public/CategoryPage').then((m) => ({ default: m.CategoryPage })));
+const PublicLandingPage = lazy(() => import('@/pages/public/LandingPage').then((m) => ({ default: m.LandingPage })));
 
 function withSuspense(element: React.ReactNode) { return <Suspense fallback={<PageLoader />}>{element}</Suspense>; }
 
@@ -129,6 +137,10 @@ export const routes: RouteObject[] = [
     { path: 'unauthorized', element: withSuspense(<UnauthorizedPage />) },
     { path: 'access-denied', element: withSuspense(<AccessDeniedPage />) },
     { path: 'forbidden', element: withSuspense(<ForbiddenPage />) },
+    { path: 'blog', element: withSuspense(<PublicBlogPage />) },
+    { path: 'blog/:slug', element: withSuspense(<PublicBlogDetailsPage />) },
+    { path: 'blog/category/:slug', element: withSuspense(<PublicCategoryPage />) },
+    { path: 'landing/:slug', element: withSuspense(<PublicLandingPage />) },
   ]},
   { path: '/login', element: (<GuestRoute><AuthLayout /></GuestRoute>), children: [{ index: true, element: withSuspense(<LoginPage />) }] },
   { path: '/register', element: (<GuestRoute><AuthLayout /></GuestRoute>), children: [{ index: true, element: withSuspense(<RegisterPage />) }] },
@@ -224,6 +236,10 @@ export const routes: RouteObject[] = [
     { path: 'permissions', element: withSuspense(<AdminPermissionManagementPage />) },
     { path: 'active-sessions', element: withSuspense(<AdminActiveSessionsPage />) },
     { path: 'audit-security', element: withSuspense(<AdminAuditSecurityPage />) },
+    { path: 'seo', element: withSuspense(<AdminSEODashboardPage />) },
+    { path: 'marketing', element: withSuspense(<AdminMarketingDashboardPage />) },
+    { path: 'blog-management', element: withSuspense(<AdminBlogManagementPage />) },
+    { path: 'landing-pages', element: withSuspense(<AdminLandingPageManagementPage />) },
   ] },
   { path: ROUTES.STUDENT, element: (<StudentRoute><StudentLayout /></StudentRoute>), children: [
     { index: true, element: withSuspense(<StudentDashboardPage />) },
