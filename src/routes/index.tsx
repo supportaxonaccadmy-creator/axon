@@ -128,6 +128,13 @@ const PublicBlogPage = lazy(() => import('@/pages/public/BlogPage').then((m) => 
 const PublicBlogDetailsPage = lazy(() => import('@/pages/public/BlogDetailsPage').then((m) => ({ default: m.BlogDetailsPage })));
 const PublicCategoryPage = lazy(() => import('@/pages/public/CategoryPage').then((m) => ({ default: m.CategoryPage })));
 const PublicLandingPage = lazy(() => import('@/pages/public/LandingPage').then((m) => ({ default: m.LandingPage })));
+const AdminProductionDashboardPage = lazy(() => import('@/pages/admin/ProductionDashboardPage').then((m) => ({ default: m.ProductionDashboardPage })));
+const AdminDeploymentCenterPage = lazy(() => import('@/pages/admin/DeploymentCenterPage').then((m) => ({ default: m.DeploymentCenterPage })));
+const AdminEnvironmentManagementPage = lazy(() => import('@/pages/admin/EnvironmentManagementPage').then((m) => ({ default: m.EnvironmentManagementPage })));
+const AdminDatabaseOptimizationPage = lazy(() => import('@/pages/admin/DatabaseOptimizationPage').then((m) => ({ default: m.DatabaseOptimizationPage })));
+const AdminBackupManagementPage = lazy(() => import('@/pages/admin/BackupManagementPage').then((m) => ({ default: m.BackupManagementPage })));
+const AdminReleaseManagementPage = lazy(() => import('@/pages/admin/ReleaseManagementPage').then((m) => ({ default: m.ReleaseManagementPage })));
+const AdminDevopsSystemHealthPage = lazy(() => import('@/pages/admin/SystemHealthPage').then((m) => ({ default: m.SystemHealthPage })));
 
 function withSuspense(element: React.ReactNode) { return <Suspense fallback={<PageLoader />}>{element}</Suspense>; }
 
@@ -240,6 +247,13 @@ export const routes: RouteObject[] = [
     { path: 'marketing', element: withSuspense(<AdminMarketingDashboardPage />) },
     { path: 'blog-management', element: withSuspense(<AdminBlogManagementPage />) },
     { path: 'landing-pages', element: withSuspense(<AdminLandingPageManagementPage />) },
+    { path: 'production', element: withSuspense(<AdminProductionDashboardPage />) },
+    { path: 'deployment', element: withSuspense(<AdminDeploymentCenterPage />) },
+    { path: 'env-management', element: withSuspense(<AdminEnvironmentManagementPage />) },
+    { path: 'db-optimization', element: withSuspense(<AdminDatabaseOptimizationPage />) },
+    { path: 'backup-management', element: withSuspense(<AdminBackupManagementPage />) },
+    { path: 'release-management', element: withSuspense(<AdminReleaseManagementPage />) },
+    { path: 'system-health', element: withSuspense(<AdminDevopsSystemHealthPage />) },
   ] },
   { path: ROUTES.STUDENT, element: (<StudentRoute><StudentLayout /></StudentRoute>), children: [
     { index: true, element: withSuspense(<StudentDashboardPage />) },
