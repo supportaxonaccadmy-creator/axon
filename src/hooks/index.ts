@@ -47,4 +47,8 @@ export { useDeployment } from './useDeployment';
 export { useEnvironment } from './useEnvironment';
 export { useHealthChecks } from './useHealthChecks';
 export { useRelease } from './useRelease';
+export { useTesting } from './useTesting';
+export { useQA } from './useQA';
+export { useTestReports } from './useTestReports';
+export { usePerformanceTests } from './usePerformanceTests';
 export { useDashboard, useDashboardStats, useDashboardActivity, useDashboardQuickActions, useDashboardSystemStatus } from './useDashboard';
