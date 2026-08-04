@@ -1,0 +1,13 @@
+import { memo } from 'react';
+import { ListChecks, CheckCircle, XCircle, AlertTriangle, Clock } from 'lucide-react';
+import { productionValidator } from '@/services/devops';
+
+function ProductionChecklistComponent() {
+  const items = productionValidator.runValidation();
+  const readiness = productionValidator.getReadinessScore();
+  const categories = [...new Set(items.map((i) => i.category))];
+  const statusIcon = (status: string) => { switch (status) { case 'pass': return <CheckCircle className="h-4 w-4 text-success-500" />; case 'fail': return <XCircle className="h-4 w-4 text-error-500" />; case 'warning': return <AlertTriangle className="h-4 w-4 text-warning-500" />; case 'pending': return <Clock className="h-4 w-4 text-neutral-400" />; default: return <Clock className="h-4 w-4 text-neutral-400" />; } };
+  const scoreColor = readiness.percentage === 100 ? 'bg-success-50 text-success-700' : readiness.percentage >= 80 ? 'bg-warning-50 text-warning-700' : 'bg-error-50 text-error-700';
+  return (<div className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm"><div className="mb-4 flex items-center justify-between"><div className="flex items-center gap-2"><div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary-50"><ListChecks className="h-4 w-4 text-primary-600" /></div><h3 className="text-sm font-semibold text-neutral-900">Production Checklist</h3></div><div className={`rounded-full px-3 py-1 text-xs font-medium ${scoreColor}`}>{readiness.percentage}% - {readiness.status}</div></div><div className="mb-4"><div className="flex items-center justify-between text-xs text-neutral-500"><span>Readiness Score</span><span>{readiness.score}/{readiness.total} required checks passed</span></div><div className="mt-1 h-2 overflow-hidden rounded-full bg-neutral-100"><div className={`h-full rounded-full ${readiness.percentage === 100 ? 'bg-success-500' : readiness.percentage >= 80 ? 'bg-warning-500' : 'bg-error-500'}`} style={{ width: `${readiness.percentage}%` }} /></div></div><div className="space-y-4">{categories.map((category) => (<div key={category}><h4 className="mb-1.5 text-xs font-semibold text-neutral-500">{category}</h4><div className="space-y-1">{items.filter((i) => i.category === category).map((item) => (<div key={item.id} className="flex items-center gap-2 text-xs">{statusIcon(item.status)}<span className="text-neutral-600">{item.description}</span>{item.required && <span className="text-neutral-400">*Required</span>}<span className="ml-auto text-neutral-400">{item.message}</span></div>))}</div></div>))}</div></div>);
+}
+export const ProductionChecklist = memo(ProductionChecklistComponent);

@@ -1,0 +1,11 @@
+import { memo } from 'react';
+import { Server, CheckCircle, AlertTriangle, XCircle } from 'lucide-react';
+import { useEnvironment } from '@/hooks/useEnvironment';
+
+function EnvironmentStatusCardComponent() {
+  const { envInfo, validation, isProduction, isStaging } = useEnvironment();
+  const statusIcon = validation.valid ? <CheckCircle className="h-5 w-5 text-success-500" /> : <XCircle className="h-5 w-5 text-error-500" />;
+  const envColor = isProduction ? 'bg-success-50 text-success-700' : isStaging ? 'bg-warning-50 text-warning-700' : 'bg-primary-50 text-primary-700';
+  return (<div className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm"><div className="mb-4 flex items-center gap-2"><div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary-50"><Server className="h-4 w-4 text-primary-600" /></div><h3 className="text-sm font-semibold text-neutral-900">Environment Status</h3></div><div className="mb-3 flex items-center gap-2"><span className={`rounded-full px-3 py-1 text-xs font-medium ${envColor}`}>{envInfo.name}</span>{statusIcon}</div><div className="space-y-1.5 text-xs text-neutral-600"><div className="flex justify-between"><span>API URL</span><span className="font-mono text-neutral-400">{envInfo.apiUrl ? 'Configured' : 'Missing'}</span></div><div className="flex justify-between"><span>App URL</span><span className="font-mono text-neutral-400">{envInfo.appUrl || 'N/A'}</span></div><div className="flex justify-between"><span>Log Level</span><span className="font-mono text-neutral-400">{envInfo.logLevel}</span></div><div className="flex justify-between"><span>Analytics</span><span className="font-mono text-neutral-400">{envInfo.enableAnalytics ? 'Enabled' : 'Disabled'}</span></div><div className="flex justify-between"><span>Error Reporting</span><span className="font-mono text-neutral-400">{envInfo.enableErrorReporting ? 'Enabled' : 'Disabled'}</span></div></div>{validation.warnings.length > 0 && (<div className="mt-3 rounded-lg bg-warning-50 p-2">{validation.warnings.map((w, i) => <div key={i} className="flex items-center gap-1 text-xs text-warning-700"><AlertTriangle className="h-3 w-3" /> {w}</div>)}</div>)}</div>);
+}
+export const EnvironmentStatusCard = memo(EnvironmentStatusCardComponent);
