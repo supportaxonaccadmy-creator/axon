@@ -116,6 +116,10 @@ const AdminPerformanceDashboardPage = lazy(() => import('@/pages/admin/Performan
 const AdminCacheManagementPage = lazy(() => import('@/pages/admin/CacheManagementPage').then((m) => ({ default: m.CacheManagementPage })));
 const StudentOfflineDownloadsPage = lazy(() => import('@/pages/student/OfflineDownloadsPage').then((m) => ({ default: m.OfflineDownloadsPage })));
 const StudentOfflineLibraryPage = lazy(() => import('@/pages/student/OfflineLibraryPage').then((m) => ({ default: m.OfflineLibraryPage })));
+const AdminSecurityDashboardPage = lazy(() => import('@/pages/admin/SecurityDashboardPage').then((m) => ({ default: m.SecurityDashboardPage })));
+const AdminPermissionManagementPage = lazy(() => import('@/pages/admin/PermissionManagementPage').then((m) => ({ default: m.PermissionManagementPage })));
+const AdminActiveSessionsPage = lazy(() => import('@/pages/admin/ActiveSessionsPage').then((m) => ({ default: m.ActiveSessionsPage })));
+const AdminAuditSecurityPage = lazy(() => import('@/pages/admin/AuditSecurityPage').then((m) => ({ default: m.AuditSecurityPage })));
 
 function withSuspense(element: React.ReactNode) { return <Suspense fallback={<PageLoader />}>{element}</Suspense>; }
 
@@ -216,6 +220,10 @@ export const routes: RouteObject[] = [
     { path: 'content-analytics', element: withSuspense(<AdminContentAnalyticsPage />) },
     { path: 'performance', element: withSuspense(<AdminPerformanceDashboardPage />) },
     { path: 'cache-management', element: withSuspense(<AdminCacheManagementPage />) },
+    { path: 'security', element: withSuspense(<AdminSecurityDashboardPage />) },
+    { path: 'permissions', element: withSuspense(<AdminPermissionManagementPage />) },
+    { path: 'active-sessions', element: withSuspense(<AdminActiveSessionsPage />) },
+    { path: 'audit-security', element: withSuspense(<AdminAuditSecurityPage />) },
   ] },
   { path: ROUTES.STUDENT, element: (<StudentRoute><StudentLayout /></StudentRoute>), children: [
     { index: true, element: withSuspense(<StudentDashboardPage />) },
