@@ -34,4 +34,8 @@ export { usePWA } from './usePWA';
 export { useOffline } from './useOffline';
 export { useInstallPrompt } from './useInstallPrompt';
 export { usePerformance } from './usePerformance';
+export { usePermissions as useSecurityPermissions } from './usePermissions';
+export { useSessionSecurity } from './useSessionSecurity';
+export { useSecurity } from './useSecurity';
+export { useDeviceTracking } from './useDeviceTracking';
 export { useDashboard, useDashboardStats, useDashboardActivity, useDashboardQuickActions, useDashboardSystemStatus } from './useDashboard';
