@@ -135,6 +135,13 @@ const AdminDatabaseOptimizationPage = lazy(() => import('@/pages/admin/DatabaseO
 const AdminBackupManagementPage = lazy(() => import('@/pages/admin/BackupManagementPage').then((m) => ({ default: m.BackupManagementPage })));
 const AdminReleaseManagementPage = lazy(() => import('@/pages/admin/ReleaseManagementPage').then((m) => ({ default: m.ReleaseManagementPage })));
 const AdminDevopsSystemHealthPage = lazy(() => import('@/pages/admin/SystemHealthPage').then((m) => ({ default: m.SystemHealthPage })));
+const AdminTestingDashboardPage = lazy(() => import('@/pages/admin/TestingDashboardPage').then((m) => ({ default: m.TestingDashboardPage })));
+const AdminUnitTestingPage = lazy(() => import('@/pages/admin/UnitTestingPage').then((m) => ({ default: m.UnitTestingPage })));
+const AdminIntegrationTestingPage = lazy(() => import('@/pages/admin/IntegrationTestingPage').then((m) => ({ default: m.IntegrationTestingPage })));
+const AdminE2ETestingPage = lazy(() => import('@/pages/admin/E2ETestingPage').then((m) => ({ default: m.E2ETestingPage })));
+const AdminPerformanceTestingPage = lazy(() => import('@/pages/admin/PerformanceTestingPage').then((m) => ({ default: m.PerformanceTestingPage })));
+const AdminSecurityTestingPage = lazy(() => import('@/pages/admin/SecurityTestingPage').then((m) => ({ default: m.SecurityTestingPage })));
+const AdminQAReportsPage = lazy(() => import('@/pages/admin/QAReportsPage').then((m) => ({ default: m.QAReportsPage })));
 
 function withSuspense(element: React.ReactNode) { return <Suspense fallback={<PageLoader />}>{element}</Suspense>; }
 
@@ -254,6 +261,13 @@ export const routes: RouteObject[] = [
     { path: 'backup-management', element: withSuspense(<AdminBackupManagementPage />) },
     { path: 'release-management', element: withSuspense(<AdminReleaseManagementPage />) },
     { path: 'system-health', element: withSuspense(<AdminDevopsSystemHealthPage />) },
+    { path: 'testing', element: withSuspense(<AdminTestingDashboardPage />) },
+    { path: 'unit-testing', element: withSuspense(<AdminUnitTestingPage />) },
+    { path: 'integration-testing', element: withSuspense(<AdminIntegrationTestingPage />) },
+    { path: 'e2e-testing', element: withSuspense(<AdminE2ETestingPage />) },
+    { path: 'performance-testing', element: withSuspense(<AdminPerformanceTestingPage />) },
+    { path: 'security-testing', element: withSuspense(<AdminSecurityTestingPage />) },
+    { path: 'qa-reports', element: withSuspense(<AdminQAReportsPage />) },
   ] },
   { path: ROUTES.STUDENT, element: (<StudentRoute><StudentLayout /></StudentRoute>), children: [
     { index: true, element: withSuspense(<StudentDashboardPage />) },
