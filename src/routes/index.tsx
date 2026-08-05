@@ -120,7 +120,7 @@ const AdminSecurityDashboardPage = lazy(() => import('@/pages/admin/SecurityDash
 const AdminPermissionManagementPage = lazy(() => import('@/pages/admin/PermissionManagementPage').then((m) => ({ default: m.PermissionManagementPage })));
 const AdminActiveSessionsPage = lazy(() => import('@/pages/admin/ActiveSessionsPage').then((m) => ({ default: m.ActiveSessionsPage })));
 const AdminAuditSecurityPage = lazy(() => import('@/pages/admin/AuditSecurityPage').then((m) => ({ default: m.AuditSecurityPage })));
-const AdminSEODashboardPage = lazy(() => import('@/pages/admin/SEODashboardPage').then((m) => ({ default: m.SEODashboardPage })));
+const AdminSEODashboardPage = lazy(() => import('@/pages/admin/SEODashboardPage').then((m) ({ default: m.SEODashboardPage })));
 const AdminMarketingDashboardPage = lazy(() => import('@/pages/admin/MarketingDashboardPage').then((m) => ({ default: m.MarketingDashboardPage })));
 const AdminBlogManagementPage = lazy(() => import('@/pages/admin/BlogManagementPage').then((m) => ({ default: m.BlogManagementPage })));
 const AdminLandingPageManagementPage = lazy(() => import('@/pages/admin/LandingPageManagementPage').then((m) => ({ default: m.LandingPageManagementPage })));
@@ -142,6 +142,13 @@ const AdminE2ETestingPage = lazy(() => import('@/pages/admin/E2ETestingPage').th
 const AdminPerformanceTestingPage = lazy(() => import('@/pages/admin/PerformanceTestingPage').then((m) => ({ default: m.PerformanceTestingPage })));
 const AdminSecurityTestingPage = lazy(() => import('@/pages/admin/SecurityTestingPage').then((m) => ({ default: m.SecurityTestingPage })));
 const AdminQAReportsPage = lazy(() => import('@/pages/admin/QAReportsPage').then((m) => ({ default: m.QAReportsPage })));
+const AdminMonitoringDashboardPage = lazy(() => import('@/pages/admin/MonitoringDashboardPage').then((m) => ({ default: m.MonitoringDashboardPage })));
+const AdminSystemLogsPage = lazy(() => import('@/pages/admin/SystemLogsPage').then((m) => ({ default: m.SystemLogsPage })));
+const AdminPerformanceMonitoringPage = lazy(() => import('@/pages/admin/PerformanceMonitoringPage').then((m) => ({ default: m.PerformanceMonitoringPage })));
+const AdminErrorTrackingPage = lazy(() => import('@/pages/admin/ErrorTrackingPage').then((m) => ({ default: m.ErrorTrackingPage })));
+const AdminHealthMonitoringPage = lazy(() => import('@/pages/admin/HealthMonitoringPage').then((m) => ({ default: m.HealthMonitoringPage })));
+const AdminAlertsManagementPage = lazy(() => import('@/pages/admin/AlertsManagementPage').then((m) => ({ default: m.AlertsManagementPage })));
+const AdminAuditMonitoringPage = lazy(() => import('@/pages/admin/AuditMonitoringPage').then((m) => ({ default: m.AuditMonitoringPage })));
 
 function withSuspense(element: React.ReactNode) { return <Suspense fallback={<PageLoader />}>{element}</Suspense>; }
 
@@ -243,7 +250,7 @@ export const routes: RouteObject[] = [
     { path: 'analytics', element: withSuspense(<AdminAnalyticsDashboardPage />) },
     { path: 'student-intelligence', element: withSuspense(<AdminStudentIntelligencePage />) },
     { path: 'revenue-analytics', element: withSuspense(<AdminRevenueAnalyticsPage />) },
-    { path: 'content-analytics', element: withSuspense(<AdminContentAnalyticsPage />) },
+    { path: 'content-analytics', element: withSuspense(<AdminAdminContentAnalyticsPage />) },
     { path: 'performance', element: withSuspense(<AdminPerformanceDashboardPage />) },
     { path: 'cache-management', element: withSuspense(<AdminCacheManagementPage />) },
     { path: 'security', element: withSuspense(<AdminSecurityDashboardPage />) },
@@ -268,6 +275,13 @@ export const routes: RouteObject[] = [
     { path: 'performance-testing', element: withSuspense(<AdminPerformanceTestingPage />) },
     { path: 'security-testing', element: withSuspense(<AdminSecurityTestingPage />) },
     { path: 'qa-reports', element: withSuspense(<AdminQAReportsPage />) },
+    { path: 'monitoring', element: withSuspense(<AdminMonitoringDashboardPage />) },
+    { path: 'system-logs', element: withSuspense(<AdminSystemLogsPage />) },
+    { path: 'perf-monitoring', element: withSuspense(<AdminPerformanceMonitoringPage />) },
+    { path: 'error-tracking', element: withSuspense(<AdminErrorTrackingPage />) },
+    { path: 'health-monitoring', element: withSuspense(<AdminHealthMonitoringPage />) },
+    { path: 'alerts-management', element: withSuspense(<AdminAlertsManagementPage />) },
+    { path: 'audit-monitoring', element: withSuspense(<AdminAuditMonitoringPage />) },
   ] },
   { path: ROUTES.STUDENT, element: (<StudentRoute><StudentLayout /></StudentRoute>), children: [
     { index: true, element: withSuspense(<StudentDashboardPage />) },
