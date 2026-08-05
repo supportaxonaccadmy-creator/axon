@@ -120,7 +120,7 @@ const AdminSecurityDashboardPage = lazy(() => import('@/pages/admin/SecurityDash
 const AdminPermissionManagementPage = lazy(() => import('@/pages/admin/PermissionManagementPage').then((m) => ({ default: m.PermissionManagementPage })));
 const AdminActiveSessionsPage = lazy(() => import('@/pages/admin/ActiveSessionsPage').then((m) => ({ default: m.ActiveSessionsPage })));
 const AdminAuditSecurityPage = lazy(() => import('@/pages/admin/AuditSecurityPage').then((m) => ({ default: m.AuditSecurityPage })));
-const AdminSEODashboardPage = lazy(() => import('@/pages/admin/SEODashboardPage').then((m) ({ default: m.SEODashboardPage })));
+const AdminSEODashboardPage = lazy(() => import('@/pages/admin/SEODashboardPage').then((m) => ({ default: m.SEODashboardPage })));
 const AdminMarketingDashboardPage = lazy(() => import('@/pages/admin/MarketingDashboardPage').then((m) => ({ default: m.MarketingDashboardPage })));
 const AdminBlogManagementPage = lazy(() => import('@/pages/admin/BlogManagementPage').then((m) => ({ default: m.BlogManagementPage })));
 const AdminLandingPageManagementPage = lazy(() => import('@/pages/admin/LandingPageManagementPage').then((m) => ({ default: m.LandingPageManagementPage })));
@@ -149,6 +149,17 @@ const AdminErrorTrackingPage = lazy(() => import('@/pages/admin/ErrorTrackingPag
 const AdminHealthMonitoringPage = lazy(() => import('@/pages/admin/HealthMonitoringPage').then((m) => ({ default: m.HealthMonitoringPage })));
 const AdminAlertsManagementPage = lazy(() => import('@/pages/admin/AlertsManagementPage').then((m) => ({ default: m.AlertsManagementPage })));
 const AdminAuditMonitoringPage = lazy(() => import('@/pages/admin/AuditMonitoringPage').then((m) => ({ default: m.AuditMonitoringPage })));
+const AdminFinanceDashboardPage = lazy(() => import('@/pages/admin/FinanceDashboardPage').then((m) => ({ default: m.FinanceDashboardPage })));
+const AdminCouponManagementPage = lazy(() => import('@/pages/admin/CouponManagementPage').then((m) => ({ default: m.CouponManagementPage })));
+const AdminWalletManagementPage = lazy(() => import('@/pages/admin/WalletManagementPage').then((m) => ({ default: m.WalletManagementPage })));
+const AdminRefundManagementPage = lazy(() => import('@/pages/admin/RefundManagementPage').then((m) => ({ default: m.RefundManagementPage })));
+const AdminInvoiceManagementPage = lazy(() => import('@/pages/admin/InvoiceManagementPage').then((m) => ({ default: m.InvoiceManagementPage })));
+const AdminTaxSettingsPage = lazy(() => import('@/pages/admin/TaxSettingsPage').then((m) => ({ default: m.TaxSettingsPage })));
+const AdminFinanceReportsPage = lazy(() => import('@/pages/admin/FinanceReportsPage').then((m) => ({ default: m.FinanceReportsPage })));
+const AdminGatewaySettingsPage = lazy(() => import('@/pages/admin/GatewaySettingsPage').then((m) => ({ default: m.GatewaySettingsPage })));
+const StudentWalletPage = lazy(() => import('@/pages/student/WalletPage').then((m) => ({ default: m.WalletPage })));
+const StudentRefundRequestsPage = lazy(() => import('@/pages/student/RefundRequestsPage').then((m) => ({ default: m.RefundRequestsPage })));
+const StudentCouponsPage = lazy(() => import('@/pages/student/CouponsPage').then((m) => ({ default: m.CouponsPage })));
 
 function withSuspense(element: React.ReactNode) { return <Suspense fallback={<PageLoader />}>{element}</Suspense>; }
 
@@ -250,7 +261,7 @@ export const routes: RouteObject[] = [
     { path: 'analytics', element: withSuspense(<AdminAnalyticsDashboardPage />) },
     { path: 'student-intelligence', element: withSuspense(<AdminStudentIntelligencePage />) },
     { path: 'revenue-analytics', element: withSuspense(<AdminRevenueAnalyticsPage />) },
-    { path: 'content-analytics', element: withSuspense(<AdminAdminContentAnalyticsPage />) },
+    { path: 'content-analytics', element: withSuspense(<AdminContentAnalyticsPage />) },
     { path: 'performance', element: withSuspense(<AdminPerformanceDashboardPage />) },
     { path: 'cache-management', element: withSuspense(<AdminCacheManagementPage />) },
     { path: 'security', element: withSuspense(<AdminSecurityDashboardPage />) },
@@ -282,6 +293,14 @@ export const routes: RouteObject[] = [
     { path: 'health-monitoring', element: withSuspense(<AdminHealthMonitoringPage />) },
     { path: 'alerts-management', element: withSuspense(<AdminAlertsManagementPage />) },
     { path: 'audit-monitoring', element: withSuspense(<AdminAuditMonitoringPage />) },
+    { path: 'finance', element: withSuspense(<AdminFinanceDashboardPage />) },
+    { path: 'coupons', element: withSuspense(<AdminCouponManagementPage />) },
+    { path: 'wallet-management', element: withSuspense(<AdminWalletManagementPage />) },
+    { path: 'refund-management', element: withSuspense(<AdminRefundManagementPage />) },
+    { path: 'invoice-management', element: withSuspense(<AdminInvoiceManagementPage />) },
+    { path: 'tax-settings', element: withSuspense(<AdminTaxSettingsPage />) },
+    { path: 'finance-reports', element: withSuspense(<AdminFinanceReportsPage />) },
+    { path: 'gateway-settings', element: withSuspense(<AdminGatewaySettingsPage />) },
   ] },
   { path: ROUTES.STUDENT, element: (<StudentRoute><StudentLayout /></StudentRoute>), children: [
     { index: true, element: withSuspense(<StudentDashboardPage />) },
@@ -311,6 +330,9 @@ export const routes: RouteObject[] = [
     { path: 'learning-insights', element: withSuspense(<StudentLearningInsightsPage />) },
     { path: 'offline-downloads', element: withSuspense(<StudentOfflineDownloadsPage />) },
     { path: 'offline-library', element: withSuspense(<StudentOfflineLibraryPage />) },
+    { path: 'wallet', element: withSuspense(<StudentWalletPage />) },
+    { path: 'refund-requests', element: withSuspense(<StudentRefundRequestsPage />) },
+    { path: 'coupons', element: withSuspense(<StudentCouponsPage />) },
   ]},
   { path: '*', element: withSuspense(<NotFoundPage />) },
 ];
